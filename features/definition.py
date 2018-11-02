@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import defintion_in_open_files, defintion, get_word, locations_by_file_extension
+from SIDE.features.lib.helpers import defintion, get_word
 
 
 history = []
@@ -26,10 +26,7 @@ class SideDefinition(sublime_plugin.TextCommand):
         cursor_pos = self.view.sel()[0].begin()
         word = get_word(self.view)
 
-        locations = defintion_in_open_files(word) or defintion(word)
-
-        filename, file_extension = os.path.splitext(self.view.file_name())
-        locations = locations_by_file_extension(locations, file_extension)
+        locations = defintion(word, self.view)
 
         if len(locations) == 0:
             window.run_command("goto_definition")

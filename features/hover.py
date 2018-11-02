@@ -2,8 +2,9 @@ import linecache
 import sublime
 import sublime_plugin
 import os
+import re
 
-from SIDE.features.lib.helpers import get_word, defintion_in_open_files, defintion, locations_by_file_extension
+from SIDE.features.lib.helpers import get_word, defintion
 
 
 class SideHover(sublime_plugin.ViewEventListener):
@@ -20,10 +21,7 @@ class SideHover(sublime_plugin.ViewEventListener):
         
     def handle_hover(self, point, is_class=False):
         word = get_word(self.view, point)
-        locations = defintion_in_open_files(word) or defintion(word)
-
-        filename, file_extension = os.path.splitext(self.view.file_name())
-        locations = locations_by_file_extension(locations, file_extension)
+        locations = defintion(word, self.view)
 
         definition_count = len(locations)
 
