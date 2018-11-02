@@ -121,15 +121,9 @@ class SideHover(sublime_plugin.ViewEventListener):
         # extract docs below function
         row = find_comment_params['row_below_signiture']
         docs = linecache.getline(file_path, row).strip()
-        if '"""' in docs:
-            while not re.match('""".*?"""', docs,  re.MULTILINE):
+        if re.match('(\'\'\'|""")', docs):
+            while not re.match('(\'\'\'|""").*?(\'\'\'|""")', docs,  re.MULTILINE):
                 row += 1
                 docs += '<br>' + linecache.getline(file_path, row).strip()
             return docs
-        if "'''" in docs:
-            while not re.match("'''.*?'''", docs,  re.MULTILINE):
-                row += 1
-                docs += '<br>' + linecache.getline(file_path, row).strip()
-            return docs
-
         return ''
