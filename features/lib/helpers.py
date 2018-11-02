@@ -8,6 +8,19 @@ def get_word(view, point=None) -> str:
         point = view.sel()[0].begin()
     return view.substr(view.word(point))
 
+def get_function_name(view, start_point) -> str:
+    ''' Get the function name when cursor is in the brackets '''
+    scope_name = view.scope_name(start_point)
+    if 'variable.function' in scope_name or 'punctuation.section.begin' in scope_name:
+        print('here i am')
+        return get_word(view)
+
+    open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START )
+    while view.substr(open_bracket_region) is not '(':
+        open_bracket_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_EMPTY_LINE)
+
+    function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START | sublime.CLASS_EMPTY_LINE)
+    return view.substr(view.word(function_name_region))
 
 def defintion(word, view):
     ''' Return a list of locations for the given word. '''

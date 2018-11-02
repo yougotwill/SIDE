@@ -5,15 +5,34 @@ import linecache
 import re
 
 
-from SIDE.features.lib.helpers import defintion, get_word
+from SIDE.features.lib.helpers import defintion, get_word, get_function_name
 
 
-history = []
+class SideShowSigniture(sublime_plugin.TextCommand):
+    def run(self, edit, locations=None, point=None, is_class=False):
+        if point is None:
+            point = self.view.sel()[0].begin()
 
+        word = None
+        if locations is None:
+            word = get_function_name(self.view, point)
+            locations = defintion(word, self.view)
 
-class SideInfoPopup(sublime_plugin.TextCommand):
-    def run(self, edit, location, point, is_class):
-        file_path, relative_file_path, row_col = location 
+        if len(locations) == 0:
+            return
+
+        # display the reference count
+        if len(locations) > 1:
+            content = """
+            <body id="side-hover" style="margin:0">
+                <div style="color: color(var(--foreground) alpha(0.7)); padding: 7px;">
+                    {} definitions
+                </div>
+            </body>""".format(len(locations))
+            self.view.show_popup(content, point)
+            return
+
+        file_path, relative_file_path, row_col = locations[0]
         row, _col = row_col  # signiture row
 
         get_docs_params = {
