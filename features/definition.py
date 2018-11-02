@@ -15,7 +15,7 @@ class SideJumpBack(sublime_plugin.TextCommand):
             file_path, row_col = bookmark 
             row, col = row_col
             window = sublime.active_window()
-            window.open_file("{}:{}:{}".format(file_path, row+1, col+1), sublime.ENCODED_POSITION)
+            window.open_file("{}:{}:{}".format(file_path, row, col), sublime.ENCODED_POSITION)
         else:
             self.view.run_command('jump_back')
 
@@ -31,15 +31,21 @@ class SideDefinition(sublime_plugin.TextCommand):
             return
 
         if len(locations) == 1:
-            # save bookmark 
             old_cursor_pos = self.view.sel()[0].begin()
-            bookmark = (self.view.file_name(), self.view.rowcol(old_cursor_pos))
-            history.append(bookmark)
+            old_row, old_col = self.view.rowcol(old_cursor_pos)
+            # normalize row and column
+            old_row += 1
+            old_col += 1
+            bookmark = (self.view.file_name(), (old_row, old_col))
 
-            # open location
             file_path, _rel_file_path, row_col = locations[0]
-            row, col = row_col
-            window.open_file("{}:{}:{}".format(file_path, row, col), sublime.ENCODED_POSITION)
+            new_row, new_col = row_col
+            
+            # save bookmark 
+            if old_row != new_row:
+                history.append(bookmark)
+            # open location
+            window.open_file("{}:{}:{}".format(file_path, new_row, new_col), sublime.ENCODED_POSITION)
         
         if len(locations) > 1:
             quick_panel = {
