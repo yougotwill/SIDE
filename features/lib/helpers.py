@@ -9,10 +9,9 @@ def get_word(view, point=None) -> str:
     return view.substr(view.word(point))
 
 def get_function_name(view, start_point) -> str:
-    ''' Get the function name when cursor is in the brackets '''
+    ''' Get the function name when cursor is inside the parenthesies or when the cursor is on the function name. '''
     scope_name = view.scope_name(start_point)
     if 'variable.function' in scope_name or 'punctuation.section.begin' in scope_name:
-        print('here i am')
         return get_word(view)
 
     open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START )
