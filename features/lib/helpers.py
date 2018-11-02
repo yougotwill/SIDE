@@ -1,5 +1,6 @@
 import os
 import sublime
+import re
 
 
 def get_word(view, point=None) -> str:
@@ -11,10 +12,13 @@ def get_word(view, point=None) -> str:
 def get_function_name(view, start_point) -> str:
     ''' Get the function name when cursor is inside the parenthesies or when the cursor is on the function name. '''
     scope_name = view.scope_name(start_point)
-    if 'variable.function' in scope_name or 'punctuation.section.begin' in scope_name:
+    if 'variable.function' in scope_name or 'entity.name.function' in scope_name:
         return get_word(view)
 
-    open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START )
+    if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
+        return ''
+
+    open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_LINE_END )
     while view.substr(open_bracket_region) is not '(':
         open_bracket_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_EMPTY_LINE)
 
