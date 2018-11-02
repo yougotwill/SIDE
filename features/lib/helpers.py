@@ -15,14 +15,14 @@ def get_function_name(view, start_point) -> str:
     if 'variable.function' in scope_name or 'entity.name.function' in scope_name:
         return get_word(view)
 
-    if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
-        return ''
+    # if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
+    #     return ''
 
-    open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START )
+    open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_LINE_END)
     while view.substr(open_bracket_region) is not '(':
-        open_bracket_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_PUNCTUATION_START)
+        open_bracket_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_EMPTY_LINE)
 
-    function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START )
+    function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START | sublime.CLASS_EMPTY_LINE)
     return view.substr(view.word(function_name_region))
 
 def defintion(word, view):
