@@ -15,8 +15,8 @@ def get_function_name(view, start_point) -> str:
     if 'variable.function' in scope_name or 'entity.name.function' in scope_name:
         return get_word(view)
 
-    # if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
-    #     return ''
+    if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
+        return ''
 
     open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_LINE_END)
     while view.substr(open_bracket_region) is not '(':
