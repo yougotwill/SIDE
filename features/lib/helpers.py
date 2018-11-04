@@ -4,6 +4,36 @@ import re
 import linecache
 
 
+def symbols_for_view_in_views(current_view, views):
+    ''' Return a list of symbol locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
+    symbols = []  # List[location]
+    for view in views:
+        locations = view.indexed_symbols()
+        for location in locations:
+            region, symbol = location
+            scope_name = view.scope_name(region.begin())
+            
+            symbol_type = '[?]'
+            if 'function' in scope_name and 'class' in scope_name:
+                symbol_type = '[m]'  # method
+            elif 'class' in scope_name:
+                symbol_type = '[c]'  # class
+            elif 'function' in scope_name:
+                symbol_type = '[f]'  # function
+            
+            location = _transform_to_location(view.file_name(), region, symbol, symbol_type)
+            symbols.append(location)
+            
+    _file_name, file_extension = os.path.splitext(current_view.file_name())
+    symbols = _locations_by_file_extension(symbols, file_extension)
+    return symbols
+
+def _transform_to_location(file_path, region, symbol, symbol_type):
+    ''' return a tuple (file_path, base_file_name, region, symbol, symbol_type) '''
+    file_name = os.path.basename(file_path)
+    base_file_name, file_extension = os.path.splitext(file_name)
+    return (file_path, base_file_name, region, symbol, symbol_type)
+
 def get_line(view, file_name, row) -> str:
     ''' 
     Get the line from the buffer or if not from linecache.
