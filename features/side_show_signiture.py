@@ -1,15 +1,14 @@
 import sublime
 import sublime_plugin
 import os
-import linecache
 import re
+import linecache
 
-
-from SIDE.features.lib.helpers import defintion, get_word, get_function_name
+from SIDE.features.lib.helpers import defintion, get_word, get_function_name, get_line
 
 
 class SideShowSigniture(sublime_plugin.TextCommand):
-    def run(self, edit, locations=None, point=None, is_class=False):
+    def run(self, edit, locations=None, point=None):
         if point is None:
             point = self.view.sel()[0].begin()
 
@@ -39,17 +38,13 @@ class SideShowSigniture(sublime_plugin.TextCommand):
             'file_path': file_path, 
             'row_above_signiture': row - 1,
             'row_below_signiture': None
-        } 
-        signiture = linecache.getline(file_path, row).strip()
+        }
 
-        if is_class:
-            signiture, row = self._build_up_class_signiture(signiture, 
-                                                            file_path, 
-                                                            row)
-        else:
-            signiture, row = self._build_up_function_signiture(signiture, 
-                                                               file_path,  
-                                                               row)
+        function_line = get_line(self.view, file_path, row).strip()
+
+        signiture, row = self.get_signiture(function_line, 
+                                            file_path, 
+                                            row)
         # prettify signiture
         signiture = signiture.strip('{').strip(':')
 
@@ -84,21 +79,17 @@ class SideShowSigniture(sublime_plugin.TextCommand):
         </body>""".format(signiture, origin, docs)
 
         self.show_popup(content, point)
+        # end of command execution
+        # perfect place to clear the linecache
         linecache.clearcache()
 
     def show_popup(self, content, point):
         self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
 
-    def _build_up_class_signiture(self, signiture, file_path, row):
-        while '{' not in signiture and ':' not in signiture:
+    def get_signiture(self, signiture, file_path, row):
+        while '{' not in signiture and ':' not in signiture and ')' not in signiture :
             row += 1
-            signiture += ' ' + linecache.getline(file_path, row).strip()
-        return signiture, row
-
-    def _build_up_function_signiture(self, signiture, file_path, row):
-        while ')' not in signiture and '{' not in signiture:
-            row += 1
-            signiture += ' ' + linecache.getline(file_path, row).strip()
+            signiture += ' ' + get_line(self.view, file_path, row).strip()
         return signiture, row
 
     def _get_docs(self, find_comment_params):
@@ -106,20 +97,20 @@ class SideShowSigniture(sublime_plugin.TextCommand):
 
         # extract docs above function
         row = find_comment_params['row_above_signiture']
-        docs = linecache.getline(file_path, find_comment_params['row_above_signiture']).strip()
+        docs = get_line(self.view, file_path, row).strip()
         # go in reverse
         if '*/' in docs:
             while '/*' not in docs:
                 row -= 1
-                docs = linecache.getline(file_path, row).strip() + '<br>' + docs
+                docs = get_line(file_path, row).strip() + '<br>' + docs
             return docs
 
         # extract docs below function
         row = find_comment_params['row_below_signiture']
-        docs = linecache.getline(file_path, row).strip()
+        docs = get_line(self.view, file_path, row).strip()
         if re.match('(\'\'\'|""")', docs):
             while not re.match('(\'\'\'|""").*?(\'\'\'|""")', docs,  re.MULTILINE):
                 row += 1
-                docs += '<br>' + linecache.getline(file_path, row).strip()
+                docs += '<br>' + get_line(self.view, file_path, row).strip()
             return docs
         return ''

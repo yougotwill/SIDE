@@ -12,11 +12,8 @@ class SideHover(sublime_plugin.ViewEventListener):
         if hover_zone != sublime.HOVER_TEXT:
             return
 
-        if 'function' in scope_name:
+        if 'function' in scope_name or 'class' in scope_name or 'constructor' in scope_name:
             self.handle_hover(point)
-
-        if 'class' in scope_name or 'constructor' in scope_name:
-            self.handle_hover(point, True)
 
     def handle_hover(self, point, is_class=False):
         word = get_word(self.view, point)
@@ -24,6 +21,5 @@ class SideHover(sublime_plugin.ViewEventListener):
 
         self.view.run_command('side_show_signiture', {
             'locations': locations, 
-            'point': point,
-            'is_class': is_class
+            'point': point
         })

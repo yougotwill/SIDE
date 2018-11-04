@@ -1,7 +1,26 @@
 import os
 import sublime
 import re
+import linecache
 
+
+def get_line(view, file_name, row):
+    print(view.file_name())
+    print(file_name)
+    print(view.file_name() == file_name)
+    is_in_buffer = view.file_name() == file_name
+
+    line = ''
+    if is_in_buffer:
+        # get from buffer
+        point = view.text_point(row, 0)
+        line = view.substr(view.line(point))
+        return line
+    else: 
+        # get from linecache
+        return linecache.getline(file_path, row)
+
+        
 
 def get_word(view, point=None) -> str:
     ''' Gets the word under cursor or at the given point if provided. '''
