@@ -4,21 +4,21 @@ import re
 import linecache
 
 
-def get_line(view, file_name, row):
-    print(view.file_name())
-    print(file_name)
-    print(view.file_name() == file_name)
+def get_line(view, file_name, row) -> str:
+    ''' 
+    Get the line from the buffer or if not from linecache.
+    '''
     is_in_buffer = view.file_name() == file_name
 
     line = ''
     if is_in_buffer:
         # get from buffer
-        point = view.text_point(row, 0)
-        line = view.substr(view.line(point))
-        return line
+        # normalize the row
+        point = view.text_point(row - 1, 0)
+        return view.substr(view.line(point))
     else: 
         # get from linecache
-        return linecache.getline(file_path, row)
+        return linecache.getline(file_name, row)
 
         
 
