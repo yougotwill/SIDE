@@ -19,8 +19,12 @@ def get_function_name(view, start_point) -> str:
         return ''
 
     open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_LINE_END)
-    while view.substr(open_bracket_region) is not '(':
+
+    while view.substr(open_bracket_region) is not '(' and open_bracket_region is not 0:
         open_bracket_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_EMPTY_LINE)
+
+    if open_bracket_region is 0:
+        return ''
 
     function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START | sublime.CLASS_EMPTY_LINE)
     return view.substr(view.word(function_name_region))
