@@ -3,6 +3,36 @@ import sublime
 import re
 import linecache
 
+def get_project_path(window):
+    """
+    Returns the first project folder or the parent folder of the active view
+    """
+    if len(window.folders()):
+        folder_paths = window.folders()
+        return folder_paths[0]
+    else:
+        view = window.active_view()
+        if view:
+            filename = view.file_name()
+            if filename:
+                project_path = os.path.dirname(filename)
+                return project_path
+
+
+def reference(word, view):
+    locations = _reference_in_open_files(word) or _reference_in_index(word)
+    # filter by the extension
+    filename, file_extension = os.path.splitext(view.file_name())
+    return _locations_by_file_extension(locations, file_extension)
+    
+def _reference_in_open_files(word):
+    locations = sublime.active_window().lookup_references_in_open_files(word)
+    return locations
+
+def _reference_in_index(word):
+    locations = sublime.active_window().lookup_references_in_index(word)
+    return locations
+
 
 def find_symbols(current_view, views):
     ''' Return a list of symbol locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
@@ -61,7 +91,10 @@ def get_word(view, point=None) -> str:
 def get_function_name(view, start_point) -> str:
     ''' Get the function name when cursor is inside the parenthesies or when the cursor is on the function name. '''
     scope_name = view.scope_name(start_point)
-    if 'variable.function' in scope_name or 'entity.name.function' in scope_name or 'entity.name.class' in scope_name:
+    if 'variable.function' in scope_name or \
+        'entity.name.function' in scope_name or \
+        'entity.name.class' in scope_name or \
+        'support.class' in scope_name:
         return get_word(view)
 
     if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
