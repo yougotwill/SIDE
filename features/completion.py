@@ -4,7 +4,7 @@ import sublime
 import sublime_plugin
 
 def transform_to_location(file_path, region, symbol, symbol_type):
-    ''' return a tuple (file_path, base_file_name, region, symbol) '''
+    ''' return a tuple (file_path, base_file_name, region, symbol, symbol_type) '''
     file_name = os.path.basename(file_path)
     base_file_name, file_extension = os.path.splitext(file_name)
     return (file_path, base_file_name, region, symbol, symbol_type)
@@ -12,7 +12,7 @@ def transform_to_location(file_path, region, symbol, symbol_type):
 
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
-
+        Side
         window = sublime.active_window()
         point = locations[0]
         views = window.views()
