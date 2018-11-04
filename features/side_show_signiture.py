@@ -96,7 +96,7 @@ class SideShowSigniture(sublime_plugin.TextCommand):
         return signiture, row
 
     def _build_up_function_signiture(self, signiture, file_path, row):
-        while ')' not in signiture:
+        while ')' not in signiture and '{' not in signiture:
             row += 1
             signiture += ' ' + linecache.getline(file_path, row).strip()
         return signiture, row
