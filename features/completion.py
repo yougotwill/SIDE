@@ -13,6 +13,9 @@ class SideCompletion(sublime_plugin.ViewEventListener):
 
         symbols = find_symbols(self.view, views)
 
+        if len(symbols):
+            return None
+
         completions = []
 
         for symbol_location in symbols:
