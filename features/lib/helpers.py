@@ -4,7 +4,7 @@ import re
 import linecache
 
 
-def symbols_for_view_in_views(current_view, views):
+def find_symbols(current_view, views):
     ''' Return a list of symbol locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
     symbols = []  # List[location]
     for view in views:

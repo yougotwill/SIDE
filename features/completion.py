@@ -2,7 +2,7 @@ import os
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import symbols_for_view_in_views
+from SIDE.features.lib.helpers import find_symbols
 
 
 class SideCompletion(sublime_plugin.ViewEventListener):
@@ -11,7 +11,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         point = locations[0]
         views = window.views()
 
-        symbols = symbols_for_view_in_views(self.view, views)
+        symbols = find_symbols(self.view, views)
 
         completions = []
 
