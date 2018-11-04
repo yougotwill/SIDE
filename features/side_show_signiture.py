@@ -102,7 +102,7 @@ class SideShowSigniture(sublime_plugin.TextCommand):
         if '*/' in docs:
             while '/*' not in docs:
                 row -= 1
-                docs = get_line(file_path, row).strip() + '<br>' + docs
+                docs = get_line(self.view, file_path, row).strip() + '<br>' + docs
             return docs
 
         # extract docs below function
