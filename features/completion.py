@@ -12,7 +12,6 @@ def transform_to_location(file_path, region, symbol, symbol_type):
 
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
-        Side
         window = sublime.active_window()
         point = locations[0]
         views = window.views()
@@ -23,13 +22,13 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             for location in locations:
                 region, symbol = location
                 scope_name = view.scope_name(region.begin())
-
+                
                 symbol_type = '[?]'
                 if 'function' in scope_name and 'class' in scope_name:
                     symbol_type = '[m]'  # method
                 elif 'class' in scope_name:
                     symbol_type = '[c]'  # class
-                else:
+                elif 'function' in scope_name:
                     symbol_type = '[f]'  # function
                 
                 location = transform_to_location(view.file_name(), region, symbol, symbol_type)
@@ -45,5 +44,5 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}($1)$0".format(symbol)]
             completions.append(completion_item)
 
-        return completions
+        return (completions, sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
