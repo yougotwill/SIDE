@@ -78,12 +78,12 @@ class SideShowSigniture(sublime_plugin.TextCommand):
             {}
         </body>""".format(signiture, origin, docs)
 
-        self.show_popup(content, point)
+        self._show_popup(content, point)
         # end of command execution
         # perfect place to clear the linecache
         linecache.clearcache()
 
-    def show_popup(self, content, point):
+    def _show_popup(self, content, point):
         self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
 
     def get_signiture(self, signiture, file_path, row):
