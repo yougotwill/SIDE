@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import reference, get_word
+from SIDE.features.lib.helpers import reference, get_word, defintion
 
 phantom_sets_by_buffer = {}  # type: Dict[int, PhantomSet]
 
@@ -33,6 +33,12 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
                 text = "{} reference".format(reference_count)
             else:
                 text = "{} references".format(reference_count)
+
+            defintion_count = len(defintion(word, self.view))
+            if defintion_count == 1:
+                text += " | {} definition".format(defintion_count)
+            else:
+                text += " | {} definitions".format(defintion_count)
            
             content = """
             <body id="side-references" style="color: color(var(--foreground) alpha(0.4))">
