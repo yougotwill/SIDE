@@ -25,26 +25,33 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
         phantoms = []
         if 'variable.function' in scope_name or \
             'entity.name.function' in scope_name or \
-            'support.function' in scope_name:
+            'support.function' in scope_name or \
+            'entity.name.class' in scope_name or \
+            'support.class' in scope_name:
             # inside of function word
 
-            reference_count = len(reference(word, self.view))
-            if reference_count == 1:
-                text = "{} reference".format(reference_count)
-            else:
-                text = "{} references".format(reference_count)
+            text = []
+
+            if 'entity.name.class' not in scope_name and \
+                'support.class' not in scope_name:
+                # it is a function
+                reference_count = len(reference(word, self.view))
+                if reference_count == 1:
+                    text.append("{} reference".format(reference_count))
+                else:
+                    text.append("{} references".format(reference_count))
 
             defintion_count = len(defintion(word, self.view))
             if defintion_count == 1:
-                text += " | {} definition".format(defintion_count)
+                text.append("{} definition".format(defintion_count))
             else:
-                text += " | {} definitions".format(defintion_count)
+                text.append("{} definitions".format(defintion_count))
            
             content = """
             <body id="side-references" style="color: color(var(--foreground) alpha(0.4))">
                 <small style="margin:0;padding:0;">{}</small>
             </body>
-            """.format(text)
+            """.format(" | ".join(text))
 
             phantoms.append(sublime.Phantom(word_region, content, sublime.LAYOUT_BELOW))
             phantom_set.update(phantoms)
