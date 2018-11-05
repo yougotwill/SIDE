@@ -41,13 +41,14 @@ class SideReference(sublime_plugin.TextCommand):
         panel.settings().set("gutter", False)
         panel.settings().set("result_file_regex", r"^(\S.*):$")
         panel.settings().set("result_line_regex", r"^\s+([0-9]+):([0-9]+).*$")
+        panel.settings().set("draw_white_space", "none")
         panel.assign_syntax('Packages/Default/Find Results.hidden-tmLanguage')
 
         panel = window.create_output_panel("references")
 
         window.run_command("show_panel", {"panel": "output.references"})
         panel.run_command('append', {
-            'characters': " {} references for '{}'\n\n{}".format(len(locations), word, find_result),
+            'characters': "{} references for '{}'\n\n{}".format(len(locations), word, find_result),
             'force': True,
             'scroll_to_end': False
         })
