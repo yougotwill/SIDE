@@ -3,7 +3,7 @@ import sublime_plugin
 
 from SIDE.features.lib.helpers import reference, get_word, defintion
 
-phantom_sets_by_buffer = {}  # type: Dict[int, PhantomSet]
+phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 
 
 class SideCodeLens(sublime_plugin.ViewEventListener):

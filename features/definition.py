@@ -7,11 +7,14 @@ from SIDE.features.lib.helpers import defintion, get_word, history, open_view
 
 class SideJumpBack(sublime_plugin.TextCommand):
     def run(self, edit):
-        if len(history) > 0:
-            bookmark = history.pop()
+        window = sublime.active_window()
+        id = window.id()
+        bookmarks = history.get(id, [])
+        
+        if len(bookmarks) > 0:
+            bookmark = bookmarks.pop()
             file_path, row_col = bookmark 
             row, col = row_col
-            window = sublime.active_window()
             window.open_file("{}:{}:{}".format(file_path, row, col), sublime.ENCODED_POSITION)
         else:
             self.view.run_command('jump_back')

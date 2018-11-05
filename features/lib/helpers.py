@@ -3,7 +3,7 @@ import sublime
 import re
 import linecache
 
-history = []
+history = {} # type: Dict[window_id, bookmarks]
 
 def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
     ''' Returns a view with the cursor at the specefied location. And save it to the jump back history. '''
@@ -19,7 +19,10 @@ def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
     new_row, new_col = row_col
     # save bookmark 
     if old_row != new_row or old_col != new_col:
-        history.append(bookmark)
+        id = window.id()
+        bookmarks = history.get(id, [])
+        bookmarks.append(bookmark)
+        history[id] = bookmarks
     # open location
     return window.open_file("{}:{}:{}".format(file_path, new_row, new_col), flags)
 
