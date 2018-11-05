@@ -27,6 +27,8 @@ class SideReference(sublime_plugin.TextCommand):
 
         if len(locations) == 1:
             open_view(locations[0], self.view)
+            if panel is not None:
+                window.destroy_output_panel('references')
             return
 
         last_reference_word = word
