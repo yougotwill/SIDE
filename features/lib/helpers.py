@@ -5,6 +5,22 @@ import linecache
 
 history = {} # type: Dict[window_id, bookmarks]
 
+def is_function(scope_name):
+    if 'variable.function' in scope_name or \
+       'entity.name.function' in scope_name or \
+       'support.function' in scope_name:
+        return True
+    else: 
+        return False
+
+def is_class(scope_name):
+    if 'entity.name.class' in scope_name or \
+       'constructor' in scope_name or \
+       'support.class' in scope_name:
+        return True
+    else: 
+        return False
+
 def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
     ''' Returns a view with the cursor at the specefied location. And save it to the jump back history. '''
     window = sublime.active_window()

@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import reference, get_word, defintion
+from SIDE.features.lib.helpers import reference, get_word, defintion, is_function, is_class
 
 phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 
@@ -23,18 +23,10 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
         scope_name = self.view.scope_name(word_region.begin())
 
         phantoms = []
-        if 'variable.function' in scope_name or \
-            'entity.name.function' in scope_name or \
-            'support.function' in scope_name or \
-            'entity.name.class' in scope_name or \
-            'support.class' in scope_name:
-            # inside of function word
+        if is_function(scope_name) or is_class(scope_name):
 
             text = []
-
-            if 'entity.name.class' not in scope_name and \
-                'support.class' not in scope_name:
-                # it is a function
+            if is_function(scope_name):
                 reference_count = len(reference(word, self.view))
                 if reference_count == 1:
                     text.append("{} reference".format(reference_count))

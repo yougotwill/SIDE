@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import get_word, defintion
+from SIDE.features.lib.helpers import get_word, defintion, is_function, is_class
 
 
 class SideHover(sublime_plugin.ViewEventListener):
@@ -12,7 +12,7 @@ class SideHover(sublime_plugin.ViewEventListener):
         if hover_zone != sublime.HOVER_TEXT:
             return
 
-        if 'function' in scope_name or 'class' in scope_name or 'constructor' in scope_name:
+        if is_function(scope_name) or is_class(scope_name):
             self.handle_hover(point)
 
     def handle_hover(self, point, is_class=False):

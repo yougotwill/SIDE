@@ -28,5 +28,5 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                 completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
             completions.append(completion_item)
 
-        return (completions, sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+        return completions
 
