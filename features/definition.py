@@ -2,10 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import defintion, get_word
-
-
-history = []
+from SIDE.features.lib.helpers import defintion, get_word, history, open_view
 
 
 class SideJumpBack(sublime_plugin.TextCommand):
@@ -27,25 +24,11 @@ class SideDefinition(sublime_plugin.TextCommand):
         locations = defintion(word, self.view)
 
         if len(locations) == 0:
-            window.run_command("goto_definition")
             return
 
         if len(locations) == 1:
-            old_cursor_pos = self.view.sel()[0].begin()
-            old_row, old_col = self.view.rowcol(old_cursor_pos)
-            # normalize row and column
-            old_row += 1
-            old_col += 1
-            bookmark = (self.view.file_name(), (old_row, old_col))
-
-            file_path, _rel_file_path, row_col = locations[0]
-            new_row, new_col = row_col
-            
-            # save bookmark 
-            if old_row != new_row:
-                history.append(bookmark)
-            # open location
-            window.open_file("{}:{}:{}".format(file_path, new_row, new_col), sublime.ENCODED_POSITION)
+            open_view(locations[0], self.view)
+            return
         
         if len(locations) > 1:
             quick_panel = {
@@ -57,19 +40,18 @@ class SideDefinition(sublime_plugin.TextCommand):
                 file_path, relative_file_path, row_col = location
                 row, col = row_col
                 quick_panel['labels'].append("{}:{}:{}".format(relative_file_path, row, col))
-                quick_panel['on_select'].append("{}:{}:{}".format(file_path, row, col))
+                quick_panel['on_select'].append(location)
             
             def _on_done(index):
                 if index == -1:
                     window.focus_view(self.view)
                     return 
-                file_path_row_col =  quick_panel['on_select'][index]
-                window.open_file("{}".format(file_path_row_col), sublime.ENCODED_POSITION)
+                location =  quick_panel['on_select'][index]
+                open_view(location, self.view)
 
             def _on_change(index):                    
-                file_path_row_col = quick_panel['on_select'][index]
-                preview_view = window.open_file("{}".format(file_path_row_col), 
-                                                sublime.ENCODED_POSITION | sublime.TRANSIENT)
+                location = quick_panel['on_select'][index]
+                open_view(location, self.view, sublime.ENCODED_POSITION | sublime.TRANSIENT)
 
             window.show_quick_panel(
                 quick_panel['labels'],

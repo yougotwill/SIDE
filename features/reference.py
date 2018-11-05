@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import linecache
 
-from SIDE.features.lib.helpers import get_word, reference, get_project_path, get_line
+from SIDE.features.lib.helpers import get_word, reference, get_project_path, get_line, open_view
 
 last_reference_word = ''
 
@@ -23,6 +23,10 @@ class SideReference(sublime_plugin.TextCommand):
         if len(locations) == 0:
             window.destroy_output_panel('references')
             sublime.status_message('No references')
+            return
+
+        if len(locations) == 1:
+            open_view(locations[0], self.view)
             return
 
         last_reference_word = word

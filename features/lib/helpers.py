@@ -3,6 +3,26 @@ import sublime
 import re
 import linecache
 
+history = []
+
+def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
+    ''' Returns a view with the cursor at the specefied location. And save it to the jump back history. '''
+    window = sublime.active_window()
+    old_cursor_pos = current_view.sel()[0].begin()
+    old_row, old_col = current_view.rowcol(old_cursor_pos)
+    # normalize row and column
+    old_row += 1
+    old_col += 1
+    bookmark = (current_view.file_name(), (old_row, old_col))
+
+    file_path, _rel_file_path, row_col = location
+    new_row, new_col = row_col
+    # save bookmark 
+    if old_row != new_row or old_col != new_col:
+        history.append(bookmark)
+    # open location
+    return window.open_file("{}:{}:{}".format(file_path, new_row, new_col), flags)
+
 def get_project_path(window):
     """
     Returns the first project folder or the parent folder of the active view
