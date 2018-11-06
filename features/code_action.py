@@ -1,20 +1,32 @@
 import sublime
 import sublime_plugin
 
+from SIDE.features.lib.helpers import get_word
+
 
 class SideCodeAction(sublime_plugin.TextCommand):
     def run(self, edit):
-        actions = [
-            'Search Web', 
-            'Tell Joke', 
-            'Ask Yes/NO Question' 
-        ]
+        region = self.view.sel()[0]
+        word = get_word(self.view, region).strip()
 
-        action_commands = [
-            'side_search_web',
-            'side_tell_joke',
-            'side_ask_question'
-        ]
+        actions = None
+        action_commands = None
+        if word:
+            actions = [
+                'Search Web', 
+            ]
+            action_commands = [
+                'side_search_web'
+            ]
+        else:
+            actions = [
+                'Tell Joke', 
+                'Ask Yes/NO Question' 
+            ]
+            action_commands = [
+                'side_tell_joke',
+                'side_ask_question'
+            ]        
 
         def on_select(index):
             if index > -1:
