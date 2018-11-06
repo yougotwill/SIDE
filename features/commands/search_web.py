@@ -13,11 +13,6 @@ class SideSearchWeb(sublime_plugin.TextCommand):
         # if no region, greab the word under cursor
         if len(word) == 0:
             word = self.view.substr(self.view.word(region.begin())).strip()
-        
-        # if no word under cursor, show message
-        if len(word)  == 0:
-            self.view.show_popup('Make a selection to search for.', sublime.HIDE_ON_MOUSE_MOVE_AWAY)
-            return
 
         filename, file_extension = os.path.splitext(self.view.file_name())
         
