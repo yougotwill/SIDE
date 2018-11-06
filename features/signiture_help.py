@@ -1,6 +1,7 @@
-from SIDE.features.lib.helpers import get_function_name, defintion
 import sublime
 import sublime_plugin
+
+from SIDE.features.lib.helpers import get_function_name, defintion
 
 
 class SideSignitureHelp(sublime_plugin.ViewEventListener):
