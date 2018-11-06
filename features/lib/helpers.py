@@ -58,12 +58,19 @@ def get_project_path(window):
                 return project_path
 
 
-def reference(word, view):
-    locations = _reference_in_index(word)
+def reference(word, view, all=True):
+    if all:
+        locations = _reference_in_index(word)
+    else: 
+        locations = _reference_in_open_files(word) or _reference_in_index(word)
     # filter by the extension
     filename, file_extension = os.path.splitext(view.file_name())
     return _locations_by_file_extension(locations, file_extension)
     
+def _reference_in_open_files(word):
+    locations = sublime.active_window().lookup_references_in_open_files(word)
+    return locations
+
 def _reference_in_index(word):
     locations = sublime.active_window().lookup_references_in_index(word)
     return locations
@@ -164,5 +171,8 @@ def _defintion_in_index(word):
 def _locations_by_file_extension(locations, extension):
     def _filter(location):
         filename, file_extension = os.path.splitext(location[0])
-        return file_extension if file_extension == extension else False
+        if file_extension == extension or extension == '.html' or extension == '.ts' or extension == '.js' or extension == '.vue':
+            return True
+        else:
+            return False
     return list(filter(_filter, locations))
