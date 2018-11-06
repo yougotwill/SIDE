@@ -16,14 +16,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         completions = []
         for symbol_location in symbols:
             file_name, base_file_name, region, symbol, symbol_type = symbol_location
-            completion_item = None
-            if symbol_type in ['[m]', '[f]']:
-                # it is a method or a function
-                completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}($1)$0".format(symbol)]
-            else:
-                # it is a class
-                completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
+            completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
             completions.append(completion_item)
 
         return completions
-
