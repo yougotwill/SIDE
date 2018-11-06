@@ -5,6 +5,37 @@ import linecache
 
 history = {} # type: Dict[window_id, bookmarks]
 
+def chose_one_location_from_many(locations, current_view) -> None:
+    window = sublime.active_window()
+
+    quick_panel = {
+        'labels': [],
+        'on_select': []
+    }
+
+    for location in locations:
+        file_path, relative_file_path, row_col = location
+        row, col = row_col
+        quick_panel['labels'].append("{}:{}:{}".format(relative_file_path, row, col))
+        quick_panel['on_select'].append(location)
+    
+    def _on_done(index):
+        if index == -1:
+            window.focus_view(current_view)
+            return 
+        location =  quick_panel['on_select'][index]
+        open_view(location, current_view)
+
+    def _on_change(index):                    
+        location = quick_panel['on_select'][index]
+        open_view(location, current_view, sublime.ENCODED_POSITION | sublime.TRANSIENT)
+
+    window.show_quick_panel(
+        quick_panel['labels'],
+        _on_done,
+        on_highlight=_on_change
+    )
+
 def is_function(scope_name):
     if 'variable.function' in scope_name or \
        'entity.name.function' in scope_name or \
