@@ -5,11 +5,19 @@ import webbrowser as wb
 
 
 class SideSearchWeb(sublime_plugin.TextCommand):
-    def run(self, edit):
+    def run(self, edit): 
+        # grab the words in region
         region = self.view.sel()[0]
-        word = self.view.substr(region)
+        word = self.view.substr(region).strip()
+
+        # if no region, greab the word under cursor
         if len(word) == 0:
-            word = self.view.substr(self.view.word(region.begin()))
+            word = self.view.substr(self.view.word(region.begin())).strip()
+        
+        # if no word under cursor, show message
+        if len(word)  == 0:
+            self.view.show_popup('Make a selection to search for.', sublime.HIDE_ON_MOUSE_MOVE_AWAY)
+            return
 
         filename, file_extension = os.path.splitext(self.view.file_name())
         
