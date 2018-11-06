@@ -4,40 +4,32 @@ import linecache
 
 from SIDE.features.lib.helpers import get_word, reference, get_project_path, get_line, open_view
 
-last_reference_word = ''
 
 class SideReference(sublime_plugin.TextCommand):
-    def run(self, edit):
-        global last_reference_word
+    def run(self, edit, all=True):
         window = sublime.active_window()
         word = get_word(self.view)
 
-        is_same_word = last_reference_word == word
-        panel = window.find_output_panel("references")
-        if panel is not None and is_same_word:
-            window.destroy_output_panel('references')
-            return
-
-        locations = reference(word, self.view)
+        locations = reference(word, self.view, all)
 
         if len(locations) == 0:
             window.destroy_output_panel('references')
             sublime.status_message('No references')
             return
 
+        panel = window.find_output_panel("references")
         if len(locations) == 1:
             open_view(locations[0], self.view)
             if panel is not None:
                 window.destroy_output_panel('references')
             return
 
-        last_reference_word = word
         find_result = ''
         for location in locations:
             file_path, rel_file_path, row_col = location
             row, col = row_col
             line = get_line(self.view, file_path, row).strip()  
-            find_result += "{}:\n    {}:{}        {}\n\n".format(rel_file_path, row, col, line)
+            find_result += "{}:\n\t{}:{}\t\t{}\n\n".format(rel_file_path, row, col, line)
 
         panel = window.create_output_panel("references")
         
@@ -52,9 +44,13 @@ class SideReference(sublime_plugin.TextCommand):
 
         panel = window.create_output_panel("references")
 
+        scope = 'in project'
+        if not all:
+            scope = 'in opened views'
+
         window.run_command("show_panel", {"panel": "output.references"})
         panel.run_command('append', {
-            'characters': "{} references for '{}'\n\n{}".format(len(locations), word, find_result),
+            'characters': "{} references {} for '{}'\n\n{}".format(len(locations), scope, word, find_result),
             'force': True,
             'scroll_to_end': False
         })
