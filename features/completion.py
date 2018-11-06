@@ -8,10 +8,7 @@ from SIDE.features.lib.helpers import find_symbols
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
         point = locations[0]
-        is_irrelevant = self.view.match_selector(point, 'string.quoted')
-        if is_irrelevant:
-            return None
-        
+
         window = sublime.active_window()
         views = window.views()
         
