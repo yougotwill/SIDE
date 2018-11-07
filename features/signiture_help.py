@@ -9,7 +9,7 @@ class SideSignitureHelp(sublime_plugin.ViewEventListener):
         point = self.view.sel()[0].begin()
         last_char = self.view.substr(point - 1)
 
-        if last_char in ['(', ',']:
+        if last_char == '(':
             word = get_function_name(self.view, point)
             self.show_signiture_help(point, word)
         else:
