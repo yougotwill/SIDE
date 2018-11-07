@@ -91,13 +91,11 @@ def is_class(scope_name):
 
 
 def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
-    ''' Returns a view with the cursor at the specefied location. And save it to the jump back history. '''
+    ''' Opens a view with the cursor at the specefied location. And save it to the jump back history. '''
     window = sublime.active_window()
     old_cursor_pos = current_view.sel()[0].begin()
     old_row, old_col = current_view.rowcol(old_cursor_pos)
-    # normalize row and column
-    old_row += 1
-    old_col += 1
+
     bookmark = (current_view.file_name(), (old_row, old_col))
 
     file_path, _rel_file_path, row_col = location
@@ -109,7 +107,16 @@ def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
         bookmarks.append(bookmark)
         history[id] = bookmarks
     # open location
-    return window.open_file("{}:{}:{}".format(file_path, new_row, new_col), flags)
+    v = window.find_open_file(file_path)
+    if v is not None:
+        window.focus_view(v)
+        point = v.text_point(new_row - 1, new_col - 1)
+        sel = v.sel()
+        sel.clear()
+        sel.add(point)
+        v.show_at_center(point)
+    else:
+        window.open_file("{}:{}:{}".format(file_path, new_row, new_col), flags)
 
 
 def get_project_path(window):

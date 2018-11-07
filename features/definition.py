@@ -10,12 +10,21 @@ class SideJumpBack(sublime_plugin.TextCommand):
         window = sublime.active_window()
         id = window.id()
         bookmarks = history.get(id, [])
-        
+
         if len(bookmarks) > 0:
             bookmark = bookmarks.pop()
             file_path, row_col = bookmark 
             row, col = row_col
-            window.open_file("{}:{}:{}".format(file_path, row, col), sublime.ENCODED_POSITION)
+            v = window.find_open_file(file_path)
+            if v is not None:
+                window.focus_view(v)
+                point = v.text_point(row, col)
+                sel = v.sel()
+                sel.clear()
+                sel.add(point)
+                v.show_at_center(point)
+            else:
+                window.open_file("{}:{}:{}".format(file_path, row + 1, col + 1), sublime.ENCODED_POSITION)
         else:
             self.view.run_command('jump_back')
 
