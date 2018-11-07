@@ -6,11 +6,11 @@ from SIDE.features.lib.helpers import get_word, reference, get_project_path, get
 
 
 class SideReference(sublime_plugin.TextCommand):
-    def run(self, edit, all=True):
+    def run(self, edit, find_all=True):
         window = sublime.active_window()
         word = get_word(self.view)
 
-        locations = reference(word, self.view, all)
+        locations = reference(word, self.view, find_all)
 
         if len(locations) == 0:
             window.destroy_output_panel('references')
@@ -25,7 +25,7 @@ class SideReference(sublime_plugin.TextCommand):
             return
 
         if len(locations) > 1:
-            if not all:
+            if not find_all:
                 chose_one_location_from_many(locations, self.view)
                 return 
 

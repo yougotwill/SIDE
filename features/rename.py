@@ -6,7 +6,7 @@ from SIDE.features.lib.helpers import get_word, find_symbols
 
 
 class SideRename(sublime_plugin.TextCommand):
-    def run(self, edit, all=True):
+    def run(self, edit, find_all=True):
         symbols = find_symbols(self.view)
         # type List[reigion]
         regions = list(map(lambda l: l[2], symbols))
@@ -45,7 +45,7 @@ class SideRename(sublime_plugin.TextCommand):
 
         sel = self.view.sel()
         sel.clear()
-        if len(between_regions) > 0 and not all:
+        if len(between_regions) > 0 and not find_all:
             # select all word occurances beetween two symbols
             sel.add_all(between_regions)
         else:
