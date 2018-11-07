@@ -15,7 +15,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         symbols = find_symbols(self.view, views)
         completions = []
         for symbol_location in symbols:
-            file_name, base_file_name, region, symbol, symbol_type = symbol_location
+            _file_name, base_file_name, _region, symbol, symbol_type = symbol_location
             completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
             completions.append(completion_item)
 
