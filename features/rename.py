@@ -7,54 +7,50 @@ from SIDE.features.lib.helpers import get_word, find_symbols
 
 class SideRename(sublime_plugin.TextCommand):
     def run(self, edit):
-        point = self.view.sel()[0].begin()
         symbols = find_symbols(self.view) 
-        # type [(region, symbol_type)]
-        symbols = list(map(lambda l: (l[2], l[4]),symbols))
+        # type List[reigion]
+        regions = list(map(lambda l: l[2], symbols))
 
-        print('sym', symbols)
-        word = get_word(self.view)
+        point = self.view.sel()[0].begin()
 
-        rename_regions = []
-        for index, symbol in enumerate(symbols):
-            region, symbol_type = symbol
-          
-            if index == len(symbols) - 1:
+        between_symbols = None  # Region
+        # check to see if the point is between two symbols
+        for index, region in enumerate(regions):          
+            if index == len(regions) - 1:
                 a = region.begin()
                 b = self.view.size()
                 reg = sublime.Region(a, b)
                 if reg.contains(point):
-                    rename_regions.append(reg)
+                    between_symbols = reg
             else:
                 a = region.begin()
-                nexe_region, next_symbol_type = symbols[index+1]
+                nexe_region = regions[index+1]
                 b = nexe_region.begin()
                 reg = sublime.Region(a, b)
                 if reg.contains(point):
-                    rename_regions.append(reg)
-
-        # useful for debuging
-        # self.view.add_regions('function', rename_regions, 'comment', flags=sublime.DRAW_OUTLINED)
+                    between_symbols = reg
         
+        word = get_word(self.view)
         word_regions = self.view.find_all(r"\b{}\b".format(word))
-        final = []
-        if len(rename_regions) > 0:
-            for r in word_regions:
-                if rename_regions[0].contains(r):
-                    final.append(r)
-        # useful for debuging
-        # self.view.add_regions('word', final, 'stirng', flags=sublime.DRAW_OUTLINED)        
+        rename_regions = []
+        if between_symbols is not None:
+            for region in word_regions:
+                if between_symbols.contains(region):
+                    rename_regions.append(region)
 
-        if len(final) > 0:
-            print('here')
+        # useful for debuging
+        # # if between_symbols is not None:
+        #     self.view.add_regions('function', [between_symbols], 'comment', flags=sublime.DRAW_OUTLINED)
+        # self.view.add_regions('word', rename_regions, 'stirng', flags=sublime.DRAW_OUTLINED)        
+
+        if len(rename_regions) > 0:
+            # select all word occurances beetween two symbols
             sel = self.view.sel()
             sel.clear()
-        
-            sel.add_all(final)
+            sel.add_all(rename_regions)
         else:
-            print('or here')
+            # select all word occurances in the file
             window = sublime.active_window()
-
             window.run_command('find_all_under')
 
        
