@@ -6,6 +6,25 @@ import linecache
 history = {} # type: Dict[window_id, bookmarks]
 
 
+def point_beetween_regions(point, regions, view):
+    for index, region in enumerate(regions):          
+        # check to see if the point is between two symbols        
+        if index == len(regions) - 1:
+            a = region.begin()
+            b = view.size()
+            r = sublime.Region(a, b)
+            if r.contains(point):
+                return r
+        else:
+            a = region.begin()
+            nexe_region = regions[index+1]
+            b = nexe_region.begin()
+            r = sublime.Region(a, b)
+            if r.contains(point):
+                return r    
+    return None
+
+
 def scroll_to_not_visible_region(regions, view):
     visible = view.visible_region()
     first_region = regions[0]
