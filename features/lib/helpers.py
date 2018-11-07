@@ -5,6 +5,23 @@ import linecache
 
 history = {} # type: Dict[window_id, bookmarks]
 
+
+def scroll_to_not_visible_region(regions, view):
+    visible = view.visible_region()
+    first_region = regions[0]
+    last_region = regions[-1]
+
+    is_first_visible = visible.contains(first_region)
+    is_last_visible = visible.contains(last_region)
+
+    if not is_first_visible and not is_last_visible:
+        view.show_at_center(last_region)
+    elif not is_last_visible:
+        view.show_at_center(last_region)
+    elif not is_first_visible:
+        view.show_at_center(first_region)
+
+
 def chose_one_location_from_many(locations, current_view) -> None:
     window = sublime.active_window()
 
@@ -36,6 +53,7 @@ def chose_one_location_from_many(locations, current_view) -> None:
         on_highlight=_on_change
     )
 
+
 def is_function(scope_name):
     if 'variable.function' in scope_name or \
        'entity.name.function' in scope_name or \
@@ -51,6 +69,7 @@ def is_class(scope_name):
         return True
     else: 
         return False
+
 
 def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
     ''' Returns a view with the cursor at the specefied location. And save it to the jump back history. '''
@@ -72,6 +91,7 @@ def open_view(location, current_view, flags=sublime.ENCODED_POSITION):
         history[id] = bookmarks
     # open location
     return window.open_file("{}:{}:{}".format(file_path, new_row, new_col), flags)
+
 
 def get_project_path(window):
     """
@@ -143,11 +163,13 @@ def _find_symbols_for_view(view):
 
         return symbols
 
+
 def _transform_to_location(file_path, region, symbol, symbol_type):
     ''' return a tuple (file_path, base_file_name, region, symbol, symbol_type) '''
     file_name = os.path.basename(file_path)
     base_file_name, file_extension = os.path.splitext(file_name)
     return (file_path, base_file_name, region, symbol, symbol_type)
+
 
 def get_line(view, file_name, row) -> str:
     ''' 
@@ -166,12 +188,12 @@ def get_line(view, file_name, row) -> str:
         return linecache.getline(file_name, row)
 
         
-
 def get_word(view, point=None) -> str:
     ''' Gets the word under cursor or at the given point if provided. '''
     if not point:
         point = view.sel()[0].begin()
     return view.substr(view.word(point))
+
 
 def get_function_name(view, start_point) -> str:
     ''' Get the function name when cursor is inside the parenthesies or when the cursor is on the function name. '''
@@ -196,6 +218,7 @@ def get_function_name(view, start_point) -> str:
     function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START | sublime.CLASS_EMPTY_LINE)
     return view.substr(view.word(function_name_region))
 
+
 def definition(word, view):
     ''' Return a list of locations for the given word. '''
     locations = _definition_in_open_files(word) or _definition_in_index(word)
@@ -210,6 +233,7 @@ def _definition_in_open_files(word):
 def _definition_in_index(word):
     locations = sublime.active_window().lookup_symbol_in_index(word)
     return locations
+
 
 def _locations_by_file_extension(locations, extension):
     def _filter(location):

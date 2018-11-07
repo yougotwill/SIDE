@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 
 from functools import reduce
-from SIDE.features.lib.helpers import get_word, find_symbols
+from SIDE.features.lib.helpers import get_word, find_symbols, scroll_to_not_visible_region
 
 
 class SideRename(sublime_plugin.TextCommand):
@@ -48,8 +48,10 @@ class SideRename(sublime_plugin.TextCommand):
         if len(between_regions) > 0 and not find_all:
             # select all word occurances beetween two symbols
             sel.add_all(between_regions)
+            scroll_to_not_visible_region(between_regions, self.view)
         else:
             # select all word occurances in the file
             sel.add_all(word_regions)
+            scroll_to_not_visible_region(word_regions, self.view)
 
        
