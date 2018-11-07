@@ -107,11 +107,25 @@ def _reference_in_index(word):
     return locations
 
 
-def find_symbols(current_view, views):
+def find_symbols(current_view, views=None):
     ''' Return a list of symbol locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
     symbols = []  # List[location]
-    for view in views:
+    if views is not None:
+        for view in views:
+            symbols_in_view = _find_symbols_for_view(view)
+            symbols.extend(symbols_in_view)
+    else:
+        symbols_in_view = _find_symbols_for_view(current_view)
+        symbols.extend(symbols_in_view)
+            
+    _file_name, file_extension = os.path.splitext(current_view.file_name())
+    symbols = _locations_by_file_extension(symbols, file_extension)
+    return symbols
+
+def _find_symbols_for_view(view):
         locations = view.indexed_symbols()
+
+        symbols = []  # List[location]
         for location in locations:
             region, symbol = location
             scope_name = view.scope_name(region.begin())
@@ -126,10 +140,8 @@ def find_symbols(current_view, views):
             
             location = _transform_to_location(view.file_name(), region, symbol, symbol_type)
             symbols.append(location)
-            
-    _file_name, file_extension = os.path.splitext(current_view.file_name())
-    symbols = _locations_by_file_extension(symbols, file_extension)
-    return symbols
+
+        return symbols
 
 def _transform_to_location(file_path, region, symbol, symbol_type):
     ''' return a tuple (file_path, base_file_name, region, symbol, symbol_type) '''
