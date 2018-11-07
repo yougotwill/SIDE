@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import get_word, defintion, is_function, is_class
+from SIDE.features.lib.helpers import get_word, definition, is_function, is_class
 
 
 class SideHover(sublime_plugin.ViewEventListener):
@@ -17,7 +17,7 @@ class SideHover(sublime_plugin.ViewEventListener):
 
     def handle_hover(self, point, is_class=False):
         word = get_word(self.view, point)
-        locations = defintion(word, self.view)
+        locations = definition(word, self.view)
 
         self.view.run_command('side_show_signiture', {
             'locations': locations, 

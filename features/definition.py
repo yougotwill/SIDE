@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import defintion, get_word, history, open_view, chose_one_location_from_many
+from SIDE.features.lib.helpers import definition, get_word, history, open_view, chose_one_location_from_many
 
 
 class SideJumpBack(sublime_plugin.TextCommand):
@@ -24,7 +24,7 @@ class SideDefinition(sublime_plugin.TextCommand):
     def run(self, edit):
         window = sublime.active_window()
         word = get_word(self.view)
-        locations = defintion(word, self.view)
+        locations = definition(word, self.view)
 
         if len(locations) == 0:
             return

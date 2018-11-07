@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import get_function_name, defintion
+from SIDE.features.lib.helpers import get_function_name, definition
 
 
 class SideSignitureHelp(sublime_plugin.ViewEventListener):
@@ -16,7 +16,7 @@ class SideSignitureHelp(sublime_plugin.ViewEventListener):
             self.hide_signiture_help()
 
     def show_signiture_help(self, point, word):
-        locations = defintion(word, self.view)
+        locations = definition(word, self.view)
 
         self.view.run_command('side_show_signiture', {
             'locations': locations, 

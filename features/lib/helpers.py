@@ -196,18 +196,18 @@ def get_function_name(view, start_point) -> str:
     function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START | sublime.CLASS_EMPTY_LINE)
     return view.substr(view.word(function_name_region))
 
-def defintion(word, view):
+def definition(word, view):
     ''' Return a list of locations for the given word. '''
-    locations = _defintion_in_open_files(word) or _defintion_in_index(word)
+    locations = _definition_in_open_files(word) or _definition_in_index(word)
     # filter by the extension
     filename, file_extension = os.path.splitext(view.file_name())
     return _locations_by_file_extension(locations, file_extension)
     
-def _defintion_in_open_files(word):
+def _definition_in_open_files(word):
     locations = sublime.active_window().lookup_symbol_in_open_files(word)
     return locations
 
-def _defintion_in_index(word):
+def _definition_in_index(word):
     locations = sublime.active_window().lookup_symbol_in_index(word)
     return locations
 

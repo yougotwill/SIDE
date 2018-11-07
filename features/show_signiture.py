@@ -4,7 +4,7 @@ import os
 import re
 import linecache
 
-from SIDE.features.lib.helpers import defintion, get_word, get_function_name, get_line
+from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line
 
 
 class SideShowSigniture(sublime_plugin.TextCommand):
@@ -15,7 +15,7 @@ class SideShowSigniture(sublime_plugin.TextCommand):
         word = None
         if locations is None:
             word = get_function_name(self.view, point)
-            locations = defintion(word, self.view)
+            locations = definition(word, self.view)
 
         if len(locations) == 0:
             return
