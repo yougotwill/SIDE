@@ -6,6 +6,23 @@ import linecache
 history = {} # type: Dict[window_id, bookmarks]
 
 
+def filter_regions_by_scope_name(regions, current_scope_name, view): 
+    ''' Filter regions by current symbol '''
+    function_match = []
+    other_symbol_match = []
+
+    for r in regions:
+        scope_name = view.scope_name(r.begin())
+        if is_function(scope_name):
+            function_match.append(r)
+        else:
+            other_symbol_match.append(r)
+    if is_function(current_scope_name):
+        return function_match
+    else:
+        return other_symbol_match
+
+
 def filter_region_between_regions(region, regions): 
     ''' Return a list of regions '''
     match = []

@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import definition, get_word, history, open_view, chose_one_location_from_many, find_symbols, get_region_between_symbols, filter_region_between_regions
+from SIDE.features.lib.helpers import definition, get_word, history, open_view, chose_one_location_from_many, find_symbols, get_region_between_symbols, filter_region_between_regions, filter_regions_by_scope_name
 
 
 class SideJumpBack(sublime_plugin.TextCommand):
@@ -42,6 +42,8 @@ class SideDefinition(sublime_plugin.TextCommand):
 
             between_symbols_region = get_region_between_symbols(point, symbols, self.view)
             words_between_regions = filter_region_between_regions(between_symbols_region, word_regions)
+            scope_name = self.view.scope_name(point)
+            words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, self.view)  
 
             definition_point = words_between_regions[0].begin()
             file_name = self.view.file_name()
