@@ -23,7 +23,7 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
         return other_symbol_match
 
 
-def filter_region_between_regions(region, regions): 
+def filter_regions_by_region(regions, region): 
     ''' Return a list of regions '''
     match = []
     if region is not None:

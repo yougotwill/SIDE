@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 
 from functools import reduce
-from SIDE.features.lib.helpers import get_word, find_symbols, scroll_to_not_visible_region, get_region_between_symbols, filter_region_between_regions, is_function, filter_regions_by_scope_name
+from SIDE.features.lib.helpers import get_word, find_symbols, scroll_to_not_visible_region, get_region_between_symbols, is_function, filter_regions_by_scope_name, filter_regions_by_region
 
 
 class SideRename(sublime_plugin.TextCommand):
@@ -14,7 +14,7 @@ class SideRename(sublime_plugin.TextCommand):
         word_regions = self.view.find_all(r"\b{}\b".format(word))
 
         between_symbols_region = get_region_between_symbols(point, symbols, self.view)
-        words_between_regions = filter_region_between_regions(between_symbols_region, word_regions)
+        words_between_regions = filter_regions_by_region(word_regions, between_symbols_region)
         scope_name = self.view.scope_name(point)
         words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, self.view)        
 
