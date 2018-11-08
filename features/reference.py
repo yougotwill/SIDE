@@ -14,7 +14,7 @@ class SideReference(sublime_plugin.TextCommand):
 
         if len(locations) == 0:
             window.destroy_output_panel('references')
-            sublime.status_message('No references')
+            self.view.show_popup('No References', sublime.HIDE_ON_MOUSE_MOVE_AWAY)
             return
 
         panel = window.find_output_panel("references")
