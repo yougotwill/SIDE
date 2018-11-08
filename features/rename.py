@@ -22,13 +22,14 @@ class SideRename(sublime_plugin.TextCommand):
         # self.view.add_regions('word', words_between_regions, 'stirng', flags=sublime.DRAW_OUTLINED)        
 
         sel = self.view.sel()
-        sel.clear()
         if len(words_between_regions) > 0 and not find_all:
             # select all word occurances beetween two symbols
+            sel.clear()
             sel.add_all(words_between_regions)
             scroll_to_not_visible_region(words_between_regions, self.view)
-        else:
+        elif len(word_regions) > 0:
             # select all word occurances in the file
+            sel.clear()
             sel.add_all(word_regions)
             scroll_to_not_visible_region(word_regions, self.view)
 
