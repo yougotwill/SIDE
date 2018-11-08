@@ -6,7 +6,19 @@ import linecache
 history = {} # type: Dict[window_id, bookmarks]
 
 
-def point_beetween_regions(point, regions, view):
+def filter_region_between_regions(region, regions): 
+    ''' Return a list of regions '''
+    match = []
+    if region is not None:
+        for r in regions:
+            if region.contains(r):
+                match.append(r)
+    return match
+
+def get_region_between_symbols(point, symbols, view):
+    ''' Return a Region or None'''
+    # type List[reigion]
+    regions = list(map(lambda l: l[2], symbols))
     for index, region in enumerate(regions):          
         # check to see if the point is between two symbols        
         if index == len(regions) - 1:
