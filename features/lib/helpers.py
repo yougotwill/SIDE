@@ -2,8 +2,28 @@ import os
 import sublime
 import re
 import linecache
+from threading import Timer
+
 
 history = {} # type: Dict[window_id, bookmarks]
+
+
+def debounce(wait):
+    """ Decorator that will postpone a functions
+        execution until after wait seconds
+        have elapsed since the last time it was invoked. """
+    def decorator(fn):
+        def debounced(*args, **kwargs):
+            def call_it():
+                fn(*args, **kwargs)
+            try:
+                debounced.t.cancel()
+            except(AttributeError):
+                pass
+            debounced.t = Timer(wait, call_it)
+            debounced.t.start()
+        return debounced
+    return decorator
 
 
 def filter_regions_by_scope_name(regions, current_scope_name, view): 

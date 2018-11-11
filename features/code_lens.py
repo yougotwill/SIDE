@@ -1,13 +1,14 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import reference, get_word, definition, is_function, is_class
+from SIDE.features.lib.helpers import reference, get_word, definition, is_function, is_class, debounce
 
 phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 
 
 class SideCodeLens(sublime_plugin.ViewEventListener):
-    def on_selection_modified_async(self):
+    @debounce(0.2)
+    def handle_selection_modified(self):
         global phantom_sets_by_buffer
 
         buffer_id = self.view.buffer_id()
@@ -50,3 +51,8 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
         else: 
             # outside of function word
             phantom_sets_by_buffer.pop(buffer_id, None)
+
+
+    def on_selection_modified_async(self):
+        self.handle_selection_modified()
+      
