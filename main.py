@@ -11,3 +11,4 @@ from SIDE.features.rename import SideRename
 from SIDE.features.commands.ask_question import SideAskQuestion
 from SIDE.features.commands.search_web import SideSearchWeb
 from SIDE.features.commands.tell_joke import SideTellJoke
+from SIDE.features.commands.advice import SideAdvice

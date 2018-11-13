@@ -21,11 +21,13 @@ class SideCodeAction(sublime_plugin.TextCommand):
         else:
             actions = [
                 'Tell Joke', 
-                'Ask Yes/NO Question' 
+                'Ask Yes/NO Question',
+                'Get Advice'
             ]
             action_commands = [
                 'side_tell_joke',
-                'side_ask_question'
+                'side_ask_question',
+                'side_advice'
             ]        
 
         def on_select(index):
