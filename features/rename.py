@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 
-from functools import reduce
 from SIDE.features.lib.helpers import get_word, find_symbols, scroll_to_not_visible_region, get_region_between_symbols, is_function, filter_regions_by_scope_name, filter_regions_by_region
 
 
