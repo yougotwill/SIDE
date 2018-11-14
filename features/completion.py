@@ -9,6 +9,11 @@ class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
         point = locations[0]
 
+        # dont commplete in strings
+        is_in_string = self.view.match_selector(point, 'string.quoted')
+        if is_in_string:
+            return None        
+
         window = sublime.active_window()
         views = window.views()
         
