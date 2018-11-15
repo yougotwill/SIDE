@@ -29,12 +29,33 @@ class SideReference(sublime_plugin.TextCommand):
                 chose_one_location_from_many(locations, self.view)
                 return 
 
-            find_result = ''
+            references_by_rel_file_path = {}  # type: Dict[str, List[line]]
             for location in locations:
                 file_path, rel_file_path, row_col = location
+                
+                # create an array if it doesn't exist
+                if references_by_rel_file_path.get(rel_file_path) is None:
+                    references_by_rel_file_path[rel_file_path] = []
+
                 row, col = row_col
-                line = get_line(self.view, file_path, row).strip()  
-                find_result += "{}:\n\t{}:{}\t\t{}\n\n".format(rel_file_path, row, col, line)
+                line = get_line(self.view, file_path, row).strip()
+                ref = {
+                    'row': row,
+                    'col': col,
+                    'line': line    
+                }
+                references_by_rel_file_path[rel_file_path].append(ref)
+
+            # this string will be rendered in the panel
+            find_result = ''
+            for rel_file_path in references_by_rel_file_path:
+                find_result += "{}:\n".format(rel_file_path)
+                references = references_by_rel_file_path.get(rel_file_path)
+
+                for ref in references:
+                    find_result += "    {}:{}\t\t{}\n".format(ref['row'], ref['col'], ref['line'])
+
+                find_result += "\n"
 
             panel = window.create_output_panel("references")
             
