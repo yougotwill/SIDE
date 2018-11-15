@@ -7,7 +7,7 @@ import linecache
 from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line
 
 
-class SideShowSigniture(sublime_plugin.TextCommand):
+class SideShowSignature(sublime_plugin.TextCommand):
     def run(self, edit, locations=None, point=None):
         if point is None:
             point = self.view.sel()[0].begin()
