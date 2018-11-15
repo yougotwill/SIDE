@@ -1,0 +1,33 @@
+[
+	// Definiton 
+	// { "keys": ["UNBOUND"], "command": "side_definition" },
+	
+	// Jump Back
+	// { "keys": ["UNBOUND"], "command": "side_jump_back" },
+
+	// Trigger Signiture Help
+	// { "keys": ["UNBOUND"], "command": "side_show_signiture" },
+	
+	// Find Reference in all files
+	// { "keys": ["UNBOUND"], "command": "side_reference" },
+	
+	// Find Reference in open files 
+	// { "keys": ["UNBOUND"], "command": "side_reference", 
+	// 	"args": {
+	// 		"find_all": false
+	// 	} 
+	// },
+	
+	// Code Cctions
+	// { "keys": ["UNBOUND"], "command": "side_code_action" },
+	
+	// Rename word in scope of a function
+	// { "keys": ["UNBOUND"], "command": "side_rename",
+	// 	"args": {
+	// 		"find_all": false
+	// 	} 
+	// },	
+	 
+	// Rename word in the entire file
+	// { "keys": ["UNBOUND"], "command": "side_rename" },
+]
