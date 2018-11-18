@@ -18,7 +18,7 @@ class SideSignitureHelp(sublime_plugin.ViewEventListener):
     def show_signiture_help(self, point, word):
         locations = definition(word, self.view)
 
-        self.view.run_command('side_show_signiture', {
+        self.view.run_command('side_show_signature', {
             'locations': locations, 
             'point': point
         })

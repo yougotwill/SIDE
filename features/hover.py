@@ -19,7 +19,7 @@ class SideHover(sublime_plugin.ViewEventListener):
         word = get_word(self.view, point)
         locations = definition(word, self.view)
 
-        self.view.run_command('side_show_signiture', {
+        self.view.run_command('side_show_signature', {
             'locations': locations, 
             'point': point
         })

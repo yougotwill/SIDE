@@ -6,7 +6,7 @@
 	// { "keys": ["UNBOUND"], "command": "side_jump_back" },
 
 	// Trigger Signiture Help
-	// { "keys": ["UNBOUND"], "command": "side_show_signiture" },
+	// { "keys": ["UNBOUND"], "command": "side_show_signature" },
 	
 	// Find Reference in all files
 	// { "keys": ["UNBOUND"], "command": "side_reference" },
