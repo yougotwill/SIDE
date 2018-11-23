@@ -232,7 +232,7 @@ def _find_symbols_for_view(view):
                 symbol_type = '[c]'  # class
             elif 'function' in scope_name:
                 symbol_type = '[f]'  # function
-            elif 'struct' in scope_name:
+            elif 'struct' in scope_name or 'impl' in scope_name:
                 symbol_type = '[s]'  # struct
 
             

@@ -26,7 +26,8 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
             if symbol not in unique_symbols:
                 unique_symbols.append(symbol)
-            completions.append(completion_item)
+            if completion_item not in completions:
+                completions.append(completion_item)
 
         for view in views:
             hash_completions = view.extract_completions(prefix)
