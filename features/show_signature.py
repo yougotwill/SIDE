@@ -4,10 +4,9 @@ import os
 import re
 import linecache
 
+from html import escape
 from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line
 
-def escape(text):
-    return text.replace('&', '&amp;')
 
 class SideShowSignature(sublime_plugin.TextCommand):
     def run(self, edit, locations=None, point=None):
@@ -78,7 +77,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
             </div>
             {} 
             {}
-        </body>""".format(signiture, origin, docs)
+        </body>""".format(escape(signiture), origin, docs)
 
         self._show_popup(content, point)
         # end of command execution
@@ -86,7 +85,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
         linecache.clearcache()
 
     def _show_popup(self, content, point):
-        self.view.show_popup(escape(content), sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
+        self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
 
     def get_signiture(self, signiture, file_path, row):
         while '{' not in signiture and ':' not in signiture and ')' not in signiture :
