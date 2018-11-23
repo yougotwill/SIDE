@@ -29,7 +29,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
                     {} definitions
                 </div>
             </body>""".format(len(locations))
-            self.view.show_popup(content, location=point)
+            self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point)
             return
 
         file_path, relative_file_path, row_col = locations[0]
