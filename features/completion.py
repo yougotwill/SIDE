@@ -20,18 +20,18 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         symbols = find_symbols(self.view, views)
         completions = []
         # easy way to filter out hash completions
-        unique = []
+        unique_symbols = []
         for symbol_location in symbols:
             _file_name, base_file_name, _region, symbol, symbol_type = symbol_location
             completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
-            if symbol not in unique:
-                unique.append(symbol)
+            if symbol not in unique_symbols:
+                unique_symbols.append(symbol)
             completions.append(completion_item)
 
         for view in views:
             hash_completions = view.extract_completions(prefix)
             for completion in hash_completions:
-                if completion in unique:
+                if completion in unique_symbols:
                     continue
                 completion_item = ["{}\t{}".format(completion, '[#]'), "{}".format(completion)]
                 completions.append(completion_item)
