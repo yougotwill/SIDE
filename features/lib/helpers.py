@@ -232,6 +232,9 @@ def _find_symbols_for_view(view):
                 symbol_type = '[c]'  # class
             elif 'function' in scope_name:
                 symbol_type = '[f]'  # function
+            elif 'struct' in scope_name:
+                symbol_type = '[s]'  # struct
+
             
             location = _transform_to_location(view.file_name(), region, symbol, symbol_type)
             symbols.append(location)
