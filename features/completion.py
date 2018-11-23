@@ -32,4 +32,4 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                     continue
                 completions.append(completion_item)
 
-        return completions
+        return (completions, sublime.INHIBIT_WORD_COMPLETIONS)
