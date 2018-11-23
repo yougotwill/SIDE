@@ -88,7 +88,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
         self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
 
     def get_signiture(self, signiture, file_path, row):
-        while '{' not in signiture and ':' not in signiture and ')' not in signiture :
+        while '{' not in signiture and ')' not in signiture :
             row += 1
             signiture += ' ' + get_line(self.view, file_path, row).strip()
         return signiture, row
