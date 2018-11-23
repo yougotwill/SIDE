@@ -109,11 +109,11 @@ def chose_one_location_from_many(locations, current_view) -> None:
             window.focus_view(current_view)
             return 
         location =  quick_panel['on_select'][index]
-        open_view(location, current_view, ignore_open=True)
+        open_view(location, current_view)
 
     def _on_change(index):                    
         location = quick_panel['on_select'][index]
-        open_view(location, current_view, sublime.ENCODED_POSITION | sublime.TRANSIENT, ignore_open=True)
+        open_view(location, current_view, sublime.ENCODED_POSITION | sublime.TRANSIENT, record_history=False)
 
     window.show_quick_panel(
         quick_panel['labels'],
@@ -139,7 +139,7 @@ def is_class(scope_name):
         return False
 
 
-def open_view(location, current_view, flags=sublime.ENCODED_POSITION, ignore_open=False):
+def open_view(location, current_view, flags=sublime.ENCODED_POSITION, record_history=True):
     ''' Opens a view with the cursor at the specefied location. And save it to the jump back history. '''
     window = sublime.active_window()
     old_cursor_pos = current_view.sel()[0].begin()
@@ -150,14 +150,14 @@ def open_view(location, current_view, flags=sublime.ENCODED_POSITION, ignore_ope
     file_path, _rel_file_path, row_col = location
     new_row, new_col = row_col
     # save bookmark 
-    if old_row != new_row or old_col != new_col:
+    if record_history and (old_row != new_row or old_col != new_col):
         id = window.id()
         bookmarks = history.get(id, [])
         bookmarks.append(bookmark)
         history[id] = bookmarks
     # open location
     v = window.find_open_file(file_path)
-    if v is not None and not ignore_open:
+    if v is not None:
         window.focus_view(v)
         point = v.text_point(new_row - 1, new_col - 1)
         sel = v.sel()
