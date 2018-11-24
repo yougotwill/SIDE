@@ -277,6 +277,7 @@ def get_function_name(view, start_point) -> str:
     ''' Get the function name when cursor is inside the parenthesies or when the cursor is on the function name. '''
     scope_name = view.scope_name(start_point)
     if 'variable.function' in scope_name or \
+        'support.function' in scope_name or \
         'entity.name.function' in scope_name or \
         'entity.name.class' in scope_name or \
         'support.class' in scope_name:
