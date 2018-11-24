@@ -67,6 +67,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
 
         get_docs_params['row_below_signiture'] = row + 1 
         docs = self._get_docs(get_docs_params)  
+
         if docs:
             docs = """
             <div style="padding: 7px; 
@@ -153,13 +154,15 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
             # We use the "operand" for the number -1 or +1. See the keybindings.
             if CURRENT_INDEX is None:
                 CURRENT_INDEX = 0
+                PREVIOUS_INDEX = None
             new_index = CURRENT_INDEX + operand
+            print('index', CURRENT_INDEX, operand)
 
             # # clamp signature index
             new_index = max(0, min(new_index, MAX_LEN - 1))
 
             # # only update when changed
-            if new_index != PREVIOUS_INDEX:
+            if new_index != PREVIOUS_INDEX or (CURRENT_INDEX == 0 and operand == 1) :
                 self.view.run_command('side_show_signature', {
                     'index': new_index
                 })
