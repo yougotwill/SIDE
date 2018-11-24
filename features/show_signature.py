@@ -17,6 +17,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
         """ index - when specefied show the current location. """
         global MAX_LEN
         global PREVIOUS_INDEX
+        # restart the counter of signiture help to 0
         PREVIOUS_INDEX = 0
 
         if point is None:
