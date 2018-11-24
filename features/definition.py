@@ -30,11 +30,13 @@ class SideJumpBack(sublime_plugin.TextCommand):
 
 
 class SideDefinition(sublime_plugin.TextCommand):
-    def run(self, edit):
+    def run(self, edit, locations=None):
+        """ index - if specefied goto that index location. """
         window = sublime.active_window()
-        point = self.view.sel()[0].begin()
-        word = get_word(self.view, point)
-        locations = definition(word, self.view)
+        if locations is None:
+            point = self.view.sel()[0].begin()
+            word = get_word(self.view, point)
+            locations = definition(word, self.view)
 
         if len(locations) == 0:
             symbols = find_symbols(self.view)            

@@ -9,7 +9,6 @@ from SIDE.features.lib.helpers import definition, get_word, get_function_name, g
 
 
 MAX_LEN = None  # used to limit up / down when keyboard is used to show signiture
-CURRENT_INDEX = None # current index in popup
 PREVIOUS_INDEX = None # previous index in popup
 
 
@@ -17,7 +16,8 @@ class SideShowSignature(sublime_plugin.TextCommand):
     def run(self, edit, locations=None, point=None, index=None):
         """ index - when specefied show the current location. """
         global MAX_LEN
-        global CURRENT_INDEX
+        global PREVIOUS_INDEX
+        PREVIOUS_INDEX = 0
 
         if point is None:
             point = self.view.sel()[0].begin()
@@ -31,7 +31,6 @@ class SideShowSignature(sublime_plugin.TextCommand):
             return
 
         MAX_LEN = len(locations)
-        CURRENT_INDEX = index
 
         # display the reference count
         if len(locations) > 1 and index is None:
@@ -143,26 +142,37 @@ class SideShowSignature(sublime_plugin.TextCommand):
 
 class SideSignatureListener(sublime_plugin.ViewEventListener):
     def on_query_context(self, key, _operator, operand, _match_all):
-        global CURRENT_INDEX
         global MAX_LEN
         global PREVIOUS_INDEX
 
         if key != "side.signature_help":
+            PREVIOUS_INDEX = 0
             return False  # Let someone else handle this keybinding.
 
         if self.view.is_popup_visible():
             # We use the "operand" for the number -1 or +1. See the keybindings.
-            if CURRENT_INDEX is None:
-                CURRENT_INDEX = 0
-                PREVIOUS_INDEX = None
-            new_index = CURRENT_INDEX + operand
-            print('index', CURRENT_INDEX, operand)
+            if PREVIOUS_INDEX is None:
+                PREVIOUS_INDEX = 0
+
+            # if enter is pressed
+            if operand == 0:
+                point = self.view.sel()[0].begin()
+                word = get_function_name(self.view, point)
+                locations = definition(word, self.view)
+
+                self.view.run_command('side_definition', {
+                    'locations': [locations[PREVIOUS_INDEX]], 
+                })
+                return True
+
+            # else up or down is pressed
+            new_index = PREVIOUS_INDEX + operand
 
             # # clamp signature index
             new_index = max(0, min(new_index, MAX_LEN - 1))
 
             # # only update when changed
-            if new_index != PREVIOUS_INDEX or (CURRENT_INDEX == 0 and operand == 1 and MAX_LEN != 1) :
+            if new_index != PREVIOUS_INDEX or (PREVIOUS_INDEX == 0 and operand == 1 and MAX_LEN != 1) :
                 self.view.run_command('side_show_signature', {
                     'index': new_index
                 })
