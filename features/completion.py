@@ -34,6 +34,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             for completion in hash_completions:
                 if completion in unique_symbols:
                     continue
+                unique_symbols.append(completion)
                 completion_item = ["{}\t{}".format(completion, '[#]'), "{}".format(completion)]
                 completions.append(completion_item)
 
