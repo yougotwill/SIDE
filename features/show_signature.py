@@ -159,7 +159,7 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
             new_index = max(0, min(new_index, MAX_LEN - 1))
 
             # # only update when changed
-            if new_index != PREVIOUS_INDEX or new_index == 1:
+            if new_index != PREVIOUS_INDEX:
                 self.view.run_command('side_show_signature', {
                     'index': new_index
                 })
