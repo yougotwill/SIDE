@@ -1,4 +1,6 @@
 [
+	{ "keys": ["up"], "command": "noop", "context": [{ "key": "side.signature_help", "operator": "equal", "operand": -1 }] },
+    { "keys": ["down"], "command": "noop", "context": [{ "key": "side.signature_help", "operator": "equal", "operand": 1 }] },
 	// Definiton 
 	// { "keys": ["UNBOUND"], "command": "side_definition" },
 	

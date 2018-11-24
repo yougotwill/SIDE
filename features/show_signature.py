@@ -8,8 +8,17 @@ from html import escape
 from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line
 
 
+MAX_LEN = None  # used to limit up / down when keyboard is used to show signiture
+CURRENT_INDEX = None # current index in popup
+PREVIOUS_INDEX = None # previous index in popup
+
+
 class SideShowSignature(sublime_plugin.TextCommand):
-    def run(self, edit, locations=None, point=None):
+    def run(self, edit, locations=None, point=None, index=None):
+        """ index - when specefied show the current location. """
+        global MAX_LEN
+        global CURRENT_INDEX
+
         if point is None:
             point = self.view.sel()[0].begin()
 
@@ -21,18 +30,25 @@ class SideShowSignature(sublime_plugin.TextCommand):
         if len(locations) == 0:
             return
 
+        MAX_LEN = len(locations)
+        CURRENT_INDEX = index
+
         # display the reference count
-        if len(locations) > 1:
-            content = """
-            <body id="side-hover" style="margin:0">
-                <div style="color: color(var(--foreground) alpha(0.7)); padding: 7px;">
-                    {} definitions
-                </div>
-            </body>""".format(len(locations))
-            self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point)
+        if len(locations) > 1 and index is None:
+            self.view.run_command('side_show_signature', {
+                'locations': locations, 
+                'point': point,
+                'index': 0
+            })
             return
 
-        file_path, relative_file_path, row_col = locations[0]
+        location = None
+        if index:
+            location = locations[index]
+        else:
+            location = locations[0]
+
+        file_path, relative_file_path, row_col = location
         row, _col = row_col  # signiture row
 
         get_docs_params = {
@@ -62,12 +78,17 @@ class SideShowSignature(sublime_plugin.TextCommand):
         if len(relative_file_path) > 70:
             relative_file_path = '...' + relative_file_path[-50:]
         
+        if len(locations) == 1:
+            range_count = ''
+        else: 
+            current_index = 1 if index is None else index + 1
+            range_count = "[{}-{}]".format(current_index, len(locations))
         origin = """
         <div style="padding: 7px; 
                     border-top: 1px solid color(var(--foreground) alpha(0.1));
                     color: color(var(--foreground) alpha(0.7))">
-            {}
-        </div>""".format(relative_file_path)
+            {} {}
+        </div>""".format(range_count, relative_file_path)
 
         content = """
         <body id="side-hover" style="margin:0">
@@ -77,7 +98,9 @@ class SideShowSignature(sublime_plugin.TextCommand):
             </div>
             {} 
             {}
-        </body>""".format(escape(signiture), origin, docs)
+        </body>""".format(escape(signiture, False), origin, docs)
+        if index is not None:
+            self.view.update_popup(content)
 
         self._show_popup(content, point)
         # end of command execution
@@ -115,3 +138,33 @@ class SideShowSignature(sublime_plugin.TextCommand):
                 docs += '<br>' + get_line(self.view, file_path, row).strip()
             return docs
         return ''
+
+
+class SideSignatureListener(sublime_plugin.ViewEventListener):
+    def on_query_context(self, key, _operator, operand, _match_all):
+        global CURRENT_INDEX
+        global MAX_LEN
+        global PREVIOUS_INDEX
+
+        if key != "side.signature_help":
+            return False  # Let someone else handle this keybinding.
+
+        if self.view.is_popup_visible():
+            # We use the "operand" for the number -1 or +1. See the keybindings.
+            if CURRENT_INDEX is None:
+                CURRENT_INDEX = 0
+            new_index = CURRENT_INDEX + operand
+
+            # # clamp signature index
+            new_index = max(0, min(new_index, MAX_LEN - 1))
+
+            # # only update when changed
+            if new_index != PREVIOUS_INDEX:
+                self.view.run_command('side_show_signature', {
+                    'index': new_index
+                })
+                PREVIOUS_INDEX = new_index
+
+            return True  # We handled this keybinding.
+        else: 
+            return False
