@@ -5,7 +5,7 @@ import re
 import linecache
 
 from html import escape
-from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line
+from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line, open_view
 
 
 MAX_LEN = None  # used to limit up / down when keyboard is used to show signiture
@@ -160,10 +160,14 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
                 point = self.view.sel()[0].begin()
                 word = get_function_name(self.view, point)
                 locations = definition(word, self.view)
+                location = locations[PREVIOUS_INDEX]
 
-                self.view.run_command('side_definition', {
-                    'locations': [locations[PREVIOUS_INDEX]], 
-                })
+                # sublime crasches if window.focus_view is called
+                # seting a timeout, fixes is
+                # I don't know why this is the case
+                def fix_window_focus_view_crach():
+                    open_view(location, self.view)
+                sublime.set_timeout(fix_window_focus_view_crach, 0)
                 return True
 
             # else up or down is pressed
