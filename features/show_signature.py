@@ -167,6 +167,7 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
                 # I don't know why this is the case
                 def fix_window_focus_view_crach():
                     open_view(location, self.view)
+                    self.view.hide_popup()
                 sublime.set_timeout(fix_window_focus_view_crach, 0)
                 return True
 
