@@ -7,6 +7,7 @@ from SIDE.features.reference import SideReference
 from SIDE.features.code_lens import SideCodeLens
 from SIDE.features.code_action import SideCodeAction
 from SIDE.features.rename import SideRename
+from SIDE.features.diagnostic import SideDiagnosticListener
 
 from SIDE.features.commands.ask_question import SideAskQuestion
 from SIDE.features.commands.search_web import SideSearchWeb
