@@ -8,7 +8,7 @@ from pyspellchecker.spellchecker import SpellChecker
 spell = SpellChecker(distance=1)
      
 class SideDiagnosticListener(sublime_plugin.ViewEventListener):
-    def on_load_async(self):
+    def on_activated_async(self):
         self.spell_check_view()
 
     def on_modified_async(self): 
