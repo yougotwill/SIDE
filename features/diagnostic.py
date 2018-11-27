@@ -14,6 +14,8 @@ class SideDiagnosticListener(sublime_plugin.ViewEventListener):
     def on_modified_async(self): 
         self.spell_check_view()
 
+    # this function is O(n^5) I think :D fun!!!
+    # if you find a better way to handle this, you are welcome :)
     @debounce(0.4)
     def spell_check_view(self):
         window = sublime.active_window()
