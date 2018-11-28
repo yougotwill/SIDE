@@ -6,7 +6,7 @@ from SIDE.features.lib.helpers import debounce
 from pyspellchecker.spellchecker import SpellChecker
 
 spell = SpellChecker(distance=1)
-MISSPELED_REGIONS = {} #window_id: file_name: [ misspeled_regions]
+MISSPELED_REGIONS = {} #window_id: [ misspeled_regions]
 
 class SideDiagnosticListener(sublime_plugin.ViewEventListener):
     def on_activated_async(self):
@@ -70,6 +70,6 @@ class SideDiagnosticListener(sublime_plugin.ViewEventListener):
         self.view.add_regions('side.diagnostic', missspeled_regions, 'markup.deleted', flags=squiggly)
 
         # this is used for code actions
-        if MISSPELED_REGIONS.get(window.id(), {}).get(self.view.file_name()) is None:
-            MISSPELED_REGIONS[window.id()] = {}
-        MISSPELED_REGIONS[window.id()][self.view.file_name()] = missspeled_regions
+        if not MISSPELED_REGIONS.get(window.id(), None):
+            MISSPELED_REGIONS[window.id()] = []
+        MISSPELED_REGIONS[window.id()] = missspeled_regions
