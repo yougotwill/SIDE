@@ -4,6 +4,10 @@ import sublime_plugin
 from SIDE.features.lib.helpers import get_word
 
 
+def pluck_tuples(tuples, position):
+    return list(map(lambda tuple: tuple[position] ,tuples))
+
+
 class SideCodeAction(sublime_plugin.TextCommand):
     def run(self, edit):
         region = self.view.sel()[0]
@@ -12,23 +16,21 @@ class SideCodeAction(sublime_plugin.TextCommand):
         actions = None
         action_commands = None
         if word:
-            actions = [
-                'Search Web', 
+            actions_and_commands = [
+                ('Search Web', 'side_search_web')
             ]
-            action_commands = [
-                'side_search_web'
-            ]
+
+            actions = pluck_tuples(actions_and_commands, 0)
+            action_commands = pluck_tuples(actions_and_commands, 1)
         else:
-            actions = [
-                'Tell Joke', 
-                'Ask Yes/NO Question',
-                'Get Advice'
-            ]
-            action_commands = [
-                'side_tell_joke',
-                'side_ask_question',
-                'side_advice'
-            ]        
+            actions_and_commands = [
+                ('Tell Joke', 'side_tell_joke'),
+                ('Ask Yes/NO Question', 'side_ask_question'),
+                ('Get Advice', 'side_advice')
+            ] 
+
+            actions = pluck_tuples(actions_and_commands, 0)
+            action_commands = pluck_tuples(actions_and_commands, 1)     
 
         def on_select(index):
             if index > -1:
