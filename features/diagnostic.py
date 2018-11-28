@@ -23,18 +23,18 @@ class SideDiagnosticListener(sublime_plugin.ViewEventListener):
 
         window = sublime.active_window()
         symbols = self.view.indexed_symbols()
-        # references = self.view.indexed_references()
+        references = self.view.indexed_references()
  
         # get only the references that are defined in project
-        # project_references = []
-        # for reference in references:
-        #     region, symbol = reference
-        #     symbol_in_project = window.lookup_symbol_in_open_files(symbol) or window.lookup_symbol_in_index(symbol)
-        #     if len(symbol_in_project) > 0:
-        #         project_references.append(reference)
+        project_references = []
+        for reference in references:
+            region, symbol = reference
+            symbol_in_project = window.lookup_symbol_in_open_files(symbol) or window.lookup_symbol_in_index(symbol)
+            if len(symbol_in_project) > 0:
+                project_references.append(reference)
 
         # only symbols and references in project will be spell checked
-        # symbols.extend(project_references)
+        symbols.extend(project_references)
   
         missspeled_regions = []
         for location in symbols:
