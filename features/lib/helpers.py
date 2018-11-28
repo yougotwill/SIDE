@@ -8,19 +8,6 @@ from threading import Timer
 history = {} # type: Dict[window_id, bookmarks]
 
 
-def pluck_tuples(tuples, position):
-    return list(map(lambda tuple: tuple[position] ,tuples))
-
-def in_diagnostic_regions(point) -> sublime.Region:
-    ''' Return the diagnostic region containing the point, or None. '''
-    window = sublime.active_window()
-    misspeled_regions = MISSPELED_REGIONS.get(window.id())
-    for region in misspeled_regions:
-        if region.contains(point):
-            return region
-    return None
-
-
 def debounce(wait):
     """ Decorator that will postpone a functions
         execution until after wait seconds

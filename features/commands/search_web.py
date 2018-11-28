@@ -10,7 +10,7 @@ class SideSearchWeb(sublime_plugin.TextCommand):
         region = self.view.sel()[0]
         word = self.view.substr(region).strip()
 
-        # if no region, greab the word under cursor
+        # if no region, grab the word under cursor
         if len(word) == 0:
             word = self.view.substr(self.view.word(region.begin())).strip()
 

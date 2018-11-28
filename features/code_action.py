@@ -1,8 +1,21 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import get_word, in_diagnostic_regions, pluck_tuples
+from SIDE.features.lib.helpers import get_word
 from SIDE.features.diagnostic import MISSPELED_REGIONS, spell
+
+
+def pluck_tuples(tuples, position):
+    return list(map(lambda tuple: tuple[position] ,tuples))
+
+def in_diagnostic_regions(point) -> sublime.Region:
+    ''' Return the diagnostic region containing the point, or None. '''
+    window = sublime.active_window()
+    misspeled_regions = MISSPELED_REGIONS.get(window.id())
+    for region in misspeled_regions:
+        if region.contains(point):
+            return region
+    return None
 
 
 class SideCodeAction(sublime_plugin.TextCommand):
