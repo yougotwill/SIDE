@@ -1,3 +1,4 @@
+from SIDE.features.diagnostic import underline_misspelled
 import sublime
 import sublime_plugin
 
@@ -20,9 +21,24 @@ class SideIgnoreWord(sublime_plugin.TextCommand):
     def run(self, edit, word):
         settings = sublime.load_settings("Preferences.sublime-settings")
 
-        ignored_words = settings.get('ignored_words')
+        ignored_words = settings.get('ignored_words', [])
         if word not in ignored_words:
             ignored_words.append(word)
         settings.set('ignored_words', ignored_words)
 
         sublime.save_settings("Preferences.sublime-settings")
+        window = sublime.active_window()
+        underline_misspelled(self.view)
+
+
+class SideAddWord(sublime_plugin.TextCommand):
+    def run(self, edit, word):
+        settings = sublime.load_settings("Preferences.sublime-settings")
+
+        added_words = settings.get('added_words', [])
+        if word not in added_words:
+            added_words.append(word)
+        settings.set('added_words', added_words)
+
+        sublime.save_settings("Preferences.sublime-settings")
+        underline_misspelled(self.view)

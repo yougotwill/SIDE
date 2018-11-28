@@ -56,8 +56,7 @@ class SideCodeAction(sublime_plugin.TextCommand):
                         actions_and_commands.append((suggested_word, 'side_spell_check', arguments))
                     actions_and_commands.append(('-', None))
                 
-                if len(corrections) == 1 and corrections[0] == misspelled_word: 
-                    actions_and_commands.append(('Add ' + misspelled_word, 'side_add_word', { 'word': misspelled_word }))
+                actions_and_commands.append(('Add ' + misspelled_word, 'side_add_word', { 'word': misspelled_word }))
                 actions_and_commands.append(('Ignore ' + misspelled_word, 'side_ignore_word', { 'word': misspelled_word }))
 
             actions = pluck_tuples(actions_and_commands, 0)
