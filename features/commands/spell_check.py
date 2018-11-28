@@ -15,3 +15,14 @@ class SideSpellCheck(sublime_plugin.TextCommand):
 
         self.view.replace(edit, region, suggested_word)
      
+
+class SideIgnoreWord(sublime_plugin.TextCommand):
+    def run(self, edit, word):
+        settings = sublime.load_settings("Preferences.sublime-settings")
+
+        ignored_words = settings.get('ignored_words')
+        if word not in ignored_words:
+            ignored_words.append(word)
+        settings.set('ignored_words', ignored_words)
+
+        sublime.save_settings("Preferences.sublime-settings")

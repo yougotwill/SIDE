@@ -49,7 +49,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
             location = locations[0]
 
         file_path, relative_file_path, row_col = location
-        row, _col = row_col  # signiture row
+        row, _col = row_col  # signature row
 
         get_docs_params = {
             'file_path': file_path, 

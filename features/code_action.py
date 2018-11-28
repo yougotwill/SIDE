@@ -43,17 +43,22 @@ class SideCodeAction(sublime_plugin.TextCommand):
 
                 misspelled_word = self.view.substr(diagnostic_region).lower()
 
-                corrections = spell.candidates(misspelled_word)
-                for suggested_word in corrections:
-                    arguments = {
-                        'region': { 'begin':diagnostic_region.begin(), 'end': diagnostic_region.end() },
-                        'suggested_word': suggested_word
-                    }
-                    actions_and_commands.append((suggested_word, 'side_spell_check', arguments))
-
-                # add divider at the end
-                actions_and_commands.append(('-', None))
-                actions_and_commands.append(('Ignore Word', 'side_ignore_word'))
+                corrections = list(spell.candidates(misspelled_word))
+                # suggestion_word == misspeled_word
+                if len(corrections) == 1 and corrections[0] == misspelled_word:
+                    pass
+                else:
+                    for suggested_word in corrections:
+                        arguments = {
+                            'region': { 'begin':diagnostic_region.begin(), 'end': diagnostic_region.end() },
+                            'suggested_word': suggested_word
+                        }
+                        actions_and_commands.append((suggested_word, 'side_spell_check', arguments))
+                    actions_and_commands.append(('-', None))
+                
+                if len(corrections) == 1 and corrections[0] == misspelled_word: 
+                    actions_and_commands.append(('Add ' + misspelled_word, 'side_add_word', { 'word': misspelled_word }))
+                actions_and_commands.append(('Ignore ' + misspelled_word, 'side_ignore_word', { 'word': misspelled_word }))
 
             actions = pluck_tuples(actions_and_commands, 0)
             action_commands = pluck_tuples(actions_and_commands, 1)

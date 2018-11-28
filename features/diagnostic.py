@@ -23,18 +23,18 @@ class SideDiagnosticListener(sublime_plugin.ViewEventListener):
 
         window = sublime.active_window()
         symbols = self.view.indexed_symbols()
-        references = self.view.indexed_references()
+        # references = self.view.indexed_references()
  
         # get only the references that are defined in project
-        project_references = []
-        for reference in references:
-            region, symbol = reference
-            symbol_in_project = window.lookup_symbol_in_open_files(symbol) or window.lookup_symbol_in_index(symbol)
-            if len(symbol_in_project) > 0:
-                project_references.append(reference)
+        # project_references = []
+        # for reference in references:
+        #     region, symbol = reference
+        #     symbol_in_project = window.lookup_symbol_in_open_files(symbol) or window.lookup_symbol_in_index(symbol)
+        #     if len(symbol_in_project) > 0:
+        #         project_references.append(reference)
 
         # only symbols and references in project will be spell checked
-        symbols.extend(project_references)
+        # symbols.extend(project_references)
   
         missspeled_regions = []
         for location in symbols:
@@ -44,7 +44,7 @@ class SideDiagnosticListener(sublime_plugin.ViewEventListener):
             symbol = symbol.strip('_')
             words = []
             if '_' in symbol:
-                # handle cabel case symbol names
+                # handle cable case symbol names
                 words = symbol.split('_')
 
             if re.match('^[A-Z][a-z]*', symbol): 
@@ -61,11 +61,15 @@ class SideDiagnosticListener(sublime_plugin.ViewEventListener):
 
             misspelled = spell.unknown(words)
 
+            settings = sublime.load_settings("Preferences.sublime-settings")
+            ignored_words = settings.get('ignored_words')
+
             for word in misspelled:
-                r = self.view.find(word, region.begin(), sublime.IGNORECASE)
-                missspeled_regions.append(r)
- 
-        # underline misspeled words
+                if word not in ignored_words:
+                    r = self.view.find(word, region.begin(), sublime.IGNORECASE)
+                    missspeled_regions.append(r)
+     
+        # underline misspelled words
         squiggly = sublime.DRAW_NO_FILL | sublime.DRAW_SQUIGGLY_UNDERLINE | sublime.DRAW_NO_OUTLINE
         self.view.add_regions('side.diagnostic', missspeled_regions, 'markup.deleted', flags=squiggly)
 

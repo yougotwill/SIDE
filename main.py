@@ -14,4 +14,4 @@ from SIDE.features.commands.ask_question import SideAskQuestion
 from SIDE.features.commands.search_web import SideSearchWeb
 from SIDE.features.commands.tell_joke import SideTellJoke
 from SIDE.features.commands.advice import SideAdvice
-from SIDE.features.commands.spell_check import SideSpellCheck
+from SIDE.features.commands.spell_check import SideSpellCheck, SideIgnoreWord
