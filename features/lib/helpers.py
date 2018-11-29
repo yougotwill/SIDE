@@ -140,7 +140,7 @@ def is_class(scope_name):
 
 
 def open_view(location, current_view, flags=sublime.ENCODED_POSITION, record_history=True, force_open=False):
-    ''' Opens a view with the cursor at the specefied location. And save it to the jump back history. '''
+    ''' Opens a view with the cursor at the specified location. And save it to the jump back history. '''
     window = sublime.active_window()
     old_cursor_pos = current_view.sel()[0].begin()
     old_row, old_col = current_view.rowcol(old_cursor_pos)
@@ -157,7 +157,7 @@ def open_view(location, current_view, flags=sublime.ENCODED_POSITION, record_his
         history[id] = bookmarks
     # open location
     v = window.find_open_file(file_path)
-    # force_open fixes frezze when goto definiton is triggered
+    # force_open fixes freeze when goto definition is triggered
     # so don't touch it :D
     if v is not None and not force_open:
         window.focus_view(v)
@@ -276,7 +276,7 @@ def get_word(view, point=None) -> str:
 
 
 def get_function_name(view, start_point) -> str:
-    ''' Get the function name when cursor is inside the parenthesies or when the cursor is on the function name. '''
+    ''' Get the function name when cursor is inside the parenthesis or when the cursor is on the function name. '''
     scope_name = view.scope_name(start_point)
     if 'variable.function' in scope_name or \
         'support.function' in scope_name or \
