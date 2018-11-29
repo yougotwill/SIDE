@@ -17,7 +17,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
         """ index - when specefied show the current location. """
         global MAX_LEN
         global PREVIOUS_INDEX
-        # restart the counter of signiture help to 0
+        # restart the counter of signature help to 0
         PREVIOUS_INDEX = 0
 
         if point is None:
@@ -59,11 +59,11 @@ class SideShowSignature(sublime_plugin.TextCommand):
 
         function_line = get_line(self.view, file_path, row).strip()
 
-        signiture, row = self.get_signiture(function_line, 
+        signature, row = self.get_signature(function_line, 
                                             file_path, 
                                             row)
-        # prettify signiture
-        signiture = signiture.strip('{').strip(':')
+        # prettify signature
+        signature = signature.strip('{').strip(':')
 
         get_docs_params['row_below_signiture'] = row + 1 
         docs = self._get_docs(get_docs_params)  
@@ -99,7 +99,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
             </div>
             {} 
             {}
-        </body>""".format(escape(signiture, False), origin, docs)
+        </body>""".format(escape(signature, False), origin, docs)
         if index is not None:
             self.view.update_popup(content)
 
@@ -111,11 +111,11 @@ class SideShowSignature(sublime_plugin.TextCommand):
     def _show_popup(self, content, point):
         self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
 
-    def get_signiture(self, signiture, file_path, row):
-        while '{' not in signiture and ')' not in signiture :
+    def get_signature(self, signature, file_path, row):
+        while '{' not in signature and ')' not in signature :
             row += 1
-            signiture += ' ' + get_line(self.view, file_path, row).strip()
-        return signiture, row
+            signature += ' ' + get_line(self.view, file_path, row).strip()
+        return signature, row
 
     def _get_docs(self, find_comment_params):
         file_path = find_comment_params['file_path']
@@ -165,10 +165,10 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
                 # sublime crasches if window.focus_view is called
                 # seting a timeout, fixes is
                 # I don't know why this is the case
-                def fix_window_focus_view_crach():
+                def fix_window_focus_view_crash():
                     open_view(location, self.view)
                     self.view.hide_popup()
-                sublime.set_timeout(fix_window_focus_view_crach, 0)
+                sublime.set_timeout(fix_window_focus_view_crash, 0)
                 return True
 
             # else up or down is pressed
