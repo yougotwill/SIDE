@@ -18,3 +18,4 @@ SIDE will just try to help as much as it can.
 * Code Lens
 * Code Actions
 * Rename
+* Diagnostic
