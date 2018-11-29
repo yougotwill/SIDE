@@ -3,7 +3,7 @@ import sublime_plugin
 import re
 
 from SIDE.features.lib.helpers import debounce
-from pyspellchecker.spellchecker import SpellChecker
+from SIDE.dependencies.spellchecker.spellchecker import SpellChecker
 
 spell = SpellChecker(distance=1)
 MISSPELED_REGIONS = {} #window_id: [ misspeled_regions]
