@@ -1,6 +1,7 @@
-from SIDE.features.diagnostic import underline_misspelled, spell
 import sublime
 import sublime_plugin
+
+from SIDE.features.diagnostic import underline_misspelled, spell
 
 
 class SideSpellCheck(sublime_plugin.TextCommand):
@@ -39,7 +40,7 @@ class SideAddWord(sublime_plugin.TextCommand):
         if word not in added_words:
             added_words.append(word)
         settings.set('added_words', added_words)
-        # add the words to the spell checker 
+        # add the words to the known words, so next time they show up as suggestions 
         spell.word_frequency.load_words(added_words)
 
         sublime.save_settings("Preferences.sublime-settings")
