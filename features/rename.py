@@ -17,7 +17,7 @@ class SideRename(sublime_plugin.TextCommand):
         scope_name = self.view.scope_name(point)
         words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, self.view)        
 
-        # useful for debuging
+        # useful for debugging
         # # if between_symbols_region is not None:
         #     self.view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
         # self.view.add_regions('word', words_between_regions, 'stirng', flags=sublime.DRAW_OUTLINED)        
