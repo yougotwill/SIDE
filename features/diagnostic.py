@@ -69,6 +69,13 @@ def underline_misspelled(view):
 
 
 class SideDiagnosticListener(sublime_plugin.ViewEventListener):
+    @classmethod
+    def is_applicable(self, settings):
+        is_enabled = settings.get('spell_check')
+        if is_enabled:
+            return True
+        return False
+
     def on_activated_async(self):
         self.spell_check_view()
 
