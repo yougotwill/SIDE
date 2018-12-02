@@ -12,6 +12,9 @@ def in_diagnostic_regions(point) -> sublime.Region:
     ''' Return the diagnostic region containing the point, or None. '''
     window = sublime.active_window()
     misspeled_regions = MISSPELED_REGIONS.get(window.id())
+    if not misspeled_regions:
+        return None
+        
     for region in misspeled_regions:
         if region.contains(point):
             return region
