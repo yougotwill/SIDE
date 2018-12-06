@@ -29,9 +29,10 @@ class SideJumpBack(sublime_plugin.TextCommand):
             self.view.run_command('jump_back')
 
 
+
 class SideDefinition(sublime_plugin.TextCommand):
     def run(self, edit):
-        """ index - if specefied goto that index location. """
+        """ index - if specified goto that index location. """
         window = sublime.active_window()
         point = self.view.sel()[0].begin()
         word = get_word(self.view, point)

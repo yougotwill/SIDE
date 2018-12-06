@@ -16,7 +16,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
 
         window = sublime.active_window()
         views = window.views()
-        
+
         symbols = find_symbols(self.view, views)
         completions = []
         # easy way to filter out hash completions
