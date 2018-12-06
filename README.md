@@ -70,9 +70,7 @@ In that case you need to configure some `tmPreferences` files. To add these symb
 
 Here is an example on how to add symbols for rust.
 
-Adding references.
-
-Create a `Rust Reference Symbol List.tmPreferences` and save it to your `Packages\User` folder.
+Adding references. Create a `Rust Reference Symbol List.tmPreferences` and save it to your `Packages\User` folder.
 With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -89,12 +87,7 @@ With the following content:
 </plist>
 ```
 
-
-This will tell Sublime to add these symbols to the references list.
-
-Adding definition.
-
-Similar, for adding symbols to the indexed list do the following. 
+Adding definitions. 
 Create a `Rust Indexed Symbols.tmPreferences` and save it to your `Packages\User` folder.
 With the following content:
 ```xml
