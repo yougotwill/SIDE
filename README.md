@@ -107,5 +107,5 @@ With the following content:
 </plist>
 ```
 
-That is it. :)
-
+The point of SIDE is to make you think. It is great to have great auto completion, diagnostics, ..., but where is the fun in that. You rarely make mistakes then?
+When you use SIDE, it won't warn you if you make mistakes (except it is a spelling mistake and you enabled spell checking). We all make them, learn from them and try not to do them again.
