@@ -55,7 +55,7 @@ Never misspell a function name again. Just set Sublime's `spell_check` setting t
 
 Code actions can correct spelling mistakes and search the Internet.
 
-When you need and advice or are in doubt, don't know if you should do this or that? You can ask SIDE, and it will give you the answer. 
+When you need an advice or are in doubt. Don't know if you should do this or that? You can ask SIDE, and it will give you the answer. 
 
 SIDE <3 Chuck. Chuck will help you to get through the day with a smile. And that is what matter the most :)
 
@@ -70,7 +70,7 @@ In that case you need to configure some `tmPreferences` files. To add these symb
 
 Here is an example on how to add symbols for rust.
 
-Adding references. Create a `Rust Reference Symbol List.tmPreferences` and save it to your `Packages\User` folder.
+Adding references. Create a `Rust Reference Symbols.tmPreferences` and save it to your `Packages\User` folder.
 With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
