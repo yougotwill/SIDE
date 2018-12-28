@@ -3,7 +3,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import definition, debounce
+from SIDE.features.lib.helpers import definition
 
 
 # key will be the panel_name

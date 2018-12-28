@@ -125,6 +125,7 @@ def chose_one_location_from_many(locations, current_view) -> None:
 def is_function(scope_name):
     if 'variable.function' in scope_name or \
        'entity.name.function' in scope_name or \
+       'variable.annotation.function' in scope_name or \
        'support.function' in scope_name:
         return True
     else: 
