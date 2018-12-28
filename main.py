@@ -10,7 +10,7 @@ from SIDE.features.code_lens import SideCodeLens
 from SIDE.features.code_action import SideCodeAction
 from SIDE.features.rename import SideRename
 from SIDE.features.diagnostic import SideDiagnosticListener, spell
-from SIDE.features.indexer import IndexerListener, SideIndexFileCommand
+from SIDE.features.indexer import IndexerListener, SideIndexFileCommand, SideUpdateIndexPanelListener
 
 from SIDE.features.commands.ask_question import SideAskQuestion
 from SIDE.features.commands.search_web import SideSearchWeb

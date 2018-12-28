@@ -1,8 +1,9 @@
+from sublime import Region
 import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import definition
+from SIDE.features.lib.helpers import definition, debounce
 
 
 # key will be the panel_name
@@ -11,9 +12,11 @@ from SIDE.features.lib.helpers import definition
 panel_state = {} 
 DEBUG = False
 
+
 def debug(*args):
     if DEBUG:
         print(*args)
+
 
 class IndexerListener(sublime_plugin.ViewEventListener):
     def on_load(self):
@@ -85,14 +88,32 @@ class IndexerListener(sublime_plugin.ViewEventListener):
         debug('panel_state after for loop', panel_state)
 
 
+class SideUpdateIndexPanelListener(sublime_plugin.ViewEventListener):
+    def on_pre_close(self):
+        window = sublime.active_window()
+        file_name = self.view.file_name()
+        if not file_name:
+            return
+        debug('index panel listener for [ {} ]'.format(file_name))
+        panel = window.find_output_panel(file_name)
+        if panel:
+            content = self.view.substr(Region(0, self.view.size()))
+            debug('index panel listener update panel [ {} ] with the following content: \n{}'.format(file_name, content))
+            self.view.run_command('side_index_file', {
+                'content': content,
+                'panel_name': file_name
+            })
+            return
+        debug('no index panel listener found for [ {} ]'.format(file_name))
+
 
 class SideIndexFileCommand(sublime_plugin.TextCommand):
     def run(self, edit, content, panel_name):
         debug('command SideIndexFileCommand called')
         window = sublime.active_window()
-        panel = window.create_output_panel(panel_name)
+        panel = window.find_output_panel(panel_name) or window.create_output_panel(panel_name)
         syntax = self.view.settings().get('syntax')
         panel.assign_syntax(syntax)
-        debug('panel [ {} ] created'.format(panel_name))
+        debug('panel [ {} ] updated'.format(panel_name))
         panel.insert(edit, 0, content)
 
