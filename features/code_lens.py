@@ -27,12 +27,12 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
         if is_function(scope_name) or is_class(scope_name):
 
             text = []
-            if is_function(scope_name):
-                reference_count = len(reference(word, self.view))
-                if reference_count == 1:
-                    text.append("{} reference".format(reference_count))
-                else:
-                    text.append("{} references".format(reference_count))
+
+            reference_count = len(reference(word, self.view))
+            if reference_count == 1:
+                text.append("{} reference".format(reference_count))
+            else:
+                text.append("{} references".format(reference_count))
 
             definition_count = len(definition(word, self.view))
             if definition_count == 1:

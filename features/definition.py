@@ -47,6 +47,10 @@ class SideDefinition(sublime_plugin.TextCommand):
             scope_name = self.view.scope_name(point)
             words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, self.view)  
 
+            # a fix
+            if not words_between_regions[0]:
+                return 
+
             definition_point = words_between_regions[0].begin()
             file_name = self.view.file_name()
             row, col = self.view.rowcol(definition_point)

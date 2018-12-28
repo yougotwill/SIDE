@@ -23,7 +23,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             # indexing 
             for panel_name in panel_state:
                 panel = window.find_output_panel(panel_name)
-                panel.file_name = lambda: panel_name 
+                panel.file_name = lambda v=panel_name: v 
                 views.append(panel)
         except Exception as e:
             print('No panel', e)
