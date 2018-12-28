@@ -3,10 +3,12 @@ import sublime
 import sublime_plugin
 
 from SIDE.features.lib.helpers import find_symbols
+from SIDE.features.indexer import panel_state
 
 
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
+        global panel_state
         point = locations[0]
 
         # don't complete in strings
@@ -17,6 +19,15 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         window = sublime.active_window()
         views = window.views()
 
+        try:
+            # indexing 
+            for panel_name in panel_state:
+                panel = window.find_output_panel(panel_name)
+                panel.file_name = lambda: panel_name 
+                views.append(panel)
+        except Exception as e:
+            print('No panel', e)
+        
         symbols = find_symbols(self.view, views)
         completions = []
         # easy way to filter out hash completions

@@ -9,7 +9,7 @@ from SIDE.features.lib.helpers import definition
 # holding an set of view ids
 # if the set is empty the panel will be destroyed
 panel_state = {} 
-DEBUG = True
+DEBUG = False
 
 def debug(*args):
     if DEBUG:
@@ -30,14 +30,14 @@ class IndexerListener(sublime_plugin.ViewEventListener):
             if len(definitions) == 1:
                 # add the apsolute file name
                 absolute_file_path = definitions[0][0]
-                relative_file_path = definitions[0][1]
 
                 if not window.find_open_file(absolute_file_path):
-                    debug('added [ {} ] files_to_index because of symbol {}'.format(relative_file_path, word))
-                    files_to_index.add((absolute_file_path, relative_file_path))
+                    debug('added [ {} ] files_to_index because of symbol {}'.format(absolute_file_path, word))
+                    files_to_index.add(absolute_file_path)
 
         # indexing
-        for absolute_file_path, panel_name in files_to_index:
+        for absolute_file_path in files_to_index:
+            panel_name = absolute_file_path
             with open(absolute_file_path) as file:  
                 panel = window.find_output_panel(panel_name)
                 # if it is indexed continue
@@ -70,7 +70,7 @@ class IndexerListener(sublime_plugin.ViewEventListener):
         debug('on_closed', self.view.id())
         debug('panel_state before for loop', panel_state)
 
-        for panel_name in panel_state:
+        for panel_name in list(panel_state):
             id = self.view.id()
             if id in panel_state[panel_name]:
                 debug('remove view {}'.format(id))
@@ -80,6 +80,8 @@ class IndexerListener(sublime_plugin.ViewEventListener):
                 debug('destroing panel [ {} ]'.format(panel_name))
                 window = sublime.active_window()
                 window.destroy_output_panel(panel_name)
+                del panel_state[panel_name]
+
         debug('panel_state after for loop', panel_state)
 
 
