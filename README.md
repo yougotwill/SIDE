@@ -60,9 +60,9 @@ SIDE <3 Chuck. Chuck will help you to get through the day with a smile. And that
 
 ### Configure SIDE
 
-Assign SIDE' key bindings you would want to use.
+Assign key bindings you would want to use by opening `Preferences/Package Settings/SIDE/Key Bindings` menu.
 
-Sometimes you would need to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them. 
+Sometimes you need to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them. 
 Or there are symbols you would like to remove from the index. 
 
 Here is how to configure your language `X` for SIDE and Sublime. 
@@ -77,7 +77,7 @@ Save it to your `Packages\User` or `SIDE/languages` (if you plan to do a Pull Re
 <plist version="1.0">
 <dict>
 	<key>scope</key>
-	<string>support.function.rust</string>
+	<string>{a list of scopes}</string> // <-- add your scopes here
 	<key>settings</key>
 	<dict>
 		<key>showInIndexedReferenceList</key>
@@ -88,7 +88,7 @@ Save it to your `Packages\User` or `SIDE/languages` (if you plan to do a Pull Re
 ```
 > All the strings bellow `scope` key will be added to the references list. 
 
-Here is how SIDE's configuration for rust looks like. The file is named `RustReferences.tmPreferences` and is placed in `SIDE/languages` folder.
+Here is how SIDE's configuration for rust references looks like. The file is named `RustReferences.tmPreferences` and is placed in `SIDE/languages` folder.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -107,8 +107,9 @@ Here is how SIDE's configuration for rust looks like. The file is named `RustRef
 
 #### Adding definitions 
 
-Create a `{YourLanguage}IndexedSymbols.tmPreferences`. 
-Save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request) folder, with the following content:
+Create a `{YourLanguage}IndexedSymbols.tmPreferences`. Save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request) folder.
+
+Here is how SIDE's configuration for rust definitions looks like.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -126,7 +127,6 @@ Save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Req
 </dict>
 </plist>
 ```
-> All the strings bellow `scope` key will be added to the definition list. 
 
 ### What is the point of SIDE?
 
