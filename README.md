@@ -58,18 +58,19 @@ When you need an advice or are in doubt. Don't know if you should do this or tha
 
 SIDE <3 Chuck. Chuck will help you to get through the day with a smile. And that is what matter the most :)
 
-# Configure SIDE
+### Configure SIDE
 
 Assign all the SIDE key bindings, you can skip some you don't want.
 
 
-Sometimes SIDE won't work because there are no references or definitions, because of the syntax definition file. Or there are some symbols you wouldn't like to be in the index. 
+Sometimes you would want to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them or maybe there are some symbols you wouldn't like to be in the index. 
 
 In that case you need to configure some `tmPreferences` files. To add these symbols to the `IndexedSymbolList` or to the `IndexedReferenceList`.
 
 Here is an example on how to add symbols for rust.
 
-Adding references. Create a `Rust Reference Symbols.tmPreferences` and save it to your `Packages\User` folder.
+Adding references. 
+Create a `RustReferences.tmPreferences` and save it to your `Packages\User` folder. All the strings bellow `scope` key will be added to the references list. 
 With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -87,7 +88,7 @@ With the following content:
 ```
 
 Adding definitions. 
-Create a `Rust Indexed Symbols.tmPreferences` and save it to your `Packages\User` folder.
+Create a `RustIndexedSymbols.tmPreferences` and save it to your `Packages\User` folder. All the strings bellow `scope` key will be added to the definition list. 
 With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -106,6 +107,8 @@ With the following content:
 </plist>
 ```
 
+### What is the point of SIDE?
+
 The point of SIDE is to make you think. It is great to have great auto completion, diagnostics, ..., but where is the fun in that. You rarely make mistakes then?
 
-When you use SIDE, it won't warn you if you make mistakes (except if it is a spelling mistake and you enabled spell checking). We all make them, learn from them and try not to do them again.
+When you use SIDE, it won't warn you if you make mistakes (except if it is a spelling mistake and you enabled spell checking). We all make mistakes and we should learn from them.
