@@ -60,18 +60,18 @@ SIDE <3 Chuck. Chuck will help you to get through the day with a smile. And that
 
 ### Configure SIDE
 
-Assign all the SIDE key bindings, you can skip some you don't want.
+Assign SIDE' key bindings you would want to use.
 
+Sometimes you would need to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them. 
+Or there are symbols you would like to remove from the index. 
 
-Sometimes you would want to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them or maybe there are some symbols you wouldn't like to be in the index. 
+Here is how to configure your language `X` for SIDE and Sublime. 
 
-In that case you need to configure some `tmPreferences` files. To add these symbols to the `IndexedSymbolList` or to the `IndexedReferenceList`.
+#### Adding references
 
-Here is SIDE's configuration for your language `X`. 
+Create a `{YourLanguage}References.tmPreferences`. 
+Save it to your `Packages\User` or `SIDE/languages` (if you plan to do a Pull Request, PR are welcome) folder, with the following content:
 
-Adding references. 
-Create a `{YourLanguage}References.tmPreferences` and save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request to add this configuration to SIDE) folder. All the strings bellow `scope` key will be added to the references list. 
-With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
@@ -86,6 +86,7 @@ With the following content:
 </dict>
 </plist>
 ```
+> All the strings bellow `scope` key will be added to the references list. 
 
 Here is how SIDE's configuration for rust looks like. The file is named `RustReferences.tmPreferences` and is placed in `SIDE/languages` folder.
 
@@ -104,9 +105,11 @@ Here is how SIDE's configuration for rust looks like. The file is named `RustRef
 </plist>
 ```
 
-Adding definitions. 
-Create a `{YourLanguage}IndexedSymbols.tmPreferences` and save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request to add this configuration to SIDE) folder. All the strings bellow `scope` key will be added to the definition list. 
-With the following content:
+#### Adding definitions 
+
+Create a `{YourLanguage}IndexedSymbols.tmPreferences`. 
+Save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request) folder, with the following content:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
@@ -123,6 +126,7 @@ With the following content:
 </dict>
 </plist>
 ```
+> All the strings bellow `scope` key will be added to the definition list. 
 
 ### What is the point of SIDE?
 
