@@ -10,7 +10,6 @@ SIDE will just try to help as much as it can.
 
 ### Features
 * Definition
-* JumpBack 
 * Hover
 * Show Signature
 * Completion

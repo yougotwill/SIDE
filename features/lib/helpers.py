@@ -3,9 +3,8 @@ import sublime
 import re
 import linecache
 from threading import Timer
+from Default.history_list import get_jump_history_for_view
 
-
-history = {} # type: Dict[window_id, bookmarks]
 
 
 def debounce(wait):
@@ -113,7 +112,7 @@ def chose_one_location_from_many(locations, current_view) -> None:
 
     def _on_change(index):                    
         location = quick_panel['on_select'][index]
-        open_view(location, current_view, sublime.ENCODED_POSITION | sublime.TRANSIENT, record_history=False, force_open=True)
+        open_view(location, current_view, sublime.ENCODED_POSITION | sublime.TRANSIENT, force_open=True)
 
     window.show_quick_panel(
         quick_panel['labels'],
@@ -140,23 +139,17 @@ def is_class(scope_name):
         return False
 
 
-def open_view(location, current_view, flags=sublime.ENCODED_POSITION, record_history=True, force_open=False):
-    ''' Opens a view with the cursor at the specified location. And save it to the jump back history. '''
+def open_view(location, current_view, flags=sublime.ENCODED_POSITION, force_open=False):
+    ''' Opens a view with the cursor at the specified location. '''
     window = sublime.active_window()
-    old_cursor_pos = current_view.sel()[0].begin()
-    old_row, old_col = current_view.rowcol(old_cursor_pos)
-
-    bookmark = (current_view.file_name(), (old_row, old_col))
 
     file_path, _rel_file_path, row_col = location
     new_row, new_col = row_col
-    # save bookmark 
-    if record_history and (old_row != new_row or old_col != new_col):
-        id = window.id()
-        bookmarks = history.get(id, [])
-        bookmarks.append(bookmark)
-        history[id] = bookmarks
-    # open location
+
+    # save to jump back history
+    if not current_view.settings().get('is_widget'):
+        get_jump_history_for_view(current_view).push_selection(current_view)
+
     v = window.find_open_file(file_path)
     # force_open fixes freeze when goto definition is triggered
     # so don't touch it :D

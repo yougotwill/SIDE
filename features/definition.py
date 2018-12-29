@@ -2,32 +2,7 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import definition, get_word, history, open_view, chose_one_location_from_many, find_symbols, get_region_between_symbols, filter_regions_by_scope_name, filter_regions_by_region
-
-
-class SideJumpBack(sublime_plugin.TextCommand):
-    def run(self, edit):
-        window = sublime.active_window()
-        id = window.id()
-        bookmarks = history.get(id, [])
-
-        if len(bookmarks) > 0:
-            bookmark = bookmarks.pop()
-            file_path, row_col = bookmark 
-            row, col = row_col
-            v = window.find_open_file(file_path)
-            if v is not None:
-                window.focus_view(v)
-                point = v.text_point(row, col)
-                sel = v.sel()
-                sel.clear()
-                sel.add(point)
-                v.show_at_center(point)
-            else:
-                window.open_file("{}:{}:{}".format(file_path, row + 1, col + 1), sublime.ENCODED_POSITION)
-        else:
-            self.view.run_command('jump_back')
-
+from SIDE.features.lib.helpers import definition, get_word, open_view, chose_one_location_from_many, find_symbols, get_region_between_symbols, filter_regions_by_scope_name, filter_regions_by_region
 
 
 class SideDefinition(sublime_plugin.TextCommand):

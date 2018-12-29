@@ -5,9 +5,6 @@
 	// Definiton 
 	// { "keys": ["UNBOUND"], "command": "side_definition" },
 	
-	// Jump Back
-	// { "keys": ["UNBOUND"], "command": "side_jump_back" },
-
 	// Trigger Signiture Help
 	// { "keys": ["UNBOUND"], "command": "side_show_signature" },
 	
@@ -54,7 +51,6 @@
 	// 
 	// My defaults
 	// { "keys": ["ctrl+shift+d"], "command": "side_definition" },
-	// { "keys": ["ctrl+shift+s"], "command": "side_jump_back" },
 	// { "keys": ["ctrl+shift+space"], "command": "side_show_signature" },
 	// { "keys": ["ctrl+shift+u"], "command": "side_reference" },
 	// { "keys": ["ctrl+shift+o"], "command": "side_reference", 
