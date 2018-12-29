@@ -158,10 +158,23 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
             # if enter is pressed
             if operand == 0:
                 point = self.view.sel()[0].begin()
+
+                # user types a function name
+                # user types a (
+                # a signature help is automatically shown on (
+                # a user press enter
+                # user expect the cursor to bellow one line
+                # actual behavior
+                # the user is navigated to the function definition
+                # so handle that case
+                last_char = self.view.substr(point-1)
+                if last_char == '(':
+                    return False
+
                 word = get_function_name(self.view, point)
                 locations = definition(word, self.view)
                 location = locations[PREVIOUS_INDEX]
-
+                
                 # sublime crashes if window.focus_view is called
                 # setting a timeout, fixes is
                 # I don't know why this is the case
