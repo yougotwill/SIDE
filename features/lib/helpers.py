@@ -43,7 +43,7 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
 
 
 def filter_regions_by_region(regions, region): 
-    ''' Return a list of regions '''
+    ''' Get only the regions contained it a region '''
     match = []
     if region is not None:
         for r in regions:
