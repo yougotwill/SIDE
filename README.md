@@ -67,10 +67,10 @@ Sometimes you would want to configure SIDE to know what are references or defini
 
 In that case you need to configure some `tmPreferences` files. To add these symbols to the `IndexedSymbolList` or to the `IndexedReferenceList`.
 
-Here is an example on how to add symbols for rust.
+Here is SIDE's configuration for your language `X`. 
 
 Adding references. 
-Create a `RustReferences.tmPreferences` and save it to your `Packages\User` folder. All the strings bellow `scope` key will be added to the references list. 
+Create a `{YourLanguage}References.tmPreferences` and save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request to add this configuration to SIDE) folder. All the strings bellow `scope` key will be added to the references list. 
 With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -87,8 +87,25 @@ With the following content:
 </plist>
 ```
 
+Here is how SIDE's configuration for rust looks like. The file is named `RustReferences.tmPreferences` and is placed in `SIDE/languages` folder.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+	<key>scope</key>
+	<string>support.function.rust</string>
+	<key>settings</key>
+	<dict>
+		<key>showInIndexedReferenceList</key>
+		<string>1</string>
+	</dict>
+</dict>
+</plist>
+```
+
 Adding definitions. 
-Create a `RustIndexedSymbols.tmPreferences` and save it to your `Packages\User` folder. All the strings bellow `scope` key will be added to the definition list. 
+Create a `{YourLanguage}IndexedSymbols.tmPreferences` and save it to your `Packages\User` or `SIDE/languages`(if you plan to do a Pull Request to add this configuration to SIDE) folder. All the strings bellow `scope` key will be added to the definition list. 
 With the following content:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
