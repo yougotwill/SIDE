@@ -6,7 +6,7 @@ import os
 from SIDE.features.lib.helpers import definition
 
 
-# key will be the panel_name
+# key will be the panel_name, witch is the absolute file name
 # holding an set of view ids
 # if the set is empty the panel will be destroyed
 panel_state = {} 
