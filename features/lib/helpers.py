@@ -53,7 +53,7 @@ def filter_regions_by_region(regions, region):
 
 def get_region_between_symbols(point, symbols, view):
     ''' Return a Region or None'''
-    # type List[reigion]
+    # type List[region]
     regions = list(map(lambda l: l[2], symbols))
     for index, region in enumerate(regions):          
         # check to see if the point is between two symbols        

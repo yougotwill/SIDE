@@ -8,13 +8,13 @@ from html import escape
 from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line, open_view
 
 
-MAX_LEN = None  # used to limit up / down when keyboard is used to show signiture
+MAX_LEN = None  # used to limit up / down when keyboard is used to show signature
 PREVIOUS_INDEX = None # previous index in popup
 
 
 class SideShowSignature(sublime_plugin.TextCommand):
     def run(self, edit, locations=None, point=None, index=None):
-        """ index - when specefied show the current location. """
+        """ index - when specified show the current location. """
         global MAX_LEN
         global PREVIOUS_INDEX
         # restart the counter of signature help to 0
@@ -75,7 +75,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
                 {}
             </div>""".format(docs)
 
-        # prettyfy file origin
+        # prettify file origin
         if len(relative_file_path) > 70:
             relative_file_path = '...' + relative_file_path[-50:]
         
@@ -148,10 +148,10 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
 
         if key != "side.signature_help":
             PREVIOUS_INDEX = 0
-            return False  # Let someone else handle this keybinding.
+            return False  # Let someone else handle this key binding.
 
         if self.view.is_popup_visible():
-            # We use the "operand" for the number -1 or +1. See the keybindings.
+            # We use the "operand" for the number -1 or +1. See the key bindings.
             if PREVIOUS_INDEX is None:
                 PREVIOUS_INDEX = 0
 
@@ -162,8 +162,8 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
                 locations = definition(word, self.view)
                 location = locations[PREVIOUS_INDEX]
 
-                # sublime crasches if window.focus_view is called
-                # seting a timeout, fixes is
+                # sublime crashes if window.focus_view is called
+                # setting a timeout, fixes is
                 # I don't know why this is the case
                 def fix_window_focus_view_crash():
                     open_view(location, self.view)
@@ -184,6 +184,6 @@ class SideSignatureListener(sublime_plugin.ViewEventListener):
                 })
                 PREVIOUS_INDEX = new_index
 
-            return True  # We handled this keybinding.
+            return True  # We handled this key binding.
         else: 
             return False

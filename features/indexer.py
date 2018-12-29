@@ -31,7 +31,7 @@ class IndexerListener(sublime_plugin.ViewEventListener):
         for word in words:
             definitions = definition(word, self.view)
             if len(definitions) == 1:
-                # add the apsolute file name
+                # add the absolute file name
                 absolute_file_path = definitions[0][0]
 
                 if not window.find_open_file(absolute_file_path):
@@ -80,7 +80,7 @@ class IndexerListener(sublime_plugin.ViewEventListener):
                 panel_state[panel_name].remove(id)
 
             if len(panel_state[panel_name]) == 0:
-                debug('destroing panel [ {} ]'.format(panel_name))
+                debug('destroying panel [ {} ]'.format(panel_name))
                 window = sublime.active_window()
                 window.destroy_output_panel(panel_name)
                 del panel_state[panel_name]

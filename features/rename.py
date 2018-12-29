@@ -20,16 +20,16 @@ class SideRename(sublime_plugin.TextCommand):
         # useful for debugging
         # # if between_symbols_region is not None:
         #     self.view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
-        # self.view.add_regions('word', words_between_regions, 'stirng', flags=sublime.DRAW_OUTLINED)        
+        # self.view.add_regions('word', words_between_regions, 'string', flags=sublime.DRAW_OUTLINED)        
 
         sel = self.view.sel()
         if len(words_between_regions) > 0 and not find_all:
-            # select all word occurances beetween two symbols
+            # select all word occurrences between two symbols
             sel.clear()
             sel.add_all(words_between_regions)
             scroll_to_not_visible_region(words_between_regions, self.view)
         elif len(word_regions) > 0:
-            # select all word occurances in the file
+            # select all word occurrences in the file
             sel.clear()
             sel.add_all(word_regions)
             scroll_to_not_visible_region(word_regions, self.view)
