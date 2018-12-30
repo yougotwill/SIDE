@@ -192,7 +192,11 @@ def reference(word, view, all=True):
     else: 
         locations = _reference_in_open_files(word) or _reference_in_index(word)
     # filter by the extension
-    filename, file_extension = os.path.splitext(view.file_name())
+    absolute_file_name = view.file_name()
+    if not absolute_file_name:
+        debug('No file_name for the current view in reference()')
+        return []
+    filename, file_extension = os.path.splitext(absolute_file_name)
     return _locations_by_file_extension(locations, file_extension)
     
 def _reference_in_open_files(word):
