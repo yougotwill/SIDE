@@ -5,6 +5,12 @@ import linecache
 from threading import Timer
 from Default.history_list import get_jump_history_for_view
 
+DEBUG = False
+
+
+def debug(*args):
+    if DEBUG:
+        print(*args)
 
 
 def debounce(wait):
@@ -209,7 +215,11 @@ def find_symbols(current_view, views=None):
         symbols_in_view = _find_symbols_for_view(current_view)
         symbols.extend(symbols_in_view)
             
-    _file_name, file_extension = os.path.splitext(current_view.file_name())
+    absolute_file_name = current_view.file_name()
+    if not absolute_file_name:
+        debug('No file_name for the current view')
+        return []
+    _file_name, file_extension = os.path.splitext(absolute_file_name)
     symbols = _locations_by_file_extension(symbols, file_extension)
     return symbols
 

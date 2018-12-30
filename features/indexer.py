@@ -3,19 +3,13 @@ import sublime
 import sublime_plugin
 import os
 
-from SIDE.features.lib.helpers import definition
+from SIDE.features.lib.helpers import definition, debug
 
 
 # key will be the panel_name, witch is the absolute file name
 # holding an set of view ids
 # if the set is empty the panel will be destroyed
-panel_state = {} 
-DEBUG = False
-
-
-def debug(*args):
-    if DEBUG:
-        print(*args)
+panel_state = {}
 
 
 class IndexerListener(sublime_plugin.ViewEventListener):
