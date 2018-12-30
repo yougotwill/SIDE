@@ -16,17 +16,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         if is_in_string:
             return None        
 
-        window = sublime.active_window()
-        views = window.views()
-
-        try:
-            # indexing 
-            for panel_name in panel_state:
-                panel = window.find_output_panel(panel_name)
-                panel.file_name = lambda v=panel_name: v 
-                views.append(panel)
-        except Exception as e:
-            print('No panel', e)
+        views = self.sort_views_by_relevance()
         
         symbols = find_symbols(self.view, views)
         completions = []
@@ -50,3 +40,25 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                 completions.append(completion_item)
 
         return (completions, sublime.INHIBIT_WORD_COMPLETIONS)
+
+    def sort_views_by_relevance(self):
+        """ Get a list of sorted views. This ensures we get the most relevant suggestions. """
+        window = sublime.active_window()
+
+        # add the current view is the most relevant
+        views = [self.view]
+        try:
+            # the second most relevant suggestions are from the indexed panels
+            for panel_name in panel_state:
+                panel = window.find_output_panel(panel_name)
+                panel.file_name = lambda v=panel_name: v 
+                views.append(panel)
+        except Exception as e:
+            print('No panel', e)
+
+        # the last but not least are the open views
+        for view in ():
+            if view is not self.view:
+                views.append(view)
+
+        return views
