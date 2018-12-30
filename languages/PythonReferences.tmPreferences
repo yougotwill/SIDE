@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
 	<key>scope</key>
-	<string>variable.annotation.function.python</string>
+	<string>variable.annotation.function.python, source.python meta.statement.import.python meta.generic-name.python</string>
 	<key>settings</key>
 	<dict>
 		<key>showInIndexedReferenceList</key>
