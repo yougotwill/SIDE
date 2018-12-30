@@ -57,7 +57,7 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             print('No panel', e)
 
         # the last but not least are the open views
-        for view in ():
+        for view in window.views():
             if view is not self.view:
                 views.append(view)
 
