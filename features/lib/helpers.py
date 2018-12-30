@@ -40,6 +40,9 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
         scope_name = view.scope_name(r.begin())
         if is_function(scope_name):
             function_match.append(r)
+        # don't match words in strings
+        elif 'string.quoted' in scope_name:
+            continue
         else:
             other_symbol_match.append(r)
     if is_function(current_scope_name):
@@ -285,6 +288,7 @@ def get_word_regions(view):
     point = view.sel()[0].begin()
     word = get_word(view, point)
     word_regions = view.find_all(r"\b{}\b".format(word))
+
 
     between_symbols_region = get_region_between_symbols(point, symbols, view)
     words_between_regions = filter_regions_by_region(word_regions, between_symbols_region)
