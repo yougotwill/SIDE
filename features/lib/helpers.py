@@ -352,7 +352,7 @@ def _definition_in_index(word):
 def _locations_by_file_extension(locations, extension):
     def _filter(location):
         filename, file_extension = os.path.splitext(location[0])
-        if file_extension == extension or extension == '.html' or extension == '.ts' or extension == '.js' or extension == '.vue':
+        if file_extension == extension:
             return True
         else:
             return False
