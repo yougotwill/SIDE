@@ -17,8 +17,12 @@ class SideHighlightListener(sublime_plugin.ViewEventListener):
             # select all word occurrences between two symbols
 
             self.view.add_regions('side_highlight', words_between_regions, scope="markup.inserted", flags=underline)
+            self.view.set_status('side_selection_cound', "⦾ " +  str(len(words_between_regions)))
             return 
         elif len(word_regions) > 0:
             self.view.add_regions('side_highlight', word_regions, scope="markup.changed", flags=underline)
+            self.view.set_status('side_selection_cound', "⧂ " + str(len(word_regions)))
+
             return
         self.view.erase_regions('side_highlight')
+        self.view.erase_status('side_selection_cound')
