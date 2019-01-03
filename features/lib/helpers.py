@@ -283,10 +283,16 @@ def get_word_regions(view):
     symbols = find_symbols(view)
 
     point = view.sel()[0].begin()
-    word = get_word(view, point)
+    word_region = view.word(point)
+
+    is_accessor = has_accessor(view, word_region)
+    word = view.substr(word_region)
+
     word_regions = view.find_all(r"\b{}\b".format(word))
     # don't match words in strings
     word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
+    # filter by accessors
+    word_regions = list(filter(lambda r: has_accessor(view, r) == is_accessor, word_regions))  
 
     between_symbols_region = get_region_between_symbols(point, symbols, view)
     words_between_regions = filter_regions_by_region(word_regions, between_symbols_region)
@@ -300,7 +306,15 @@ def get_word_regions(view):
 
     return (word_regions, words_between_regions)
 
-        
+def has_accessor(view, word_region):
+    '''  Check if the current word has an has_accessor like a . or > before it '''
+    point_before_word = word_region.begin() - 1
+    scope_before_region = view.scope_name(point_before_word)
+    is_accessor = False
+    if 'punctuation.accessor' in scope_before_region:
+        is_accessor = True
+    return is_accessor        
+
 def get_word(view, point=None) -> str:
     ''' Gets the word under cursor or at the given point if provided. '''
     if not point:
