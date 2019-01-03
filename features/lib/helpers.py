@@ -286,7 +286,10 @@ def get_word_regions(view):
     word_region = view.word(point)
 
     is_accessor = has_accessor(view, word_region)
-    word = view.substr(word_region)
+    word = view.substr(word_region).strip()
+
+    if not word:
+        return ([], [])
 
     word_regions = view.find_all(r"\b{}\b".format(word))
     # don't match words in strings
