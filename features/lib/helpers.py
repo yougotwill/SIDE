@@ -38,7 +38,7 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
 
     for r in regions:
         scope_name = view.scope_name(r.begin())
-        if is_function(scope_name):
+        if is_function(scope_name) or is_import(scope_name):
             function_match.append(r)
         else:
             other_symbol_match.append(r)
@@ -126,6 +126,11 @@ def chose_one_location_from_many(locations, current_view) -> None:
         on_highlight=_on_change
     )
 
+def is_import(scope_name):
+    if 'meta.statement.import' in scope_name:
+        return True
+    else: 
+        return False
 
 def is_function(scope_name):
     if 'variable.function' in scope_name or \
@@ -283,9 +288,13 @@ def get_word_regions(view):
     symbols = find_symbols(view)
 
     point = view.sel()[0].begin()
+    scope_name = view.scope_name(point)
     word_region = view.word(point)
 
-    is_accessor = has_accessor(view, word_region)
+    # flags
+    accessor = is_accessor(view, word_region)
+    function = is_function(scope_name)
+
     word = view.substr(word_region).strip()
 
     if not word:
@@ -294,12 +303,16 @@ def get_word_regions(view):
     word_regions = view.find_all(r"\b{}\b".format(word))
     # don't match words in strings
     word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
-    # filter by accessors
-    word_regions = list(filter(lambda r: has_accessor(view, r) == is_accessor, word_regions))  
+  
+    # select from file start to file end 
+    between_symbols_region = sublime.Region(0, view.size())
+    if not function:
+        # filter by accessors
+        word_regions = list(filter(lambda r: is_accessor(view, r) == accessor, word_regions))  
+        # select from function start to function end
+        between_symbols_region = get_region_between_symbols(point, symbols, view)
 
-    between_symbols_region = get_region_between_symbols(point, symbols, view)
     words_between_regions = filter_regions_by_region(word_regions, between_symbols_region)
-    scope_name = view.scope_name(point)
     words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, view) 
 
     # useful for debugging
@@ -309,14 +322,14 @@ def get_word_regions(view):
 
     return (word_regions, words_between_regions)
 
-def has_accessor(view, word_region):
-    '''  Check if the current word has an has_accessor like a . or > before it '''
+def is_accessor(view, word_region):
+    '''  Check if the current word has an is_accessor like a . or > before it '''
     point_before_word = word_region.begin() - 1
     scope_before_region = view.scope_name(point_before_word)
-    is_accessor = False
+    accessor = False
     if 'punctuation.accessor' in scope_before_region:
-        is_accessor = True
-    return is_accessor        
+        accessor = True
+    return accessor        
 
 def get_word(view, point=None) -> str:
     ''' Gets the word under cursor or at the given point if provided. '''
