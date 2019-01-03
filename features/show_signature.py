@@ -5,7 +5,7 @@ import re
 import linecache
 
 from html import escape
-from SIDE.features.lib.helpers import definition, get_word, get_function_name, get_line, open_view
+from SIDE.features.lib.helpers import definition, get_function_name, get_line, open_view
 
 
 MAX_LEN = None  # used to limit up / down when keyboard is used to show signature

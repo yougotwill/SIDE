@@ -1,5 +1,4 @@
 import os
-import sublime
 import sublime_plugin
 import webbrowser as wb
 

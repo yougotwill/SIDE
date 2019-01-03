@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import reference, get_word, definition, is_function, is_class, debounce
+from SIDE.features.lib.helpers import reference, definition, is_function, is_class, debounce
 
 phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 

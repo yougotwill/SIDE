@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import get_word, find_symbols, scroll_to_not_visible_region, get_region_between_symbols, is_function, filter_regions_by_scope_name, filter_regions_by_region, get_word_regions
+from SIDE.features.lib.helpers import scroll_to_not_visible_region, get_word_regions
 
 
 class SideRename(sublime_plugin.TextCommand):
