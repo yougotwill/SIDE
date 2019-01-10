@@ -8,8 +8,9 @@ class SideSignatureHelp(sublime_plugin.ViewEventListener):
     def on_modified_async(self):
         point = self.view.sel()[0].begin()
         last_char = self.view.substr(point - 1)
+        scope_name = self.view.scope_name(point)
 
-        if last_char == '(':
+        if last_char == '(' or last_char == ',' and 'meta.function-call' in scope_name:
             word = get_function_name(self.view, point)
             self.show_signature_help(point, word)
         else:
