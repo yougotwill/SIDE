@@ -33,7 +33,8 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         for view in views:
             hash_completions = view.extract_completions(prefix)
             for completion in hash_completions:
-                if completion in unique_symbols:
+                # filter out unique symols or words in comment like "don't"  
+                if completion in unique_symbols or "'" in completion or '.' in completion:
                     continue
                 unique_symbols.append(completion)
                 completion_item = ["{}\t{}".format(completion, '[#]'), "{}".format(completion)]
@@ -62,3 +63,13 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                 views.append(view)
 
         return views
+
+    def on_modified_async(self): 
+        if self.view.is_auto_complete_visible():
+            word = self.view.substr(self.view.word(self.view.sel()[0].begin()))
+            if len(word) == 1:
+                self.view.run_command('hide_auto_complete')
+                self.view.run_command("auto_complete", {
+                    'disable_auto_insert': True,
+                    # 'next_completion_if_showing': False
+                })
