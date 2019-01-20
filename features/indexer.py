@@ -11,6 +11,28 @@ from SIDE.features.lib.helpers import definition, debug
 # if the set is empty the panel will be destroyed
 panel_state = {}
 
+# Here is a brief explanation. Imaine we have file, A, B, C, D
+# And that file A, have some functions defined in C, which are used in A
+# And that file B, have some functiond defined in C and D, which are used in B 
+#
+# The panel_state for that case would look like this: 
+# {
+#   "C" : ["A", "B"],
+#   "D" : ["B"]
+# }
+# 
+# Under the hood, two output panels are created for files C, D
+# We grab of all the indexed simbols from the output panels.
+# And later in completions show those symbols.
+# 
+# If file B is closed, the panels_state would look like this:
+# {
+#   "C": ["A"]
+# }
+# 
+# The "D" panel was destoryed because there were no files associated to it.
+# Similary if we closed the file A, 
+# The "C" panel would be destored, because there we no more files associated with it. 
 
 class IndexerListener(sublime_plugin.ViewEventListener):
     def on_load(self):
