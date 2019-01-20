@@ -17,14 +17,28 @@ SIDE will just try to help as much as it can.
 * Code Lens
 * Code Actions
 * Rename
+* Highlight
 * Diagnostic
 
+**Show signature help** when hovering over `function/class` symbols. 
+Or when typing a `(` after a function call.
+Or a `,` when typing the function arguments. 
 
-Show signature help when hovering over `function/class` symbols or when typing a `(` after a function call. You can also trigger it with a key binding.
+You can also assign a key binding to trigger it manually.
 
 ![signature help](img/signature.png)
 
-Rename will select all occurrences of the given word in a function scope. SIDE knows what a function call is, and when you try to rename a variable that is called `sel` it will not select `sel` if it is a function call, and vice versa.
+**Highlight** will underline the word under cursor, smartly. 
+
+Green underline means that SIDE will highlight only the word in the given function scope. 
+Unless the word is a function. In that case it will highlight all the word occurrences in the file.
+
+Yellow underline means that SIDE can't figure out the scope.
+In which case it will highlight all occurrences of the word in the file.
+
+**Highlight** and **Rename** work hand in hand.
+
+Rename will select all the highlighted words for editing.
 
 ![rename](img/rename.png)
 
@@ -32,15 +46,21 @@ Rename can also select all occurrences of the word in a file.
 
 ![rename all](img/rename_all.png)
 
-Show all references for the given symbol in a panel. Sometimes it is useful to go cycle through the references in just the open views, for that there is a key binding in the SIDE preferences.   
+**Reference** panel shows all references for the given symbol. 
+Sometimes it is useful to cycle through the references in just the open views, in which case you can assign a key binding.   
 
 ![References](img/references.png)
 
-Completions will show all the symbols and words found in the opened views, with the type of the symbol and the file from where it is found. The types can be:
+**Completions** will show all the symbols and words found in the opened views, with the type of the symbol and the file from where it is found. The types can be:
 * `[c]` - class
 * `[m]` - method
 * `[f]` - function
+* `[s]` - struct
 * `[#]` - unknown, but it exist somewhere in the open views, probably a variable, or a word in a comment
+
+SIDE has a feature called **One Level Indexing**. Here is how it works.
+If SIDE is 100% sure that some file `B` is related to the current file `A` you are editing.
+It will show you all the symbols defined it that file `B` in completions. 
 
 ![Completions](img/completions.png)
 
@@ -54,9 +74,9 @@ Never misspell a function name again. Just set Sublime's `spell_check` setting t
 
 Code actions can correct spelling mistakes and search the Internet.
 
-When you need an advice or are in doubt. Don't know if you should do this or that? You can ask SIDE, and it will give you the answer. 
+When you need an advice or a Yes/No answer, ask SIDE and it will give one. 
 
-SIDE <3 Chuck. Chuck will help you to get through the day with a smile. And that is what matter the most :)
+SIDE <3 Chuck Norris. Chuck will help you to get through the day with a smile. :)
 
 ### Configure SIDE
 
@@ -130,6 +150,6 @@ Here is how SIDE's configuration for rust definitions looks like.
 
 ### What is the point of SIDE?
 
-The point of SIDE is to make you think. It is great to have great auto completion, diagnostics, ..., but where is the fun in that. You rarely make mistakes then?
+The point of SIDE is to make you think. It is great to have great auto completion, diagnostics, ..., but where is the fun in that.
 
 When you use SIDE, it won't warn you if you make mistakes (except if it is a spelling mistake and you enabled spell checking). We all make mistakes and we should learn from them.
