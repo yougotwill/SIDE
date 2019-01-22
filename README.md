@@ -14,7 +14,7 @@ SIDE will just try to help as much as it can.
 * Highlight
 * Rename
 * References
-* Completion
+* Completions
 * Code Lens
 * Diagnostics
 * Code Actions
