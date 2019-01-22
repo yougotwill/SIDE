@@ -1,26 +1,31 @@
 ## SIDE 
 
 SIDE makes Sublime just a bit more useful.
-The goal of SIDE is to mimic LSP features without language servers and without any protocol. It uses only the things that are already in Sublime.
+The goal of SIDE is to mimic LSP features without LSP. It uses only the things that are already in Sublime.
 
 How is that even possible?
-Well SIDE is smart as much as you are. 
+Well SIDE is smart as much as you are.
 You can be the best or the worst language server. That depends on you. 
 SIDE will just try to help as much as it can.
 
 ### Features
 * Definition
-* Hover
-* Show Signature
-* Completion
-* Reference
-* Code Lens
-* Code Actions
-* Rename
+* Signature Help
 * Highlight
-* Diagnostic
+* Rename
+* Reference
+* Completion
+* Code Lens
+* Diagnostics
+* Code Actions
 
-**Show signature help** when hovering over `function/class` symbols. 
+
+
+**Definition** will show you definition/s filtered by the file extension, which in most cases is better than the default behavior of the `goto_definition` command. 
+
+
+
+Show **Signature Help**. when hovering over `function`/`class` symbols. 
 Or when typing a `(` after a function call.
 Or a `,` when typing the function arguments. 
 
@@ -28,28 +33,38 @@ You can also assign a key binding to trigger it manually.
 
 ![signature help](img/signature.png)
 
+
+
 **Highlight** will underline the word under cursor, smartly. 
 
-Green underline means that SIDE will highlight only the word in the given function scope. 
-Unless the word is a function. In that case it will highlight all the word occurrences in the file.
+Green underline means that SIDE will highlight words in the given function scope.
+SIDE knows when a word is an `acessor` (a property of an object which is usually separated by a `.` or `->`), so the highlighted words will be filtered by the criteria if a word is an acessor or not.
+If the word is a function call, than it will highlight all those function calls in the current file.
 
-Yellow underline means that SIDE can't figure out the scope.
-In which case it will highlight all occurrences of the word in the file.
+Yellow underline means that SIDE is unsure.
+When the line is yellow, SIDE will highlight all the occurrences of the word in the file, but filtered by the criteria if a word is an `acessor` or not.
 
 **Highlight** and **Rename** work hand in hand.
 
-Rename will select all the highlighted words for editing.
+
+
+**Rename** will select all the highlighted words for you to edit.
 
 ![rename](img/rename.png)
 
-Rename can also select all occurrences of the word in a file. 
+**Rename** can also select all occurrences of the word in a file, but filtered by the criteria if a word is an `acessor` or not.
 
 ![rename all](img/rename_all.png)
 
-**Reference** panel shows all references for the given symbol. 
-Sometimes it is useful to cycle through the references in just the open views, in which case you can assign a key binding.   
+
+
+**Reference** panel shows all references for the given symbol.
 
 ![References](img/references.png)
+
+Sometimes it is useful to cycle through the references in just the open views, in which case you can assign a key binding.   
+
+
 
 **Completions** will show all the symbols and words found in the opened views, with the type of the symbol and the file from where it is found. The types can be:
 * `[c]` - class
@@ -64,25 +79,35 @@ It will show you all the symbols defined it that file `B` in completions.
 
 ![Completions](img/completions.png)
 
-Code lens show you the count of references and definitions.
+
+
+**Code Lens** show you the count of references and definitions.
 
 ![Code lens](img/codelens.png)
 
-Never misspell a function name again. Just set Sublime's `spell_check` setting to `true`. 
+
+
+With **Diagnostics**  never misspell a function name again. Just set Sublime's `spell_check` setting to `true`. 
+
+
+
+**Code Actions** can correct spelling mistakes and search the Internet.
 
 ![Code actions](img/codeactions.png)
 
 Code actions can correct spelling mistakes and search the Internet.
-
 When you need an advice or a Yes/No answer, ask SIDE and it will give one. 
-
 SIDE <3 Chuck Norris. Chuck will help you to get through the day with a smile. :)
+
+
 
 ### Configure SIDE
 
 Assign key bindings you would want to use by opening `Preferences/Package Settings/SIDE/Key Bindings` menu.
 
-Sometimes you need to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them. 
+
+SIDE tries to be configured out of the box. But because SIDE is young, it is likely that you language `x` is not yet properly set up for SIDE.
+So you need to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them.
 Or there are symbols you would like to remove from the index. 
 
 Here is how to configure your language `X` for SIDE and Sublime. 
