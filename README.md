@@ -25,7 +25,7 @@ SIDE will just try to help as much as it can.
 
 
 
-Show **Signature Help**. when hovering over `function`/`class` symbols. 
+Show **Signature Help** when hovering over `function`/`class` symbols. 
 Or when typing a `(` after a function call.
 Or a `,` when typing the function arguments. 
 
