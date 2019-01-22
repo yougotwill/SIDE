@@ -37,15 +37,9 @@ You can also assign a key binding to trigger it manually.
 
 **Highlight** will underline the word under cursor, smartly. 
 
-Green underline means that SIDE will highlight words in the given function scope.
+Green underline means that SIDE will highlight words in the given function scope. SIDE knows when a word is an `acessor` (a property of an object which is usually separated by a `.` or `->`), so the highlighted words will be filtered by the criteria if a word is an acessor or not. If the word is a function call, than it will highlight all those function calls in the current file.
 
-SIDE knows when a word is an `acessor` (a property of an object which is usually separated by a `.` or `->`), so the highlighted words will be filtered by the criteria if a word is an acessor or not.
-
-If the word is a function call, than it will highlight all those function calls in the current file.
-
-Yellow underline means that SIDE is unsure.
-
-When the line is yellow, SIDE will highlight all the occurrences of the word in the file, but filtered by the criteria if a word is an `acessor` or not.
+Yellow underline means that SIDE is unsure. When the line is yellow, SIDE will highlight all the occurrences of the word in the file, but filtered by the criteria if a word is an `acessor` or not.
 
 **Highlight** and **Rename** work hand in hand.
 
