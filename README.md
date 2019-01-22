@@ -13,7 +13,7 @@ SIDE will just try to help as much as it can.
 * Signature Help
 * Highlight
 * Rename
-* Reference
+* References
 * Completion
 * Code Lens
 * Diagnostics
@@ -55,7 +55,7 @@ Yellow underline means that SIDE is unsure. When the line is yellow, SIDE will h
 
 
 
-**Reference** panel shows all references for the given symbol.
+**References** panel shows all references for the given symbol.
 
 ![References](img/references.png)
 
