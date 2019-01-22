@@ -47,11 +47,10 @@ Yellow underline means that SIDE is unsure. When the line is yellow, SIDE will h
 
 **Rename** will select all the highlighted words for you to edit.
 
-![rename](img/rename.gif)
 
 **Rename** can also select all occurrences of the word in a file, but filtered by the criteria if a word is an `acessor` or not.
 
-![rename all](img/rename_all.png)
+![highlight_rename_example](img/rename.gif)
 
 
 
