@@ -148,6 +148,10 @@ def is_class(scope_name):
     else: 
         return False
 
+def is_tag(scope_name):
+    if 'entity.name.tag' in scope_name:
+        return True
+    return False
 
 def open_view(location, current_view, flags=sublime.ENCODED_POSITION, force_open=False):
     ''' Opens a view with the cursor at the specified location. '''
@@ -279,6 +283,15 @@ def get_line(view, file_name, row) -> str:
         # get from linecache
         return linecache.getline(file_name, row)
 
+def toggle_dash_if_tag(tag, view):
+    word_separators = view.settings().get('word_separators', "")
+    if tag and '-' in word_separators:
+        word_separators = word_separators.replace('-', '')
+        view.settings().set('word_separators', word_separators)
+    elif not tag and '-' not in word_separators:
+        word_separators += '-'
+        view.settings().set('word_separators', word_separators)
+
 def get_word_regions(view):
     ''' Returns a tuple containing two lists 
         first list contain regions of all word occurrences in the view
@@ -288,6 +301,11 @@ def get_word_regions(view):
 
     point = view.sel()[0].begin()
     scope_name = view.scope_name(point)
+
+    # match tag names that have a - between
+    tag = is_tag(scope_name)
+    toggle_dash_if_tag(tag, view)
+
     word_region = view.word(point)
 
     # flags
