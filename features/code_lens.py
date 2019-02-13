@@ -6,7 +6,29 @@ from SIDE.features.lib.helpers import reference, definition, is_function, is_cla
 phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 
 
+class SideToggleCodeLens(sublime_plugin.TextCommand):
+    def run(self, edit):
+        global phantom_sets_by_buffer
+        settings = self.view.settings()
+        codeLensEnabled = settings.get('side_code_lens_enabled', True)
+
+        if codeLensEnabled:
+            settings.set('side_code_lens_enabled', False)
+            # clean the phantom
+            buffer_id = self.view.buffer_id()
+            phantom_sets_by_buffer.pop(buffer_id, None)
+        else:
+            settings.set('side_code_lens_enabled', True)
+
+
 class SideCodeLens(sublime_plugin.ViewEventListener):
+    @classmethod
+    def is_applicable(self, settings):
+        is_enabled = settings.get('side_code_lens_enabled')        
+        if is_enabled:
+            return True
+        return False
+
     @debounce(0.2)
     def handle_selection_modified(self):
         global phantom_sets_by_buffer
