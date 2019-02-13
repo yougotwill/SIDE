@@ -22,16 +22,14 @@ class SideToggleCodeLens(sublime_plugin.TextCommand):
 
 
 class SideCodeLens(sublime_plugin.ViewEventListener):
-    @classmethod
-    def is_applicable(self, settings):
-        is_enabled = settings.get('side_code_lens_enabled')        
-        if is_enabled:
-            return True
-        return False
-
     @debounce(0.2)
     def handle_selection_modified(self):
         global phantom_sets_by_buffer
+
+        settings = self.view.settings()
+        is_enabled = settings.get('side_code_lens_enabled')        
+        if not is_enabled:
+            return 
 
         buffer_id = self.view.buffer_id()
         phantom_set = phantom_sets_by_buffer.get(buffer_id)
