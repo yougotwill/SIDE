@@ -9,7 +9,7 @@ phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 class SideToggleCodeLens(sublime_plugin.TextCommand):
     def run(self, edit):
         global phantom_sets_by_buffer
-        settings = self.view.settings()
+        settings = sublime.load_settings("Preferences.sublime-settings")
         codeLensEnabled = settings.get('side_code_lens_enabled', True)
 
         if codeLensEnabled:
@@ -20,14 +20,16 @@ class SideToggleCodeLens(sublime_plugin.TextCommand):
         else:
             settings.set('side_code_lens_enabled', True)
 
+        sublime.save_settings("Preferences.sublime-settings")
+
 
 class SideCodeLens(sublime_plugin.ViewEventListener):
     @debounce(0.2)
     def handle_selection_modified(self):
         global phantom_sets_by_buffer
 
-        settings = self.view.settings()
-        is_enabled = settings.get('side_code_lens_enabled')        
+        settings = sublime.load_settings("Preferences.sublime-settings")
+        is_enabled = settings.get('side_code_lens_enabled', True)        
         if not is_enabled:
             return 
 
