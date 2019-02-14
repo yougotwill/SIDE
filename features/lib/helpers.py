@@ -38,11 +38,17 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
 
     for r in regions:
         scope_name = view.scope_name(r.begin())
-        if is_function(scope_name) or is_import(scope_name):
+        if is_function(scope_name):
             function_match.append(r)
+        elif is_import(scope_name):
+            # we dont know wether the import word is a function or some other type
+            # so we assign it to both arrays
+            function_match.append(r)
+            other_symbol_match.append(r)
         else:
             other_symbol_match.append(r)
-    if is_function(current_scope_name):
+
+    if is_function(current_scope_name) or is_import(current_scope_name):
         return function_match
     else:
         return other_symbol_match
@@ -293,12 +299,9 @@ def toggle_dash_if_tag(tag, view):
         view.settings().set('word_separators', word_separators)
 
 def get_word_regions(view):
-    ''' Returns a tuple containing two lists 
-        first list contain regions of all word occurrences in the view
-        second list contain regions of word occurrences between two closes symbols. 
-        Used for renaming and highlighting. '''
-    symbols = find_symbols(view)
-
+    ''' Returns regions based on the current scope name.
+        If it is a function or import, return word regions from the whole file,
+        Else return word regions between symbols.'''
     point = view.sel()[0].begin()
     scope_name = view.scope_name(point)
 
@@ -311,33 +314,38 @@ def get_word_regions(view):
     # flags
     accessor = is_accessor(view, word_region)
     function = is_function(scope_name)
+    import_scope = is_import(scope_name)
 
     word = view.substr(word_region).strip()
-
     if not word:
-        return ([], [])
+        return []
 
     word_regions = view.find_all(r"\b{}\b".format(word))
-    # don't match words in strings
+    # filter out strings
     word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
-  
-    # select from file start to file end 
-    between_symbols_region = sublime.Region(0, view.size())
-    if not function:
-        # filter by accessors
-        word_regions = list(filter(lambda r: is_accessor(view, r) == accessor, word_regions))  
-        # select from function start to function end
+    
+    find_all = False
+    if find_all or function or import_scope:
+        # select from file start to file end 
+        between_symbols_region = sublime.Region(0, view.size())
+    else:
+        # filter between symbols
+        symbols = find_symbols(view)
         between_symbols_region = get_region_between_symbols(point, symbols, view)
+    word_regions = filter_regions_by_region(word_regions, between_symbols_region)
 
-    words_between_regions = filter_regions_by_region(word_regions, between_symbols_region)
-    words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, view) 
+    # filter by accessors
+    if not function:
+        word_regions = list(filter(lambda r: is_accessor(view, r) == accessor, word_regions))  
+
+    word_regions = filter_regions_by_scope_name(word_regions, scope_name, view) 
 
     # useful for debugging
-    # if between_symbols_region is not None:
-    #     view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
-    # view.add_regions('word', words_between_regions, 'string', flags=sublime.DRAW_OUTLINED)        
+    if between_symbols_region is not None:
+        view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
+    view.add_regions('word', word_regions, 'string', flags=sublime.DRAW_OUTLINED)        
 
-    return (word_regions, words_between_regions)
+    return word_regions
 
 def is_accessor(view, word_region):
     '''  Check if the current word has an is_accessor like a . or > before it '''

@@ -20,14 +20,7 @@
 	
 	// Code Cctions
 	// { "keys": ["UNBOUND"], "command": "side_code_action" },
-	
-	// Rename word in scope of a function
-	// { "keys": ["UNBOUND"], "command": "side_rename",
-	// 	"args": {
-	// 		"find_all": false
-	// 	} 
-	// },	
-	 
+		 
 	// Rename word in the entire file
 	// { "keys": ["UNBOUND"], "command": "side_rename" },
 	
@@ -59,10 +52,5 @@
 	// 	} 
 	// },
 	// { "keys": ["ctrl+."], "command": "side_code_action" },
-	// { "keys": ["f2"], "command": "side_rename",
-	// 	"args": {
-	// 		"find_all": false
-	// 	} 
-	// },	
-	// { "keys": ["shift+f2"], "command": "side_rename" },
+	// { "keys": ["f2"], "command": "side_rename" }
 ]

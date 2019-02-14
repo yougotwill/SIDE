@@ -7,8 +7,7 @@
 
   { "caption": "SIDE: Code Action", "command": "side_code_action", "args": {} },
 
-  { "caption": "SIDE: Rename", "command": "side_rename", "args": {"find_all": false} },
-  { "caption": "SIDE: Rename All", "command": "side_rename", "args": {} },
+  { "caption": "SIDE: Rename", "command": "side_rename", "args": {} },
 
   { "caption": "SIDE: Toggle Code Lens", "command": "side_toggle_code_lens", "args": {} },
 ]
