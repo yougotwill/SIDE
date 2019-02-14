@@ -322,8 +322,6 @@ def get_word_regions(view):
         return []
 
     word_regions = view.find_all(r"\b{}\b".format(word))
-    # filter out strings, consider not filtering strings
-    # word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
     
     settings = sublime.load_settings("Preferences.sublime-settings")
     find_all = settings.get('side_toggle_find_all', False)
@@ -343,11 +341,17 @@ def get_word_regions(view):
 
     word_regions = filter_regions_by_scope_name(word_regions, scope_name, view) 
 
+    # filter out strings
+    word_regions_no_strings = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
+    regions_under_cursor = filter_regions_by_region(word_regions_no_strings, word_region)
+
+    # this is used to smatly select strings. I believe this will be a brain fuck in the future to understand
+    if len(word_regions_no_strings) > 0 and len(regions_under_cursor) > 0:
+        return word_regions_no_strings
     # useful for debugging
     # if between_symbols_region is not None:
     #     view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
     # view.add_regions('word', word_regions, 'string', flags=sublime.DRAW_OUTLINED)        
-
     return word_regions
 
 def is_accessor(view, word_region):
