@@ -4,7 +4,6 @@ import sublime_plugin
 from SIDE.features.lib.helpers import scroll_to_not_visible_region, get_word_regions
 
 
-
 class SideRename(sublime_plugin.TextCommand):
     def run(self, edit):
         word_regions = get_word_regions(self.view)        
