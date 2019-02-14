@@ -149,6 +149,7 @@ def is_function(scope_name):
     if 'variable.function' in scope_name or \
        'entity.name.function' in scope_name or \
        'variable.annotation.function' in scope_name or \
+       'punctuation.section.group.begin' in scope_name or \
        'punctuation.section.arguments.begin' in scope_name or \
        'support.function' in scope_name:
         return True
