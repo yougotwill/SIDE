@@ -18,6 +18,7 @@ from SIDE.features.commands.search_web import SideSearchWeb
 from SIDE.features.commands.tell_joke import SideTellJoke
 from SIDE.features.commands.advice import SideAdvice
 from SIDE.features.commands.spell_check import SideSpellCheck, SideIgnoreWord, SideAddWord
+from SIDE.features.commands.toggle_find_all import SideToggleFindAll
 
 
 def plugin_loaded():

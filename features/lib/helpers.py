@@ -324,7 +324,8 @@ def get_word_regions(view):
     # filter out strings
     word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
     
-    find_all = False
+    settings = sublime.load_settings("Preferences.sublime-settings")
+    find_all = settings.get('side_toggle_find_all', False)
     if find_all or function or import_scope:
         # select from file start to file end 
         between_symbols_region = sublime.Region(0, view.size())

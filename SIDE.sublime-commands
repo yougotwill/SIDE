@@ -10,4 +10,5 @@
   { "caption": "SIDE: Rename", "command": "side_rename", "args": {} },
 
   { "caption": "SIDE: Toggle Code Lens", "command": "side_toggle_code_lens", "args": {} },
+  { "caption": "SIDE: Toggle Find All", "command": "side_toggle_find_all", "args": {} },
 ]
