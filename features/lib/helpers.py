@@ -51,7 +51,12 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
     if is_function(current_scope_name):
         return function_match
     if is_import(current_scope_name):
-        return function_match + other_symbol_match
+        result = []
+        regions = function_match + other_symbol_match
+        for r in regions:
+            if r not in result:
+                result.append(r)
+        return result
     else:
         return other_symbol_match
 
