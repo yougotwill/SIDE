@@ -53,7 +53,9 @@ SIDE knows when a word is an `acessor` (a property of an object which is usually
 **Highlight** and **Rename** work hand in hand.
 
 
-**Rename** will select all the highlighted words for you to edit.
+**Rename** will select all the highlighted words for you to edit. 
+
+One cool trick you can do is once you marked your words for editing, if you press the rename key-binding again, it will take you the to last/first not visible word. If You can press it again it will take you to last/first not visible word. You get the point. :) 
 
 
 ![highlight_rename_example](img/rename.gif)
