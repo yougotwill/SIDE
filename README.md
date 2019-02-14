@@ -37,18 +37,24 @@ You can also assign a key binding to trigger it manually.
 
 **Highlight** will underline the word under cursor, smartly. 
 
-Green underline means that SIDE will highlight words in the given function scope. SIDE knows when a word is an `acessor` (a property of an object which is usually separated by a `.` or `->`), so the highlighted words will be filtered by the criteria if a word is an acessor or not. If the word is a function call, than it will highlight all those function calls in the current file.
 
-Yellow underline means that SIDE is unsure. When the line is yellow, SIDE will highlight all the occurrences of the word in the file, but filtered by the criteria if a word is an `acessor` or not.
+SIDE will highlight words in the given function scope or the entire file, depending on the *Find All MODE*.
+The mode can be toggled through the command palette `SIDE: Toggle Find All` or by assigning a keyboard shortcut. 
+Current mode will be shown in the status bar with the following icons:
+
+- `⧂ {highlighted count}` - *Find All In File* highlights all words in the entire file.
+- `⦾ {highlighted count}` - *Find All In Scope* highlights only words in current function scope, unless that word is a function.
+
+In general you should just be more careful when you use the *Find All In File* (`⧂`) mode. :) 
+
+SIDE knows when a word is an `acessor` (a property of an object which is usually separated by a `.` or `->`), so the highlighted words will be filtered by the criteria if a word is an acessor or not. If the word is a function call, than it will highlight all those function calls in the current file.
+
 
 **Highlight** and **Rename** work hand in hand.
 
 
-
 **Rename** will select all the highlighted words for you to edit.
 
-
-**Rename** can also select all occurrences of the word in a file, but filtered by the criteria if a word is an `acessor` or not.
 
 ![highlight_rename_example](img/rename.gif)
 
@@ -77,7 +83,7 @@ It will show you all the symbols defined it that file `B` in completions.
 
 
 
-**Code Lens** show you the count of references and definitions.
+**Code Lens** show you the count of references and definitions. You can toggle the visibility of the code lens through the command palette `SIDE: Toggle Code Lens`. 
 
 ![Code lens](img/codelens.png)
 
