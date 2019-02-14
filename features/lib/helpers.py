@@ -342,9 +342,9 @@ def get_word_regions(view):
     word_regions = filter_regions_by_scope_name(word_regions, scope_name, view) 
 
     # useful for debugging
-    if between_symbols_region is not None:
-        view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
-    view.add_regions('word', word_regions, 'string', flags=sublime.DRAW_OUTLINED)        
+    # if between_symbols_region is not None:
+    #     view.add_regions('function', [between_symbols_region], 'comment', flags=sublime.DRAW_OUTLINED)
+    # view.add_regions('word', word_regions, 'string', flags=sublime.DRAW_OUTLINED)        
 
     return word_regions
 
