@@ -142,6 +142,7 @@ def is_function(scope_name):
     if 'variable.function' in scope_name or \
        'entity.name.function' in scope_name or \
        'variable.annotation.function' in scope_name or \
+       'punctuation.section.arguments.begin' in scope_name or \
        'support.function' in scope_name:
         return True
     else: 
@@ -316,13 +317,13 @@ def get_word_regions(view):
     function = is_function(scope_name)
     import_scope = is_import(scope_name)
 
-    word = view.substr(word_region).strip()
+    word = view.substr(word_region).strip().strip('(').strip(')')
     if not word:
         return []
 
     word_regions = view.find_all(r"\b{}\b".format(word))
-    # filter out strings
-    word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
+    # filter out strings, consider not filtering strings
+    # word_regions = list(filter(lambda r: 'string.quoted' not in view.scope_name(r.begin()), word_regions))  
     
     settings = sublime.load_settings("Preferences.sublime-settings")
     find_all = settings.get('side_toggle_find_all', False)
@@ -333,7 +334,8 @@ def get_word_regions(view):
         # filter between symbols
         symbols = find_symbols(view)
         between_symbols_region = get_region_between_symbols(point, symbols, view)
-    word_regions = filter_regions_by_region(word_regions, between_symbols_region)
+    if between_symbols_region:
+        word_regions = filter_regions_by_region(word_regions, between_symbols_region)
 
     # filter by accessors
     if not function:
