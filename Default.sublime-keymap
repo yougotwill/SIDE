@@ -18,11 +18,14 @@
 	// 	} 
 	// },
 	
-	// Code Cctions
+	// Code Actions
 	// { "keys": ["UNBOUND"], "command": "side_code_action" },
 		 
-	// Rename word in the entire file
+	// Rename
 	// { "keys": ["UNBOUND"], "command": "side_rename" },
+	
+	// Toggle Find All Mode
+	// { "keys": ["UNBOUND"], "command": "side_toggle_find_all" } 
 	
 	// PPPPPPPPPPPPPPPP    PPPP    PPPPPPPPPPPPPPPPPPPP        PPPPPPPPPPPPP
 	// PPPPPPPPPPPPPPPP    PPPP    PPPPPPPPPPPPPPPPPPPP        PPPPPPPPPPPPP
@@ -53,4 +56,5 @@
 	// },
 	// { "keys": ["ctrl+."], "command": "side_code_action" },
 	// { "keys": ["f2"], "command": "side_rename" }
+	// { "keys": ["shift+f2"], "command": "side_toggle_find_all" }
 ]

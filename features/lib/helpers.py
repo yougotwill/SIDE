@@ -48,8 +48,10 @@ def filter_regions_by_scope_name(regions, current_scope_name, view):
         else:
             other_symbol_match.append(r)
 
-    if is_function(current_scope_name) or is_import(current_scope_name):
+    if is_function(current_scope_name):
         return function_match
+    if is_import(current_scope_name):
+        return function_match + other_symbol_match
     else:
         return other_symbol_match
 
