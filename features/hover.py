@@ -15,7 +15,7 @@ class SideHover(sublime_plugin.ViewEventListener):
         if is_function(scope_name) or is_class(scope_name):
             self.handle_hover(point)
 
-    def handle_hover(self, point, is_class=False):
+    def handle_hover(self, point):
         word = get_word(self.view, point)
         locations = definition(word, self.view)
 
