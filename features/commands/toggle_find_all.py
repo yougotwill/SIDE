@@ -1,6 +1,8 @@
 import sublime
 import sublime_plugin
 
+from SIDE.features.lib.helpers import highlight
+
 
 class SideToggleFindAll(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -13,5 +15,6 @@ class SideToggleFindAll(sublime_plugin.TextCommand):
         else:
             self.view.set_status('side_selection_cound', "⧂")
             settings.set('side_toggle_find_all', True)
-
         sublime.save_settings("Preferences.sublime-settings")
+        # update the higlight
+        highlight(self.view)

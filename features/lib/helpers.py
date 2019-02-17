@@ -31,6 +31,25 @@ def debounce(wait):
     return decorator
 
 
+def highlight(view):
+    """ Put a underline bellow current word. """
+    word_regions = get_word_regions(view)     
+    underline = sublime.DRAW_NO_FILL | sublime.DRAW_NO_OUTLINE | sublime.DRAW_SOLID_UNDERLINE
+
+    if len(word_regions) > 0:
+        view.add_regions('side_highlight', word_regions, scope="markup.inserted", flags=underline)
+        settings = sublime.load_settings("Preferences.sublime-settings")
+        find_all = settings.get('side_toggle_find_all', False)
+        if find_all:
+            view.set_status('side_selection_cound', "⧂ " + str(len(word_regions)))
+        else:
+            view.set_status('side_selection_cound', "⦾ " + str(len(word_regions)))
+        return 
+
+    view.erase_regions('side_highlight')
+    view.erase_status('side_selection_cound')
+
+
 def filter_regions_by_scope_name(regions, current_scope_name, view): 
     ''' Filter regions by current symbol '''
     function_match = []
