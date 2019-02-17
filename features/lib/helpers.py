@@ -183,7 +183,7 @@ def is_class(scope_name):
         return False
 
 def is_tag(scope_name):
-    if 'entity.name.tag' in scope_name:
+    if 'meta.tag' in scope_name:
         return True
     return False
 
