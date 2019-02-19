@@ -159,7 +159,8 @@ def chose_one_location_from_many(locations, current_view) -> None:
     )
 
 def is_import(scope_name):
-    if 'meta.statement.import' in scope_name:
+    if 'meta.statement.import' in scope_name or \
+       'meta.use' in scope_name:
         return True
     else: 
         return False
@@ -184,6 +185,12 @@ def is_class(scope_name):
 
 def is_tag(scope_name):
     if 'meta.tag' in scope_name:
+        return True
+    return False
+
+def is_trait(scope_name):
+    if 'entity.other.inherited-class' in scope_name or \
+       'entity.name.trait' in scope_name:
         return True
     return False
 
@@ -286,6 +293,8 @@ def _find_symbols_for_view(view):
                 symbol_type = '[f]'  # function
             elif 'struct' in scope_name or 'impl' in scope_name:
                 symbol_type = '[s]'  # struct
+            elif 'trait' in scope_name:
+                symbol_type = '[t]'
 
             
             location = _transform_to_location(view.file_name(), region, symbol, symbol_type)

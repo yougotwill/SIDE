@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
 	<key>scope</key>
-	<string>support.class.php</string>
+	<string>support.class.php, entity.other.inherited-class.php, entity.name.trait.php</string>
 	<key>settings</key>
 	<dict>
 		<key>showInIndexedReferenceList</key>

@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import reference, definition, is_function, is_class, debounce
+from SIDE.features.lib.helpers import reference, definition, is_function, is_class, debounce, is_trait
 
 phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 
@@ -46,7 +46,7 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
         scope_name = self.view.scope_name(word_region.begin())
 
         phantoms = []
-        if is_function(scope_name) or is_class(scope_name):
+        if is_function(scope_name) or is_class(scope_name) or is_trait(scope_name):
 
             text = []
 

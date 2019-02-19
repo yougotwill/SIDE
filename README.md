@@ -75,6 +75,7 @@ Sometimes it is useful to cycle through the references in just the open views, i
 * `[m]` - method
 * `[f]` - function
 * `[s]` - struct
+* `[t]` - trait
 * `[#]` - unknown, but it exist somewhere in the open views, probably a variable, or a word in a comment
 
 SIDE has a feature called **One Level Indexing**. Here is how it works.
