@@ -20,9 +20,7 @@ SIDE will just try to help as much as it can.
 * Code Actions
 
 
-
 **Definition** will show you definition/s filtered by the file extension, which in most cases is better than the default behavior of the `goto_definition` command. 
-
 
 
 Show **Signature Help** when hovering over `function`/`class` symbols. 
@@ -34,9 +32,7 @@ You can also assign a key binding to trigger it manually.
 ![signature help](img/signature.png)
 
 
-
 **Highlight** will underline the word under cursor, smartly. 
-
 
 SIDE will highlight words in the given function scope or the entire file, depending on the *Find All MODE*.
 The mode can be toggled through the command palette `SIDE: Toggle Find All` or by assigning a keyboard shortcut. 
@@ -47,7 +43,7 @@ Current mode will be shown in the status bar with the following icons:
 
 In general you should just be more careful when you use the *Find All In File* (`⧂`) mode. :) 
 
-SIDE knows when a word is an `acessor` (a property of an object which is usually separated by a `.` or `->`), so the highlighted words will be filtered by the criteria if a word is an acessor or not. If the word is a function call, than it will highlight all those function calls in the current file.
+There are two commands for going to the `next`/`previous` highlight. You need to assigning a keyboard shortcut to use them.
 
 
 **Highlight** and **Rename** work hand in hand.
@@ -55,11 +51,9 @@ SIDE knows when a word is an `acessor` (a property of an object which is usually
 
 **Rename** will select all the highlighted words for you to edit. 
 
-One cool trick you can do is once you marked your words for editing, if you press the rename key-binding again, it will take you the to last/first not visible word. If You can press it again it will take you to last/first not visible word. You get the point. :) 
-
+If you press the rename key-binding again, you can go back and forth to the first or last highlighted word. 
 
 ![highlight_rename_example](img/rename.gif)
-
 
 
 **References** panel shows all references for the given symbol.
@@ -67,7 +61,6 @@ One cool trick you can do is once you marked your words for editing, if you pres
 ![References](img/references.png)
 
 Sometimes it is useful to cycle through the references in just the open views, in which case you can assign a key binding.   
-
 
 
 **Completions** will show all the symbols and words found in the opened views, with the type of the symbol and the file from where it is found. The types can be:
@@ -85,31 +78,25 @@ It will show you all the symbols defined it that file `B` in completions.
 ![Completions](img/completions.png)
 
 
-
 **Code Lens** show you the count of references and definitions. You can toggle the visibility of the code lens through the command palette `SIDE: Toggle Code Lens`. 
 
 ![Code lens](img/codelens.png)
 
 
-
 With **Diagnostics**  never misspell a function name again. Just set Sublime's `spell_check` setting to `true`. 
-
 
 
 **Code Actions** can correct spelling mistakes and search the Internet.
 
 ![Code actions](img/codeactions.png)
 
-Code actions can correct spelling mistakes and search the Internet.
 When you need an advice or a Yes/No answer, ask SIDE and it will give one. 
 SIDE <3 Chuck Norris. Chuck will help you to get through the day with a smile. :)
-
 
 
 ### Configure SIDE
 
 Assign key bindings you would want to use by opening `Preferences/Package Settings/SIDE/Key Bindings` menu.
-
 
 SIDE tries to be configured out of the box. But because SIDE is young, it is likely that you language `x` is not yet properly set up for SIDE.
 So you need to configure SIDE to know what are references or definitions, because the default `SOME_LANGAUGE.tmPreferences` didn't account for them.

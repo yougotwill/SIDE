@@ -18,6 +18,13 @@
 	// 	} 
 	// },
 	
+	// Find the next highlighted word 
+	// { "keys": ["UNBOUND"], "command": "side_higlight_next_result" },
+	
+	// Find the previous highlighted word 
+	// { "keys": ["UNBOUND"], "command": "side_higlight_prev_result" },
+	
+	
 	// Code Actions
 	// { "keys": ["UNBOUND"], "command": "side_code_action" },
 		 
@@ -55,6 +62,8 @@
 	// 	} 
 	// },
 	// { "keys": ["ctrl+."], "command": "side_code_action" },
-	// { "keys": ["f2"], "command": "side_rename" }
-	// { "keys": ["shift+f2"], "command": "side_toggle_find_all" }
+	// { "keys": ["f2"], "command": "side_rename" },
+	// { "keys": ["shift+f2"], "command": "side_toggle_find_all" },
+	// { "keys": ["f3"], "command": "side_higlight_next_result" },	
+	// { "keys": ["f1"], "command": "side_higlight_prev_result" },
 ]
