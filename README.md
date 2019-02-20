@@ -29,6 +29,9 @@ Or a `,` when typing the function arguments.
 
 You can also assign a key binding to trigger it manually.
 
+When the signature is visible, you can use the `Up`|`Down` arrows to go through them. 
+When you found the definition you want press `enter` and it will take you to that definition. Note that this won't work if the cursor is next to a open bracket `(`. In that case it will just insert a new line.
+
 ![signature help](img/signature.png)
 
 
