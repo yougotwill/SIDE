@@ -10,7 +10,7 @@ from SIDE.features.code_lens import SideCodeLens, SideToggleCodeLens
 from SIDE.features.code_action import SideCodeAction
 from SIDE.features.rename import SideRename
 from SIDE.features.diagnostic import SideDiagnosticListener, spell
-from SIDE.features.indexer import IndexerListener, SideIndexFileCommand, SideUpdateIndexPanelListener
+from SIDE.features.indexer import IndexerListener, SideIndexFileCommand, SideUpdateIndexPanelListener, index_view
 from SIDE.features.highlight import SideHighlightListener, SideHiglightNextResult, SideHiglightPrevResult
 
 from SIDE.features.commands.ask_question import SideAskQuestion
@@ -25,3 +25,7 @@ def plugin_loaded():
     settings = sublime.load_settings("Preferences.sublime-settings")
     added_words = settings.get('added_words', [])
     spell.word_frequency.load_words(added_words)
+
+    # index open views
+    for view in sublime.active_window().views():
+        index_view(view)
