@@ -44,12 +44,7 @@ Current mode will be shown in the status bar with the following icons:
 - `⧂ {highlighted count}` - *Find All In File* highlights all words in the entire file.
 - `⦾ {highlighted count}` - *Find All In Scope* highlights only words in current function scope, unless that word is a function.
 
-In general you should just be more careful when you use the *Find All In File* (`⧂`) mode. :) 
-
 There are two commands for going to the `next`/`previous` highlight. You need to assigning a keyboard shortcut to use them.
-
-
-**Highlight** and **Rename** work hand in hand.
 
 
 **Rename** will select all the highlighted words for you to edit. 
