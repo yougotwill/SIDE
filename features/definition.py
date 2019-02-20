@@ -22,8 +22,8 @@ class SideDefinition(sublime_plugin.TextCommand):
             scope_name = self.view.scope_name(point)
             words_between_regions = filter_regions_by_scope_name(words_between_regions, scope_name, self.view)  
 
-            # a fix
-            if not words_between_regions[0]:
+            # make sure that there is at least one item in list
+            if len(words_between_regions) < 1:
                 return 
 
             definition_point = words_between_regions[0].begin()
