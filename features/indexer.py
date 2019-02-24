@@ -89,6 +89,9 @@ class IndexerListener(sublime_plugin.ViewEventListener):
     def on_load(self):
         index_view(self.view)
 
+    def on_pre_save_async(self):
+        index_view(self.view)
+
     def on_pre_close(self):
         global panel_state
         id = self.view.id()
