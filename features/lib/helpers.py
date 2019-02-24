@@ -339,7 +339,11 @@ def get_word_regions(view):
     ''' Returns regions based on the current scope name.
         If it is a function or import, return word regions from the whole file,
         Else return word regions between symbols.'''
-    point = view.sel()[0].begin()
+    sel = view.sel()
+    if len(sel) < 1:
+        return []
+
+    point = sel[0].begin()
     scope_name = view.scope_name(point)
 
     # match tag names that have a - between
