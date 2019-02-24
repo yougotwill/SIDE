@@ -9,12 +9,7 @@ from SIDE.features.indexer import panel_state
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
         global panel_state
-        point = locations[0]
-
-        # don't complete in strings
-        is_in_string = self.view.match_selector(point, 'string.quoted')
-        if is_in_string:
-            return None        
+        point = locations[0] 
 
         views = self.sort_views_by_relevance()
         
