@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import reference, definition, is_function, is_class, debounce, is_trait
+from SIDE.features.lib.helpers import reference, definition, is_function, is_class, debounce, is_trait, debug
 
 phantom_sets_by_buffer = {}  # type: Dict[buffer_id, PhantomSet]
 
@@ -39,7 +39,12 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
             phantom_set = sublime.PhantomSet(self.view, 'references_phantom')
             phantom_sets_by_buffer[buffer_id] = phantom_set
     
-        point = self.view.sel()[0].begin()
+        sel = self.view.sel()
+        if len(sel) < 1:
+            debug('Code lens, no selection')
+            return
+
+        point = sel[0].begin()
         word_region = self.view.word(point)
 
         word = self.view.substr(word_region)
