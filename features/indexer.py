@@ -13,26 +13,26 @@ panel_state = {}
 
 # Here is a brief explanation. Imaine we have file, A, B, C, D
 # And that file A, have some functions defined in C, which are used in A
-# And that file B, have some functiond defined in C and D, which are used in B 
+# And that file B, have some functiond defined in C and D, which are used in B
 #
-# The panel_state for that case would look like this: 
+# The panel_state for that case would look like this:
 # {
 #   "C" : ["A", "B"],
 #   "D" : ["B"]
 # }
-# 
+#
 # Under the hood, two output panels are created for files C, D
 # We grab of all the indexed simbols from the output panels.
 # And later in completions show those symbols.
-# 
+#
 # If file B is closed, the panels_state would look like this:
 # {
 #   "C": ["A"]
 # }
-# 
+#
 # The "D" panel was destoryed because there were no files associated to it.
-# Similary if we closed the file A, 
-# The "C" panel would be destored, because there we no more files associated with it. 
+# Similary if we closed the file A,
+# The "C" panel would be destored, because there we no more files associated with it.
 
 def index_view(view):
     debug('index view', view.id())
@@ -59,7 +59,7 @@ def index_view(view):
         # alias the panel name to be the apsolute file name
         panel_name = absolute_file_path
 
-        with open(absolute_file_path) as file:  
+        with open(absolute_file_path, 'r', encoding='utf-8') as file:
             panel = window.find_output_panel(panel_name)
 
             # if it is indexed continue
@@ -71,7 +71,7 @@ def index_view(view):
                 continue
 
             # else index it
-            content = file.read() 
+            content = file.read()
             view.run_command('side_index_file', {
                     'content': content,
                     'panel_name': panel_name
