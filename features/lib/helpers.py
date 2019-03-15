@@ -160,7 +160,8 @@ def chose_one_location_from_many(locations, current_view) -> None:
 
 def is_import(scope_name):
     if 'meta.statement.import' in scope_name or \
-       'meta.use' in scope_name:
+       'meta.use' in scope_name or \
+       'meta.import' in scope_name:
         return True
     else: 
         return False
@@ -256,16 +257,52 @@ def _reference_in_index(word):
     locations = sublime.active_window().lookup_references_in_index(word)
     return locations
 
+def find_references(current_view, views=None):
+    ''' Return a list of references locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
+    references = []  # List[location]
+    if views is not None:
+        for view in views:
+            locations = view.indexed_references()
+            symbols_in_view = _find_symbols_for_view(view, locations)
+            references.extend(symbols_in_view)
+    else:
+        locations = current_view.indexed_references()
+        symbols_in_view = _find_symbols_for_view(current_view)
+        references.extend(symbols_in_view)
+
+    absolute_file_name = current_view.file_name()
+    if not absolute_file_name:
+        debug('No file_name for the current view')
+        return []
+    _file_name, file_extension = os.path.splitext(absolute_file_name)
+    references = _locations_by_file_extension(references, file_extension)
+    return references
+
+def get_symbol_type(scope_name):
+    symbol_type = '[?]'
+    if 'function' in scope_name and 'class' in scope_name:
+        symbol_type = '[m]'  # method
+    elif 'class' in scope_name:
+        symbol_type = '[c]'  # class
+    elif 'function' in scope_name:
+        symbol_type = '[f]'  # function
+    elif 'struct' in scope_name or 'impl' in scope_name:
+        symbol_type = '[s]'  # struct
+    elif 'trait' in scope_name:
+        symbol_type = '[t]'
+    return symbol_type
 
 def find_symbols(current_view, views=None):
     ''' Return a list of symbol locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
     symbols = []  # List[location]
     if views is not None:
         for view in views:
-            symbols_in_view = _find_symbols_for_view(view)
+            locations = view.indexed_symbols()
+            symbols_in_view = _find_symbols_for_view(view, locations)
             symbols.extend(symbols_in_view)
     else:
-        symbols_in_view = _find_symbols_for_view(current_view)
+        locations = current_view.indexed_symbols()
+        symbols_in_view = _find_symbols_for_view(current_view, locations)
         symbols.extend(symbols_in_view)
             
     absolute_file_name = current_view.file_name()
@@ -276,27 +313,14 @@ def find_symbols(current_view, views=None):
     symbols = _locations_by_file_extension(symbols, file_extension)
     return symbols
 
-def _find_symbols_for_view(view):
-        locations = view.indexed_symbols()
 
+def _find_symbols_for_view(view, locations):
         symbols = []  # List[location]
         for location in locations:
             region, symbol = location
             scope_name = view.scope_name(region.begin())
-            
-            symbol_type = '[?]'
-            if 'function' in scope_name and 'class' in scope_name:
-                symbol_type = '[m]'  # method
-            elif 'class' in scope_name:
-                symbol_type = '[c]'  # class
-            elif 'function' in scope_name:
-                symbol_type = '[f]'  # function
-            elif 'struct' in scope_name or 'impl' in scope_name:
-                symbol_type = '[s]'  # struct
-            elif 'trait' in scope_name:
-                symbol_type = '[t]'
+            symbol_type = get_symbol_type(scope_name)
 
-            
             location = _transform_to_location(view.file_name(), region, symbol, symbol_type)
             symbols.append(location)
 

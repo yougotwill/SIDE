@@ -2,7 +2,7 @@ import os
 import sublime
 import sublime_plugin
 
-from SIDE.features.lib.helpers import find_symbols
+from SIDE.features.lib.helpers import find_symbols, find_references
 from SIDE.features.indexer import panel_state
 
 
@@ -12,7 +12,6 @@ class SideCompletion(sublime_plugin.ViewEventListener):
         point = locations[0] 
 
         views = self.sort_views_by_relevance()
-        
         symbols = find_symbols(self.view, views)
         completions = []
         # easy way to filter out hash completions
@@ -22,6 +21,19 @@ class SideCompletion(sublime_plugin.ViewEventListener):
             completion_item = ["{}\t{}{}".format(symbol, base_file_name, symbol_type), "{}".format(symbol)]
             if symbol not in unique_symbols:
                 unique_symbols.append(symbol)
+            if completion_item not in completions:
+                completions.append(completion_item)
+
+        references = find_references(self.view, views)
+        for symbol_location in references:
+            _file_name, base_file_name, _region, symbol, symbol_type = symbol_location
+            completion_item = ["{}\t{}".format(symbol, symbol_type), "{}".format(symbol)]
+            if symbol not in unique_symbols:
+                unique_symbols.append(symbol)
+            else:
+                # symbol exists, skip
+                continue
+            # we wont get here if the symbol exist
             if completion_item not in completions:
                 completions.append(completion_item)
 
