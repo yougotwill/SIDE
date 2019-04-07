@@ -42,7 +42,6 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                         completion_item = ["{}\t{}".format(f, completion_type), "{}".format(f)]
                         completions.append(completion_item)
 
-                    completions = sorted()
                     return (completions, sublime.INHIBIT_WORD_COMPLETIONS)
                 except Exception as e:
                     debug('Can\'t figure out listdir:\n', e)
