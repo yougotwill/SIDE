@@ -68,8 +68,12 @@ Sometimes it is useful to cycle through the references in just the open views, i
 * `[s]` - struct
 * `[t]` - trait
 * `[#]` - unknown, but it exist somewhere in the open views, probably a variable, or a word in a comment
+* `[FILE]` - file
+* `[FOLDER]` - folder
 
-SIDE has a feature called **One Level Indexing**. Here is how it works.
+Get PATH autocompletions when inside a stings that starts with `./`.
+
+SIDE has a feature called **One Level Indexing**. Here is how it works. 
 If SIDE is 100% sure that some file `B` is related to the current file `A` you are editing.
 It will show you all the symbols defined it that file `B` in completions. 
 
