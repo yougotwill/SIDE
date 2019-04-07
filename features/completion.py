@@ -10,7 +10,6 @@ class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
         global panel_state
         point = locations[0] 
-
         completions = []
 
         is_in_string = self.view.match_selector(point, "string.quoted")
@@ -39,7 +38,14 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                         completion_type = '[FILE]'
                         if not is_file: 
                             completion_type = '[FOLDER]'
-                        completion_item = ["{}\t{}".format(f, completion_type), "{}".format(f)]
+
+                        insert_text = ''
+                        if is_file:
+                            insert_text =  "{}".format(f)
+                        else:
+                            insert_text = "{}/".format(f)
+
+                        completion_item = ["{}\t{}".format(f, completion_type), insert_text]
                         completions.append(completion_item)
 
                     # sort completion by type
@@ -129,3 +135,6 @@ class SideAutoShowFilePathCompletions(sublime_plugin.ViewEventListener):
             self.view.run_command("auto_complete", {
                 'disable_auto_insert': True,
             })
+
+        if last_char != '/' and 'string.quoted' in scope_name:
+            self.view.run_command("hide_auto_complete")
