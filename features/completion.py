@@ -4,7 +4,7 @@ import sublime_plugin
 
 from SIDE.features.lib.helpers import find_symbols, find_references, debug
 from SIDE.features.indexer import panel_state
-
+"./../"
 
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
@@ -34,7 +34,6 @@ class SideCompletion(sublime_plugin.ViewEventListener):
 
                 try:
                     files_and_folders = sorted(os.listdir(searched_folder))
-                    print(files_and_folders)
                     for f in files_and_folders:
                         is_file = os.path.isfile(os.path.join(searched_folder, f))
                         completion_type = '[FILE]'
