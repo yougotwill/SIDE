@@ -135,6 +135,3 @@ class SideAutoShowFilePathCompletions(sublime_plugin.ViewEventListener):
             self.view.run_command("auto_complete", {
                 'disable_auto_insert': True,
             })
-
-        if last_char != '/' and 'string.quoted' in scope_name:
-            self.view.run_command("hide_auto_complete")
