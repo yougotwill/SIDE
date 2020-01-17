@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 
 from SIDE.features.lib.helpers import get_word
-from SIDE.features.diagnostic import MISSPELED_REGIONS, spell
+from SIDE.features.diagnostic import MISSPELLED_REGIONS, spell
 
 
 def pluck_tuples(tuples, position):
@@ -11,11 +11,11 @@ def pluck_tuples(tuples, position):
 def in_diagnostic_regions(point) -> sublime.Region:
     ''' Return the diagnostic region containing the point, or None. '''
     window = sublime.active_window()
-    misspeled_regions = MISSPELED_REGIONS.get(window.id())
-    if not misspeled_regions:
+    misspelled_regions = MISSPELLED_REGIONS.get(window.id())
+    if not misspelled_regions:
         return None
         
-    for region in misspeled_regions:
+    for region in misspelled_regions:
         if region.contains(point):
             return region
     return None

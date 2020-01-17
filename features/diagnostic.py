@@ -6,25 +6,30 @@ from SIDE.features.lib.helpers import debounce
 from SIDE.dependencies.spellchecker.spellchecker import SpellChecker
 
 spell = SpellChecker(distance=1)
-MISSPELED_REGIONS = {} #window_id: [ misspeled_regions]
+MISSPELLED_REGIONS = {} #window_id: [ misspelled_regions]
 
 def underline_misspelled(view):
     window = sublime.active_window()
     symbols = view.indexed_symbols()
     references = view.indexed_references()
+    word_regions = []
+    word_regions.extend(view.find_by_selector('variable.other'))
+    word_regions = [(r, view.substr(r).lower()) for r in word_regions]
 
     # get only the references that are defined in project
     project_references = []
     for reference in references:
         region, symbol = reference
         symbol_in_project = window.lookup_symbol_in_open_files(symbol) or window.lookup_symbol_in_index(symbol)
+
         if len(symbol_in_project) > 0:
             project_references.append(reference)
 
     # only symbols and references in project will be spell checked
     symbols.extend(project_references)
+    symbols.extend(word_regions)
 
-    missspeled_regions = []
+    misspelled_regions = []
     for location in symbols:
         region, symbol = location
 
@@ -55,17 +60,17 @@ def underline_misspelled(view):
 
         for word in misspelled:
             if word not in ignored_words and word not in added_words:
-                r = view.find(word, region.begin(), sublime.IGNORECASE)
-                missspeled_regions.append(r)
+                r = view.find(word, 0, sublime.IGNORECASE)
+                misspelled_regions.append(r)
  
     # underline misspelled words
     squiggly = sublime.DRAW_NO_FILL | sublime.DRAW_SQUIGGLY_UNDERLINE | sublime.DRAW_NO_OUTLINE
-    view.add_regions('side.diagnostic', missspeled_regions, 'markup.deleted', flags=squiggly)
+    view.add_regions('side.diagnostic', misspelled_regions, 'markup.deleted', flags=squiggly)
 
     # this is used for code actions
-    if not MISSPELED_REGIONS.get(window.id(), None):
-        MISSPELED_REGIONS[window.id()] = []
-    MISSPELED_REGIONS[window.id()] = missspeled_regions
+    if not MISSPELLED_REGIONS.get(window.id(), None):
+        MISSPELLED_REGIONS[window.id()] = []
+    MISSPELLED_REGIONS[window.id()] = misspelled_regions
 
 
 class SideDiagnosticListener(sublime_plugin.ViewEventListener):
