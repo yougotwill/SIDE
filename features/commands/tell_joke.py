@@ -12,7 +12,7 @@ def send_request(view):
     except:
         contents = 'Without the Internet, my humor is gone :('
     contents = contents.replace('&quot;', '\'')
-    view.show_popup(escape(contents, False), max_width=500)
+    view.show_popup("<p>{}</p>".format(escape(contents, False)), max_width=500)
 
 
 class SideTellJoke(sublime_plugin.TextCommand):
