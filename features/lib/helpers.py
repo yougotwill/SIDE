@@ -279,17 +279,15 @@ def find_references(current_view, views=None):
     return references
 
 def get_symbol_type(scope_name):
-    symbol_type = '[?]'
-    if 'function' in scope_name and 'class' in scope_name:
-        symbol_type = '[m]'  # method
-    elif 'class' in scope_name:
-        symbol_type = '[c]'  # class
+    symbol_type = '#'
+    if 'class' in scope_name:
+        symbol_type = '⚼'  # class
     elif 'function' in scope_name:
-        symbol_type = '[f]'  # function
+        symbol_type = 'λ'  # function
     elif 'struct' in scope_name or 'impl' in scope_name:
-        symbol_type = '[s]'  # struct
+        symbol_type = '□'  # struct
     elif 'trait' in scope_name:
-        symbol_type = '[t]'
+        symbol_type = '◳'
     return symbol_type
 
 def find_symbols(current_view, views=None):

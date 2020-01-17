@@ -4,7 +4,7 @@ from SIDE.features.show_signature import SideShowSignature, SideSignatureListene
 from SIDE.features.definition import SideDefinition
 from SIDE.features.hover import SideHover
 from SIDE.features.signature_help import SideSignatureHelp
-from SIDE.features.completion import SideCompletion, SideAutoShowFilePathCompletions
+from SIDE.features.completion import SideCompletion
 from SIDE.features.reference import SideReference
 from SIDE.features.code_lens import SideCodeLens, SideToggleCodeLens
 from SIDE.features.code_action import SideCodeAction
