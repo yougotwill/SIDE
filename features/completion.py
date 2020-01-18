@@ -6,23 +6,12 @@ from SIDE.features.lib.helpers import find_symbols, find_references, debug
 from SIDE.features.indexer import panel_state
 
 class SideCompletion(sublime_plugin.ViewEventListener):
-    def __init__(self, view):
-        super().__init__(view)
-        self.last_symbols_len = -1
-        self.items = []
-
     def on_query_completions(self, prefix, locations):
         completions = sublime.CompletionList()
 
         views = self.sort_views_by_relevance()
         symbols = find_symbols(self.view, views)
 
-        # some simple caching strategy
-        if len(symbols) == self.last_symbols_len:
-            completions.set_completions(self.items)
-            return completions
-
-        self.last_symbols_len = len(symbols)
         self.items = []
 
         # easy way to filter out hash completions

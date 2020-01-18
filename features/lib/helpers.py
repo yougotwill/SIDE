@@ -280,10 +280,12 @@ def find_references(current_view, views=None):
 
 def get_symbol_type(scope_name):
     symbol_type = '#'
-    if 'class' in scope_name:
-        symbol_type = '⚼'  # class
+    if 'class' in scope_name and 'function' in scope_name:
+        symbol_type = 'μ'
     elif 'function' in scope_name:
         symbol_type = 'λ'  # function
+    elif 'class' in scope_name:
+        symbol_type = '⚼'  # class
     elif 'struct' in scope_name or 'impl' in scope_name:
         symbol_type = '□'  # struct
     elif 'trait' in scope_name:
