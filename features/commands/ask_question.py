@@ -14,6 +14,6 @@ class SideAskQuestion(sublime_plugin.TextCommand):
         else:
             anwser = 'no'
             
-        self.view.show_popup("The anwser to your question is {}".format(anwser), max_width=500)
+        self.view.show_popup("<p style='padding: 20px 10px 20px 10px'>The anwser to your question is {}</p>".format(anwser), max_width=500)
 
      

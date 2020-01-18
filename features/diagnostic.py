@@ -14,7 +14,7 @@ def underline_misspelled(view):
     references = view.indexed_references()
     word_regions = []
     word_regions.extend(view.find_by_selector('variable.other'))
-    word_regions = [(r, view.substr(r).lower()) for r in word_regions]
+    word_regions = [(r, view.substr(r)) for r in word_regions]
 
     # get only the references that are defined in project
     project_references = []

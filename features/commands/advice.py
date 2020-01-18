@@ -14,7 +14,7 @@ def send_request(view):
     except:
         contents = 'What Dana once said... Zivot je kratak, pojedi batak 😎'
     contents = contents.replace('&quot;', '\'')
-    view.show_popup(escape(contents, False), max_width=500)   
+    view.show_popup("<p style='padding: 20px 10px 20px 10px'>{}</p>".format(escape(contents, False)), max_width=500)   
 
 
 class SideAdvice(sublime_plugin.TextCommand):
