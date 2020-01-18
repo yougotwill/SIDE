@@ -14,6 +14,7 @@ def underline_misspelled(view):
     references = view.indexed_references()
     word_regions = []
     word_regions.extend(view.find_by_selector('variable.other'))
+    word_regions.extend(view.find_by_selector('meta.property.object'))
     word_regions = [(r, view.substr(r)) for r in word_regions]
 
     # get only the references that are defined in project
@@ -39,6 +40,7 @@ def underline_misspelled(view):
         if '_' in symbol:
             # handle cable case symbol names
             words = symbol.split('_')
+            words = [w.lower() for w in words]
 
         if re.match('^[A-Z][a-z]*', symbol): 
             # handle uppercase first camel case symbol names
@@ -60,8 +62,8 @@ def underline_misspelled(view):
 
         for word in misspelled:
             if word not in ignored_words and word not in added_words:
-                r = view.find(word, 0, sublime.IGNORECASE)
-                misspelled_regions.append(r)
+                regions = view.find_all(word, sublime.IGNORECASE)
+                misspelled_regions.extend(regions)
  
     # underline misspelled words
     squiggly = sublime.DRAW_NO_FILL | sublime.DRAW_SQUIGGLY_UNDERLINE | sublime.DRAW_NO_OUTLINE
