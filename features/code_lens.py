@@ -51,7 +51,7 @@ class SideCodeLens(sublime_plugin.ViewEventListener):
         scope_name = self.view.scope_name(word_region.begin())
 
         phantoms = []
-        if is_function(scope_name) or is_class(scope_name) or is_trait(scope_name):
+        if word.isalnum() and (is_function(scope_name) or is_class(scope_name) or is_trait(scope_name)):
 
             text = []
 
