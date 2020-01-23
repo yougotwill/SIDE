@@ -112,6 +112,10 @@ class SideShowSignature(sublime_plugin.TextCommand):
         self.view.show_popup(content, sublime.HIDE_ON_MOUSE_MOVE_AWAY, location=point, max_width=700)
 
     def get_signature(self, signature, file_path, row):
+        # handle languages that don't use parenthesizes
+        if '(' not in signature:
+            return signature, row
+
         while '{' not in signature and ')' not in signature :
             row += 1
             signature += ' ' + get_line(self.view, file_path, row).strip()

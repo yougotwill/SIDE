@@ -6,7 +6,7 @@ from SIDE.features.lib.helpers import debounce
 from SIDE.dependencies.spellchecker.spellchecker import SpellChecker
 
 spell = SpellChecker(distance=1)
-MISSPELLED_REGIONS = {} #window_id: [ misspelled_regions]
+MISSPELLED_REGIONS = {} # window_id: [ misspelled_regions]
 
 def underline_misspelled(view):
     window = sublime.active_window()
