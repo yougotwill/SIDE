@@ -267,7 +267,7 @@ def find_references(current_view, views=None):
             references.extend(symbols_in_view)
     else:
         locations = current_view.indexed_references()
-        symbols_in_view = _find_symbols_for_view(current_view)
+        symbols_in_view = _find_symbols_for_view(current_view, locations)
         references.extend(symbols_in_view)
 
     absolute_file_name = current_view.file_name()

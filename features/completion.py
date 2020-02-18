@@ -5,12 +5,29 @@ import sublime_plugin
 from SIDE.features.lib.helpers import find_symbols, find_references, debug
 from SIDE.features.indexer import panel_state
 
+last_view_id = None
+cached_symbols = []
+cached_references = []
+
 class SideCompletion(sublime_plugin.ViewEventListener):
     def on_query_completions(self, prefix, locations):
+        global last_view_id
+        global cached_symbols
+        global cached_references
+
         completions = sublime.CompletionList()
 
+        # views is an array of view-s not including self.view
         views = self.sort_views_by_relevance()
-        symbols = find_symbols(self.view, views)
+        symbols = []
+
+        current_view_symbols = find_symbols(self.view)
+
+        if last_view_id != self.view.id():
+            cached_symbols = find_symbols(self.view, views)
+
+        symbols.extend(current_view_symbols)
+        symbols.extend(cached_symbols)
 
         self.items = []
 
@@ -28,7 +45,15 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                 unique_symbols.append(symbol)
                 self.items.append(completion_item)
 
-        references = find_references(self.view, views)
+        references = []
+
+        current_view_references = find_references(self.view)
+        if last_view_id != self.view.id():
+            cached_references = find_references(self.view, views)
+
+        references.extend(current_view_references)
+        references.extend(cached_references)
+
         for symbol_location in references:
             _file_name, base_file_name, _region, symbol, symbol_type = symbol_location
 
@@ -44,14 +69,15 @@ class SideCompletion(sublime_plugin.ViewEventListener):
                 self.items.append(completion_item)
 
         completions.set_completions(self.items)
+
+        last_view_id = self.view.id()
         return completions
 
     def sort_views_by_relevance(self):
         """ Get a list of sorted views. This ensures we get the most relevant suggestions. """
         window = sublime.active_window()
 
-        # add the current view is the most relevant
-        views = [self.view]
+        views = []
         try:
             # the second most relevant suggestions are from the indexed panels
             for panel_name in panel_state:
