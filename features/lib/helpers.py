@@ -417,12 +417,11 @@ def get_function_name(view, start_point) -> str:
     cursor = start_point
     
     while cursor > 0:
-        word = view.word(cursor)
-        scope_name = view.scope_name(word.begin())
+        scope_name = view.scope_name(cursor)
         if is_function(scope_name) or is_class(scope_name):
-            return view.substr(word)
+            return get_word(view, cursor)
 
-        cursor = view.find_by_class(word.begin(), False, sublime.CLASS_WORD_START)
+        cursor = view.find_by_class(cursor, False, sublime.CLASS_WORD_START)
 
     return ""
 
