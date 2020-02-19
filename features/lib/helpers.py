@@ -235,28 +235,6 @@ def get_project_path(window):
                 project_path = os.path.dirname(filename)
                 return project_path
 
-
-def reference(word, view, all=True):
-    if all:
-        locations = _reference_in_index(word)
-    else: 
-        locations = _reference_in_open_files(word) or _reference_in_index(word)
-    # filter by the extension
-    absolute_file_name = view.file_name()
-    if not absolute_file_name:
-        debug('No file_name for the current view in reference()')
-        return []
-    filename, file_extension = os.path.splitext(absolute_file_name)
-    return _locations_by_file_extension(locations, file_extension)
-    
-def _reference_in_open_files(word):
-    locations = sublime.active_window().lookup_references_in_open_files(word)
-    return locations
-
-def _reference_in_index(word):
-    locations = sublime.active_window().lookup_references_in_index(word)
-    return locations
-
 def find_references(current_view, views=None):
     ''' Return a list of references locations [(file_path, base_file_name, region, symbol, symbol_type)]. '''
     references = []  # List[location]

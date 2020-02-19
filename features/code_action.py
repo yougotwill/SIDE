@@ -28,7 +28,6 @@ class SideCodeAction(sublime_plugin.TextCommand):
 
         diagnostic_region = in_diagnostic_regions(point)
 
-        
         word = get_word(self.view, region).strip()
 
         actions = None

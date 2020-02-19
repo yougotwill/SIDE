@@ -5,7 +5,6 @@ from SIDE.features.definition import SideDefinition
 from SIDE.features.hover import SideHover
 from SIDE.features.signature_help import SideSignatureHelp
 from SIDE.features.completion import SideCompletion
-from SIDE.features.reference import SideReference
 from SIDE.features.code_action import SideCodeAction
 from SIDE.features.rename import SideRename
 from SIDE.features.diagnostic import SideDiagnosticListener, spell

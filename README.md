@@ -13,7 +13,6 @@ SIDE will just try to help as much as it can.
 * Signature Help
 * Highlight
 * Rename
-* References
 * Completions
 * Diagnostics
 * Code Actions
@@ -51,14 +50,6 @@ There are two commands for going to the `next`/`previous` highlight. You need to
 If you press the rename key-binding again, you can go back and forth to the first or last highlighted word. 
 
 ![highlight_rename_example](img/rename.gif)
-
-
-**References** panel shows all references for the given symbol.
-
-![References](img/references.png)
-
-Sometimes it is useful to cycle through the references in just the open views, in which case you can assign a key binding.   
-
 
 **Completions** will show all the symbols and words found in the opened views, with the type of the symbol and the file from where it is found. The types can be:
 * `[c]` - class
