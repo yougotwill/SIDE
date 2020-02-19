@@ -9,7 +9,29 @@ last_view_id = None
 cached_symbols = []
 cached_references = []
 
+class SideInsertCompletion(sublime_plugin.TextCommand):
+    def run(self, edit):
+
+        erase_regions = []
+        for sel in self.view.sel():
+            cursor = sel.begin()
+            word = self.view.word(cursor)
+
+            erase_regions.append(
+                sublime.Region(cursor, word.end())
+            )
+
+        erase_regions.reverse()
+
+        for r in erase_regions:
+            self.view.erase(edit, r)
+
+
 class SideCompletion(sublime_plugin.ViewEventListener):
+    def on_text_command(self, command_name, args):
+        if command_name == 'commit_completion':
+            self.view.run_command('side_insert_completion')
+
     def on_query_completions(self, prefix, locations):
         global last_view_id
         global cached_symbols
