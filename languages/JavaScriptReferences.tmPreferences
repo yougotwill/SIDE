@@ -2,8 +2,10 @@
 <plist version="1.0">
 <dict>
 	<key>scope</key>
-	<string>meta.import.js meta.block.js variable.other.readwrite.js, variable.function.js,
-	entity.name.tag.tsx support.class.component.tsx</string>
+	<string>variable.function.js,
+	entity.name.class.js, 
+	meta.function-call.constructor.js variable.type.js
+	</string>
 	<key>settings</key>
 	<dict>
 		<key>showInIndexedReferenceList</key>

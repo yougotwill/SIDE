@@ -15,7 +15,6 @@ SIDE will just try to help as much as it can.
 * Rename
 * References
 * Completions
-* Code Lens
 * Diagnostics
 * Code Actions
 
@@ -78,11 +77,6 @@ If SIDE is 100% sure that some file `B` is related to the current file `A` you a
 It will show you all the symbols defined it that file `B` in completions. 
 
 ![Completions](img/completions.png)
-
-
-**Code Lens** show you the count of references and definitions. You can toggle the visibility of the code lens through the command palette `SIDE: Toggle Code Lens`. 
-
-![Code lens](img/codelens.png)
 
 
 With **Diagnostics**  never misspell a function name again. Just set Sublime's `spell_check` setting to `true`. 
