@@ -414,23 +414,17 @@ def get_word(view, point=None) -> str:
 
 def get_function_name(view, start_point) -> str:
     ''' Get the function name when cursor is inside the parenthesis or when the cursor is on the function name. '''
-    scope_name = view.scope_name(start_point)
-    if is_function(scope_name) or is_class(scope_name):
-        return get_word(view)
+    cursor = start_point
+    
+    while cursor > 0:
+        word = view.word(cursor)
+        scope_name = view.scope_name(word.begin())
+        if is_function(scope_name) or is_class(scope_name):
+            return view.substr(word)
 
-    if 'punctuation.section.arguments.begin' in scope_name or 'punctuation.section.group.begin' in scope_name:
-        return ''
+        cursor = view.find_by_class(word.begin(), False, sublime.CLASS_WORD_START)
 
-    open_bracket_region = view.find_by_class(start_point, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_LINE_END)
-
-    while view.substr(open_bracket_region) is not '(' and open_bracket_region > 0:
-        open_bracket_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_PUNCTUATION_START | sublime.CLASS_EMPTY_LINE)
-
-    if open_bracket_region is 0:
-        return ''
-
-    function_name_region = view.find_by_class(open_bracket_region, False, sublime.CLASS_WORD_START | sublime.CLASS_EMPTY_LINE | sublime.CLASS_LINE_START)
-    return view.substr(view.word(function_name_region))
+    return ""
 
 
 def definition(word, view):
