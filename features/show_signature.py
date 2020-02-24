@@ -5,7 +5,7 @@ import re
 import linecache
 
 from html import escape
-from SIDE.features.lib.helpers import definition, get_function_name, get_line, open_view
+from SIDE.features.lib.helpers import definition, get_function_name, get_line, open_view, get_comment_above, get_comment_bellow
 
 
 MAX_LEN = None  # used to limit up / down when keyboard is used to show signature
@@ -51,12 +51,6 @@ class SideShowSignature(sublime_plugin.TextCommand):
         file_path, relative_file_path, row_col = location
         row, _col = row_col  # signature row
 
-        get_docs_params = {
-            'file_path': file_path, 
-            'row_above_signiture': row - 1,
-            'row_below_signiture': None
-        }
-
         function_line = get_line(self.view, file_path, row).strip()
 
         signature, row = self.get_signature(function_line, 
@@ -65,8 +59,7 @@ class SideShowSignature(sublime_plugin.TextCommand):
         # prettify signature
         signature = signature.strip('{').strip(':')
 
-        get_docs_params['row_below_signiture'] = row + 1 
-        docs = self._get_docs(get_docs_params)  
+        docs = self.get_docs(file_path, row_col)  
 
         if docs:
             docs = """
@@ -121,28 +114,18 @@ class SideShowSignature(sublime_plugin.TextCommand):
             signature += ' ' + get_line(self.view, file_path, row).strip()
         return signature, row
 
-    def _get_docs(self, find_comment_params):
-        file_path = find_comment_params['file_path']
+    def get_docs(self, file_path, row_col):
+        row, col = row_col
 
-        # extract docs above function
-        row = find_comment_params['row_above_signiture']
-        docs = get_line(self.view, file_path, row).strip()
-        # go in reverse
-        if '*/' in docs:
-            while '/*' not in docs:
-                row -= 1
-                docs = get_line(self.view, file_path, row).strip() + '<br>' + docs
-            return docs
+        w = sublime.active_window()
+        v = w.find_output_panel(file_path) or w.find_open_file(file_path)
 
-        # extract docs below function
-        row = find_comment_params['row_below_signiture']
-        docs = get_line(self.view, file_path, row).strip()
-        if re.match('(\'\'\'|""")', docs):
-            while not re.match('(\'\'\'|""").*?(\'\'\'|""")', docs,  re.MULTILINE):
-                row += 1
-                docs += '<br>' + get_line(self.view, file_path, row).strip()
-            return docs
-        return ''
+        docs = ''
+        if v is not None:
+            point = v.text_point(row - 1, col)
+            docs += get_comment_above(v, point)
+            docs += get_comment_bellow(v, point) 
+        return docs
 
 
 class SideSignatureListener(sublime_plugin.ViewEventListener):

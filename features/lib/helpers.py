@@ -177,6 +177,11 @@ def is_function(scope_name):
     else: 
         return False
 
+def is_comment(scope_name):
+    if 'comment' in scope_name:
+        return True
+    return False
+
 def is_class(scope_name):
     if 'entity.name.class' in scope_name or \
        'support.class' in scope_name:
@@ -410,6 +415,31 @@ def get_word(view, point=None) -> str:
     if not point:
         point = view.sel()[0].begin()
     return view.substr(view.word(point))
+
+def get_comment_above(view, start_point) -> str:
+    cursor = start_point
+
+    while cursor > 0 and view.substr(view.line(cursor)).strip() != '':
+        scope_name = view.scope_name(cursor)
+        if is_comment(scope_name):
+            return view.substr(view.extract_scope(cursor)).replace('\n', '<br>')
+
+        cursor = view.find_by_class(cursor, False, sublime.CLASS_WORD_START | sublime.CLASS_LINE_START)
+
+    return ""
+
+def get_comment_bellow(view, start_point) -> str:
+    cursor = start_point
+    
+    while cursor <= view.size() and view.substr(view.line(cursor)).strip() != '':
+        print('eee', view.substr(view.line(cursor)).strip())
+        scope_name = view.scope_name(cursor)
+        if is_comment(scope_name):
+            return view.substr(view.extract_scope(cursor)).replace('\n', '<br>')
+
+        cursor = view.find_by_class(cursor, True, sublime.CLASS_WORD_START | sublime.CLASS_LINE_START)
+
+    return ""
 
 
 def get_function_name(view, start_point) -> str:
